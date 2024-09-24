@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>venPrincipal</class>
  <widget class="QMainWindow" name="venPrincipal">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>752</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +20,23 @@
    <widget class="QPushButton" name="btnAceptar">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>250</y>
-      <width>75</width>
-      <height>23</height>
+      <x>340</x>
+      <y>310</y>
+      <width>91</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>90</width>
+      <height>30</height>
+     </size>
     </property>
     <property name="text">
      <string>Aceptar</string>
@@ -30,16 +45,19 @@
    <widget class="QLabel" name="lblTitulo">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>200</y>
-      <width>261</width>
-      <height>31</height>
+      <x>230</x>
+      <y>80</y>
+      <width>288</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Papyrus</family>
+      <family>Lucida Fax</family>
       <pointsize>14</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -55,12 +73,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>752</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="actionSalir"/>
+   </widget>
+   <addaction name="menuArchivo"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
