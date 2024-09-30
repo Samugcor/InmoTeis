@@ -2,8 +2,11 @@
 Eventos que no tienen que ver con la gestion dde la db
 '''
 import sys
+import conexion
 from PyQt6 import QtWidgets
 from PyQt6.QtGui import QIcon
+
+import var
 
 
 class Eventos:
@@ -22,3 +25,13 @@ class Eventos:
             sys.exit()
         else:
             mbox.hide()
+
+    def cargarProvincias(self):
+        var.ui.cmbProvincia.clear()
+        listado=conexion.Conexion.listaProv(self)
+        var.ui.cmbProvincia.addItems(listado)
+
+    def cargarMunicipios(self):
+        var.ui.cmbMunicipio.clear()
+        listado=conexion.Conexion.listaMuni(self)
+        var.ui.cmbMunicipio.addItems(listado)

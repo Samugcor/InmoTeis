@@ -1,4 +1,6 @@
+import conexion
 import eventos
+import styles
 from venPrincipal import *
 import sys
 import var
@@ -9,6 +11,10 @@ class Main(QtWidgets.QMainWindow):
         super(Main,self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
+        self.setStyleSheet(styles.load_stylesheet())
+        conexion.Conexion.db_conexion(self)
+        eventos.Eventos.cargarProvincias(self)
+        eventos.Eventos.cargarMunicipios(self)
 
         '''
         Zona de evebtos del menubar

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1031</width>
+    <width>1092</width>
     <height>769</height>
    </rect>
   </property>
@@ -23,15 +23,53 @@
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="2">
+     <spacer name="horizontalSpacer_10">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="0" column="0">
+     <spacer name="horizontalSpacer_9">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
      <widget class="QTabWidget" name="panPrincipal">
       <property name="minimumSize">
        <size>
         <width>200</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -57,60 +95,29 @@
           </property>
          </spacer>
         </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="1">
          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
           <property name="sizeConstraint">
            <enum>QLayout::SetMaximumSize</enum>
           </property>
           <item>
-           <layout class="QGridLayout" name="gridLayout_2">
-            <item row="1" column="5">
-             <widget class="QLineEdit" name="txtDniCliente_3">
-              <property name="maximumSize">
-               <size>
-                <width>250</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="3" colspan="2">
-             <widget class="QLabel" name="lblDniCliente_5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Provincia</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>Apellidos</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="5">
-             <widget class="QComboBox" name="cmbProvincia">
-              <property name="minimumSize">
-               <size>
-                <width>120</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="lblDniCliente_4">
-              <property name="text">
-               <string>Dirección</string>
-              </property>
-             </widget>
-            </item>
+           <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1,0,0,0,0,0,0,0,0">
             <item row="0" column="0">
              <widget class="QLabel" name="lblDniCliente">
               <property name="text">
@@ -118,13 +125,10 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="txtDniCliente_4">
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
+            <item row="3" column="7">
+             <widget class="QLabel" name="lblDniCliente_6">
+              <property name="text">
+               <string>Municipio</string>
               </property>
              </widget>
             </item>
@@ -144,39 +148,6 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="txtDniCliente_2">
-              <property name="maximumSize">
-               <size>
-                <width>250</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lblDniCliente_2">
-              <property name="text">
-               <string>Email</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Minimum</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="2" column="5" colspan="4">
              <widget class="QLineEdit" name="txtDniCliente_5">
               <property name="maximumSize">
@@ -193,7 +164,7 @@
             <item row="1" column="3" colspan="2">
              <widget class="QLabel" name="label_4">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -206,13 +177,50 @@
             <item row="2" column="3" colspan="2">
              <widget class="QLabel" name="lblDniCliente_3">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="text">
                <string>Movil</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="lblDniCliente_4">
+              <property name="text">
+               <string>Dirección</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1" colspan="2">
+             <widget class="QLineEdit" name="txtDniCliente_6">
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="3" colspan="2">
+             <widget class="QLabel" name="lblDniCliente_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Provincia</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lblDniCliente_2">
+              <property name="text">
+               <string>Email</string>
               </property>
              </widget>
             </item>
@@ -232,18 +240,54 @@
               </property>
              </spacer>
             </item>
-            <item row="3" column="7">
-             <widget class="QLabel" name="lblDniCliente_6">
-              <property name="text">
-               <string>Municipio</string>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="txtDniCliente_4">
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
+               </size>
               </property>
              </widget>
             </item>
-            <item row="3" column="1" colspan="2">
-             <widget class="QLineEdit" name="txtDniCliente_6">
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="txtDniCliente_2">
+              <property name="maximumSize">
+               <size>
+                <width>250</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Apellidos</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="3" column="5">
+             <widget class="QComboBox" name="cmbProvincia">
               <property name="minimumSize">
                <size>
-                <width>300</width>
+                <width>120</width>
                 <height>0</height>
                </size>
               </property>
@@ -295,11 +339,21 @@
              </widget>
             </item>
             <item row="3" column="9">
-             <widget class="QComboBox" name="cmbProvincia_2">
+             <widget class="QComboBox" name="cmbMunicipio">
               <property name="minimumSize">
                <size>
                 <width>160</width>
                 <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="5">
+             <widget class="QLineEdit" name="txtDniCliente_3">
+              <property name="maximumSize">
+               <size>
+                <width>250</width>
+                <height>16777215</height>
                </size>
               </property>
              </widget>
@@ -396,22 +450,6 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="2">
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabEnConstruccion">
@@ -441,7 +479,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1031</width>
+     <width>1092</width>
      <height>21</height>
     </rect>
    </property>

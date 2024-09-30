@@ -1,0 +1,19 @@
+/*--- Estilo para QMainWindow ---*/
+QMainWindow{
+background-color: #E4EAF1;
+}
+
+QtabWidget{
+background-color: none;
+}
+
+QMenuBar{
+background-color: whitesmoke;
+}
+
+QPushButton{
+background-color: #E4EAF1;
+color: black;
+border: none;
+border_radius: 5px;
+}
