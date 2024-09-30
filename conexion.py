@@ -3,13 +3,13 @@ from PyQt6 import QtSql, QtWidgets
 
 class Conexion:
 
-    '''
+    """
 
-    método de una clase que no depende de una instancia específica de esa clase. 
-    Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase. 
+    método de una clase que no depende de una instancia específica de esa clase.
+    Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase.
     Es útil en comportamientos o funcionalidades que son más a una clase en general que a una instancia en particular.
-    
-    '''
+
+    """
 
     @staticmethod
     def db_conexion(self):
@@ -52,6 +52,7 @@ class Conexion:
 
         return listaprov
 
+    @staticmethod
     def listaMuni(self):
         listamuni=[]
         query= QtSql.QSqlQuery()
