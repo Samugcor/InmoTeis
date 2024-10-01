@@ -1,3 +1,4 @@
+import clientes
 import conexion
 import eventos
 import styles
@@ -8,6 +9,9 @@ import var
 class Main(QtWidgets.QMainWindow):
 
     def __init__(self):
+        '''
+        Configuración inicial
+        '''
         super(Main,self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
@@ -17,9 +21,21 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.cargarMunicipios(self)
 
         '''
-        Zona de evebtos del menubar
+        Zona de eventos del menubar
         '''
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
+
+        '''
+        Eventos de botones
+        '''
+        var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaClientes)
+
+        '''
+        Eventos de cajas de texto
+        '''
+        var.ui.txtDniCliente.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniCliente.text()))
+
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
     window = Main()
