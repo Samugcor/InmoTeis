@@ -1,8 +1,12 @@
+from calendar import Calendar
+from venPrincipal import *
+from venAux import *
+
 import clientes
 import conexion
 import eventos
 import styles
-from venPrincipal import *
+
 import sys
 import var
 
@@ -15,6 +19,7 @@ class Main(QtWidgets.QMainWindow):
         super(Main,self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
+        var.uiCalendar = Calendar()
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
         eventos.Eventos.cargarProvincias(self)
@@ -29,11 +34,19 @@ class Main(QtWidgets.QMainWindow):
         Eventos de botones
         '''
         var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaClientes)
+        var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0))
 
         '''
         Eventos de cajas de texto
         '''
         var.ui.txtDniCliente.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniCliente.text()))
+
+        '''
+        Eventos de los combobox
+        '''
+        var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargarMunicipios)
+
+
 
 
 if __name__ == '__main__':

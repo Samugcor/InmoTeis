@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1643</width>
-    <height>969</height>
+    <width>1159</width>
+    <height>1003</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>img/house.svg</normaloff>img/house.svg</iconset>
+    <normaloff>../../../../../.designer/backup/img/house.svg</normaloff>../../../../../.designer/backup/img/house.svg</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -134,7 +134,7 @@
            </spacer>
           </item>
           <item row="3" column="5">
-           <widget class="QComboBox" name="cmbProvincia">
+           <widget class="QComboBox" name="cmbProvCli">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -413,7 +413,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="btnCalendar">
+             <widget class="QPushButton" name="btnAltaCli">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -428,7 +428,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>img/calendar.svg</normaloff>img/calendar.svg</iconset>
+                <normaloff>../img/calendar.svg</normaloff>../img/calendar.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -562,22 +562,6 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="2">
-         <spacer name="horizontalSpacer_11">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="1" column="0">
          <spacer name="horizontalSpacer_8">
           <property name="orientation">
@@ -598,6 +582,22 @@
          <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
            <enum>QSizePolicy::Minimum</enum>
@@ -639,7 +639,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1643</width>
+     <width>1159</width>
      <height>21</height>
     </rect>
    </property>

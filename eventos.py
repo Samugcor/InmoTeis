@@ -2,6 +2,8 @@
 Eventos que no tienen que ver con la gestion dde la db
 '''
 import sys
+import time
+
 import conexion
 from PyQt6 import QtWidgets
 from PyQt6.QtGui import QIcon
@@ -27,13 +29,14 @@ class Eventos:
             mbox.hide()
 
     def cargarProvincias(self):
-        var.ui.cmbProvincia.clear()
+        var.ui.cmbProvCli.clear()
         listado=conexion.Conexion.listaProv(self)
-        var.ui.cmbProvincia.addItems(listado)
+        var.ui.cmbProvCli.addItems(listado)
 
     def cargarMunicipios(self):
+        provincia=var.ui.cmbProvCli.currentText()
         var.ui.cmbMunicipio.clear()
-        listado=conexion.Conexion.listaMuni(self)
+        listado=conexion.Conexion.listaMuni(provincia)
         var.ui.cmbMunicipio.addItems(listado)
 
     def validarDNIcli(dni):
@@ -60,3 +63,21 @@ class Eventos:
 
         except Exception as error:
             print("error en validar dni ", error)
+
+    def abrirCalendar(op):
+        try:
+            var.panel = op
+            var.uiCalendar.show()
+        except Exception as error:
+            print("error en abrir calendar ", error)
+
+    def cargaFecha(qDate):
+        try:
+            data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
+            if var.panel == var.ui.panPrincipal.currentIndex():
+                var.ui.txtAltacli.setText(str(data))
+            time.sleep(0.5)
+            var.uiCalendar.hide()
+            return data
+        except Exception as error:
+            print("error en cargar fecha: ", error)
