@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1159</width>
-    <height>1003</height>
+    <width>1110</width>
+    <height>982</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,7 +157,7 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="txtDniCliente_3">
+           <widget class="QLineEdit" name="txtNombreCliente">
             <property name="minimumSize">
              <size>
               <width>200</width>
@@ -277,7 +277,7 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="txtDniCliente_2">
+           <widget class="QLineEdit" name="txtApellidosCliente">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -299,7 +299,7 @@
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QLineEdit" name="txtDniCliente_4">
+           <widget class="QLineEdit" name="txtEmailCliente">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -321,7 +321,7 @@
            </widget>
           </item>
           <item row="2" column="5">
-           <widget class="QLineEdit" name="txtDniCliente_5">
+           <widget class="QLineEdit" name="txtMovilCliente">
             <property name="minimumSize">
              <size>
               <width>200</width>
@@ -340,7 +340,7 @@
            </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QLineEdit" name="txtDniCliente_6">
+           <widget class="QLineEdit" name="txtDirecionCliente">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -369,7 +369,7 @@
            </widget>
           </item>
           <item row="3" column="8">
-           <widget class="QComboBox" name="cmbMunicipio">
+           <widget class="QComboBox" name="cmbMunicipioCli">
             <property name="minimumSize">
              <size>
               <width>170</width>
@@ -639,7 +639,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1159</width>
+     <width>1110</width>
      <height>21</height>
     </rect>
    </property>

@@ -15,4 +15,4 @@ class Calendar(QtWidgets.QDialog):
         ano=datetime.now().year
 
         var.uiCalendar.Calendar.setSelectedDate((QtCore.QDate(ano,mes,dia)))
-        var.uiCalendar.Calendar.clicked.connect(eventos.Eventos)
+        var.uiCalendar.Calendar.clicked.connect(eventos.Eventos.cargaFecha)

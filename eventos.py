@@ -3,6 +3,7 @@ Eventos que no tienen que ver con la gestion dde la db
 '''
 import sys
 import time
+import re
 
 import conexion
 from PyQt6 import QtWidgets
@@ -12,6 +13,7 @@ import var
 
 
 class Eventos:
+    #Pop up salir
     def mensajeSalir(self):
         mbox =QtWidgets.QMessageBox()
         mbox.setWindowIcon(QIcon('./img/house.svg'))
@@ -28,6 +30,7 @@ class Eventos:
         else:
             mbox.hide()
 
+    #Cargar valores
     def cargarProvincias(self):
         var.ui.cmbProvCli.clear()
         listado=conexion.Conexion.listaProv(self)
@@ -35,10 +38,11 @@ class Eventos:
 
     def cargarMunicipios(self):
         provincia=var.ui.cmbProvCli.currentText()
-        var.ui.cmbMunicipio.clear()
+        var.ui.cmbMunicipioCli.clear()
         listado=conexion.Conexion.listaMuni(provincia)
-        var.ui.cmbMunicipio.addItems(listado)
+        var.ui.cmbMunicipioCli.addItems(listado)
 
+    #Validacion
     def validarDNIcli(dni):
         try:
             dni = str(dni).upper()
@@ -75,9 +79,17 @@ class Eventos:
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
             if var.panel == var.ui.panPrincipal.currentIndex():
-                var.ui.txtAltacli.setText(str(data))
+                var.ui.txtAltaCliente.setText(str(data))
             time.sleep(0.5)
             var.uiCalendar.hide()
             return data
         except Exception as error:
             print("error en cargar fecha: ", error)
+
+    def validarMail(mail):
+        mail = mail.lower()
+        regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+        if re.match(regex, mail):
+            return True
+        else:
+            return False

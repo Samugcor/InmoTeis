@@ -1,10 +1,12 @@
 import os
 from PyQt6 import QtSql, QtWidgets
+from PyQt6.QtGui import QIcon
+
 
 class Conexion:
 
     """
-
+    @staticmethod
     método de una clase que no depende de una instancia específica de esa clase.
     Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase.
     Es útil en comportamientos o funcionalidades que son más a una clase en general que a una instancia en particular.
@@ -56,9 +58,32 @@ class Conexion:
     def listaMuni(provincia):
         listamunicipios = []
         query = QtSql.QSqlQuery()
-        query.prepare("SELECT * FROM municipios where idprov = (select idprov from provincias where provincia = ?)")
-        query.bindValue(0, provincia)
+        query.prepare("SELECT * FROM municipios where idprov = (select idprov from provincias where provincia = :provincia)")
+        query.bindValue(":provincia", provincia)
         if query.exec():
             while query.next():
                 listamunicipios.append(query.value(1))
         return listamunicipios
+
+    def altaCliente(nuevoCli):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT into clientes (dnicli,altacli,apecli,nomecli,emailcli,movilcli,direcli,provcli,municli)"
+                          " VALUES (:dnicli,:altacli,:apecli,:nomecli,:emailcli,:movilcli,:direcli,:provcli,:municli)")
+            #Corrige esta mierda en casa con una lista y un bucle
+            query.bindValue(":dnicli", str(nuevoCli[0]))
+            query.bindValue(":altacli", str(nuevoCli[1]))
+            query.bindValue(":apecli", str(nuevoCli[2]))
+            query.bindValue(":nomecli", str(nuevoCli[3]))
+            query.bindValue(":emailci", str(nuevoCli[4]))
+            query.bindValue(":movilcli", str(nuevoCli[5]))
+            query.bindValue(":direcli", str(nuevoCli[6]))
+            query.bindValue(":provcli", str(nuevoCli[7]))
+            query.bindValue(":municli", str(nuevoCli[8]))
+
+            if query.exec():
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error alta cliente",e)

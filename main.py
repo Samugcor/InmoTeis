@@ -40,6 +40,7 @@ class Main(QtWidgets.QMainWindow):
         Eventos de cajas de texto
         '''
         var.ui.txtDniCliente.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniCliente.text()))
+        var.ui.txtEmailCliente.editingFinished.connect(lambda: clientes.Clientes.checkEmail(var.ui.txtEmailCliente.text()))
 
         '''
         Eventos de los combobox
