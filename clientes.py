@@ -1,6 +1,6 @@
 from tabnanny import check
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QIcon
 
 import conexion
@@ -33,11 +33,15 @@ class Clientes:
             mbox.setWindowIcon(QIcon('./img/house.svg'))
             mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
             mbox.setWindowTitle('Aviso')
-            mbox.setText('Cliente alta en base de datos')
+            mbox.setText('Cliente dado de alta en base de datos')
             mbox.setStandardButtons(
                 QtWidgets.QMessageBox.StandardButton.Ok)
             mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+            mbox.exec()
+
+            Clientes.cargaTablaCientes(self)
         else:
             QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
                                            QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -56,4 +60,30 @@ class Clientes:
                 var.ui.txtEmailCliente.setFocus()
 
         except Exception as error:
-            print("error check cliente", error)
+            print("Erros checkeando el email", error)
+
+    def cargaTablaCientes(self):
+        try:
+            listado= conexion.Conexion.listadoClientes(self)
+            index=0
+            for registro in listado:
+                var.ui.tabClientes.setRowCount(index+1)
+                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ registro[2] + "  "))
+                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[3]+ "  "))
+                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem("   "+ registro[5]+ "   "))
+                var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))
+                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ registro[8]+ "  "))
+                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ registro[9]+ "  "))
+
+                var.ui.tabClientes.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabClientes.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabClientes.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+                index+=1
+
+
+        except Exception as error:
+            print("Error cargando la tabla de clientes", error)

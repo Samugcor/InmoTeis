@@ -1,4 +1,6 @@
 import os
+from idlelib import query
+
 from PyQt6 import QtSql, QtWidgets
 from PyQt6.QtGui import QIcon
 
@@ -67,23 +69,49 @@ class Conexion:
 
     def altaCliente(nuevoCli):
         try:
+            print(nuevoCli)
             query = QtSql.QSqlQuery()
             query.prepare("INSERT into clientes (dnicli,altacli,apecli,nomecli,emailcli,movilcli,direcli,provcli,municli)"
                           " VALUES (:dnicli,:altacli,:apecli,:nomecli,:emailcli,:movilcli,:direcli,:provcli,:municli)")
-            #Corrige esta mierda en casa con una lista y un bucle
+
+            '''Con este bucle si un campo se queda vacio si guarda como string vacia en vez de null, habría que arreglarlo
+            fields = [
+                ":dnicli", ":altacli", ":apecli", ":nomecli", ":emailcli",
+                ":movilcli", ":direcli", ":provcli", ":municli"
+            ]
+
+            for field, value in zip(fields, nuevoCli):
+                query.bindValue(field, str(value))'''
+
             query.bindValue(":dnicli", str(nuevoCli[0]))
             query.bindValue(":altacli", str(nuevoCli[1]))
             query.bindValue(":apecli", str(nuevoCli[2]))
             query.bindValue(":nomecli", str(nuevoCli[3]))
-            query.bindValue(":emailci", str(nuevoCli[4]))
+            query.bindValue(":emailcli", str(nuevoCli[4]))
             query.bindValue(":movilcli", str(nuevoCli[5]))
             query.bindValue(":direcli", str(nuevoCli[6]))
             query.bindValue(":provcli", str(nuevoCli[7]))
             query.bindValue(":municli", str(nuevoCli[8]))
 
             if query.exec():
+                print("Cliente añadido")
                 return True
             else:
                 return False
         except Exception as e:
             print("Error alta cliente",e)
+
+    def listadoClientes(self):
+        try:
+            listado=[]
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM clientes ORDER BY apecli, nomecli ASC")
+
+            if query.exec():
+                while query.next():
+                    fila=[query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            return listado
+
+        except Exception as e:
+            print("Error recuperando el listado de clientes",e)

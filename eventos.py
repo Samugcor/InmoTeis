@@ -87,10 +87,26 @@ class Eventos:
             print("error en cargar fecha: ", error)
 
     def validarMail(mail):
-        #⭕Corregir que puedas burrar el email despues de escribir en el campo y que te lo de como valido
         mail = mail.lower()
         regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
-        if re.match(regex, mail) :
+        if re.match(regex, mail) or mail == "":
             return True
         else:
             return False
+
+    def resizeTablaClientes(self):
+        try:
+            header=var.ui.tabClientes.horizontalHeader()
+            for i in range(header.count()):
+                if(i in (0,1,3,4)):
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_items =var.ui.tabClientes.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla clientes ", e)
