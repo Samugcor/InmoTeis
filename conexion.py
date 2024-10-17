@@ -69,7 +69,7 @@ class Conexion:
 
     def altaCliente(nuevoCli):
         try:
-            print(nuevoCli)
+
             query = QtSql.QSqlQuery()
             query.prepare("INSERT into clientes (dnicli,altacli,apecli,nomecli,emailcli,movilcli,direcli,provcli,municli)"
                           " VALUES (:dnicli,:altacli,:apecli,:nomecli,:emailcli,:movilcli,:direcli,:provcli,:municli)")
@@ -115,3 +115,63 @@ class Conexion:
 
         except Exception as e:
             print("Error recuperando el listado de clientes",e)
+
+    def datosOneCliente(dni):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM clientes WHERE dnicli = :dni")
+
+            query.bindValue(":dni",str(dni).strip())
+
+            if query.exec():
+                while query.next():
+                   for i in range(query.record().count()):
+                    registro.append(str(query.value(i)))
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de clientes",e)
+
+    def modifCliente(registro):
+        try:
+            query=QtSql.QSqlQuery()
+            query.prepare("UPDATE clientes SET altacli =:altacli,apecli = :apecli,nomecli = :nomecli, emailcli = :emailcli, "
+                          " movilcli = :movilcli, direcli = :direcli, provcli = :provcli, municli =:municli "
+                          " WHERE dnicli = :dni")
+
+            query.bindValue(":dni", str(registro[0]))
+            query.bindValue(":altacli", str(registro[1]))
+            query.bindValue(":apecli", str(registro[2]))
+            query.bindValue(":nomecli", str(registro[3]))
+            query.bindValue(":emailcli", str(registro[4]))
+            query.bindValue(":movilcli", str(registro[5]))
+            query.bindValue(":direcli", str(registro[6]))
+            query.bindValue(":provcli", str(registro[7]))
+            query.bindValue(":municli", str(registro[8]))
+
+            if query.exec():
+                return True
+            else:
+                return False
+        except Exception as e:
+            print()
+
+    def bajaCliente(datos):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE clientes SET bajacli =:bajacli WHERE dnicli = :dni")
+            query.bindValue(":dni", str(datos[0]).strip())
+            query.bindValue(":bajacli", str(datos[1]))
+
+            if query.exec():
+                return True
+            else:
+                return False
+
+        except Exception as e:
+            print("Error baja cliente bd",e)
+
+
