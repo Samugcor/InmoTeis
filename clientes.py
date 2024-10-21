@@ -28,7 +28,7 @@ class Clientes:
     def altaClientes(self):
         nuevoCli =[var.ui.txtDniCliente.text(),var.ui.txtAltaCliente.text(),var.ui.txtApellidosCliente.text(),
                 var.ui.txtNombreCliente.text(),var.ui.txtEmailCliente.text(),var.ui.txtMovilCliente.text(),var.ui.txtDirecionCliente.text(),
-                var.ui.cmbProvCli.currentText(),var.ui.cmbMunicipioCli.currentText()]
+                var.ui.cmbProvCli.currentText(),var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
 
         if conexion.Conexion.altaCliente(nuevoCli):
             mbox = QtWidgets.QMessageBox()
@@ -48,7 +48,8 @@ class Clientes:
             QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
                                            QtWidgets.QMessageBox.StandardButton.Cancel)
 
-    def checkEmail(mail):
+    @staticmethod
+    def checkEmail():
         try:
             mail = str(var.ui.txtEmailCliente.text())
             if eventos.Eventos.validarMail(mail):
@@ -63,6 +64,22 @@ class Clientes:
 
         except Exception as error:
             print("Erros checkeando el email", error)
+
+    @staticmethod
+    def checkMovil():
+        try:
+            movil = str(var.ui.txtMovilCliente.text())
+            if eventos.Eventos.validarMovil(movil):
+                var.ui.txtMovilCliente.setStyleSheet('background-color: rgb(255, 255, 255);')
+                var.ui.txtMovilCliente.setText(movil.lower())
+
+            else:
+                var.ui.txtMovilCliente.setStyleSheet('background-color:#FFC0CB;')
+                var.ui.txtMovilCliente.setText(None)
+                var.ui.txtMovilCliente.setFocus()
+
+        except Exception as error:
+            print("Erros checkeando el movil", error)
 
     def cargaTablaCientes(self):
         try:
@@ -100,7 +117,7 @@ class Clientes:
             registro=conexion.Conexion.datosOneCliente(str(datos[0]))
             listado= [var.ui.txtDniCliente,var.ui.txtAltaCliente,var.ui.txtApellidosCliente,
                 var.ui.txtNombreCliente,var.ui.txtEmailCliente,var.ui.txtMovilCliente,var.ui.txtDirecionCliente,
-                var.ui.cmbProvCli,var.ui.cmbMunicipioCli]
+                var.ui.cmbProvCli,var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
 
             for i in range(len(listado)):
                 if i==7 or i==8:
@@ -116,7 +133,7 @@ class Clientes:
             modifCli = [var.ui.txtDniCliente.text(), var.ui.txtAltaCliente.text(), var.ui.txtApellidosCliente.text(),
                         var.ui.txtNombreCliente.text(), var.ui.txtEmailCliente.text(), var.ui.txtMovilCliente.text(),
                         var.ui.txtDirecionCliente.text(),
-                        var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText()]
+                        var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
 
             if conexion.Conexion.modifCliente(modifCli):
                 mbox = QtWidgets.QMessageBox()
@@ -181,3 +198,16 @@ class Clientes:
 
         except Exception as e:
             print("Error baja de clientes", e)
+
+    def historicoCli(self):
+        try:
+            if var.ui.chkHistoricoCli.isChecked():
+                #Muestra los dados de baja
+                var.historico=0
+            else:
+                var.historico=1
+
+            clientes.Clientes.cargaTablaCientes(self)
+
+        except Exception as error:
+            print("Error cargando historico clientes", error)

@@ -25,6 +25,7 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir=FileDialogAbrir()
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
+        var.historico=1
         #conexionserver.ConexionServer.crear_conexion(self)
 
 
@@ -55,7 +56,8 @@ class Main(QtWidgets.QMainWindow):
         Eventos de cajas de texto
         '''
         var.ui.txtDniCliente.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniCliente.text()))
-        var.ui.txtEmailCliente.editingFinished.connect(lambda: clientes.Clientes.checkEmail(var.ui.txtEmailCliente.text()))
+        var.ui.txtEmailCliente.editingFinished.connect(clientes.Clientes.checkEmail)
+        var.ui.txtMovilCliente.editingFinished.connect(clientes.Clientes.checkMovil)
 
         '''
         Eventos de los combobox
@@ -70,6 +72,10 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionbarLimpiar.triggered.connect(eventos.Eventos.limpiarPanel)
 
+        '''
+        Eventos checkbox
+        '''
+        var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.historicoCli)
 
 
 if __name__ == '__main__':
