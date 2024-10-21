@@ -154,8 +154,8 @@ class Conexion:
     def modifCliente(registro):
         try:
             query=QtSql.QSqlQuery()
-            query.prepare("UPDATE clientes SET altacli =:altacli,apecli = :apecli,nomecli = :nomecli, emailcli = :emailcli, "
-                          " movilcli = :movilcli, direcli = :direcli, provcli = :provcli, municli =:municli, bajacli = :bajacli "
+            query.prepare("UPDATE clientes SET altacli =:altacli, apecli = :apecli, nomecli = :nomecli, emailcli = :emailcli, "
+                          " movilcli = :movilcli, direcli = :direcli, provcli = :provcli, municli = :municli, bajacli = :bajacli "
                           " WHERE dnicli = :dni")
 
             query.bindValue(":dni", str(registro[0]))
@@ -169,6 +169,7 @@ class Conexion:
             query.bindValue(":municli", str(registro[8]))
             query.bindValue(":bajacli", None if not str(registro[9]) else str(registro[9]))
 
+            print("PUTO")
             if query.exec():
                 return True
             else:

@@ -132,8 +132,8 @@ class Clientes:
         try:
             modifCli = [var.ui.txtDniCliente.text(), var.ui.txtAltaCliente.text(), var.ui.txtApellidosCliente.text(),
                         var.ui.txtNombreCliente.text(), var.ui.txtEmailCliente.text(), var.ui.txtMovilCliente.text(),
-                        var.ui.txtDirecionCliente.text(),
-                        var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
+                        var.ui.txtDirecionCliente.text(), var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText(),
+                        var.ui.txtBajaCliente.text()]
 
             if conexion.Conexion.modifCliente(modifCli):
                 mbox = QtWidgets.QMessageBox()
