@@ -88,15 +88,15 @@ class Conexion:
 
             #if str empty =null
             # null if not str(nuevoCli[0]) else str(nuevoCli[0])
-            query.bindValue(":dnicli", str(nuevoCli[0]))
-            query.bindValue(":altacli", str(nuevoCli[1]))
-            query.bindValue(":apecli", str(nuevoCli[2]))
-            query.bindValue(":nomecli", str(nuevoCli[3]))
+            query.bindValue(":dnicli", None if not str(nuevoCli[0]) else str(nuevoCli[0]))
+            query.bindValue(":altacli", None if not str(nuevoCli[1]) else str(nuevoCli[1]))
+            query.bindValue(":apecli", None if not str(nuevoCli[2]) else str(nuevoCli[2]))
+            query.bindValue(":nomecli", None if not str(nuevoCli[3]) else str(nuevoCli[3]))
             query.bindValue(":emailcli", None if not str(nuevoCli[4]) else str(nuevoCli[4]))
-            query.bindValue(":movilcli", str(nuevoCli[5]))
-            query.bindValue(":direcli", str(nuevoCli[6]))
-            query.bindValue(":provcli", str(nuevoCli[7]))
-            query.bindValue(":municli", str(nuevoCli[8]))
+            query.bindValue(":movilcli", None if not str(nuevoCli[5]) else str(nuevoCli[5]))
+            query.bindValue(":direcli", None if not str(nuevoCli[6]) else str(nuevoCli[6]))
+            query.bindValue(":provcli", None if not str(nuevoCli[7]) else str(nuevoCli[7]))
+            query.bindValue(":municli", None if not str(nuevoCli[8]) else str(nuevoCli[8]))
             query.bindValue(":bajacli", None if not str(nuevoCli[9]) else str(nuevoCli[9]))
 
             if query.exec():
@@ -158,19 +158,20 @@ class Conexion:
                           " movilcli = :movilcli, direcli = :direcli, provcli = :provcli, municli = :municli, bajacli = :bajacli "
                           " WHERE dnicli = :dni")
 
-            query.bindValue(":dni", str(registro[0]))
-            query.bindValue(":altacli", str(registro[1]))
-            query.bindValue(":apecli", str(registro[2]))
-            query.bindValue(":nomecli", str(registro[3]))
+            query.bindValue(":dni", None if not(str(registro[0]))else str(registro[0]))
+            query.bindValue(":altacli", None if not (str(registro[1])) else str(registro[1]))
+            query.bindValue(":apecli", None if not (str(registro[2])) else str(registro[2]))
+            query.bindValue(":nomecli", None if not (str(registro[3])) else str(registro[3]))
             query.bindValue(":emailcli", None if not str(registro[4]) else str(registro[4]))
-            query.bindValue(":movilcli", str(registro[5]))
-            query.bindValue(":direcli", str(registro[6]))
-            query.bindValue(":provcli", str(registro[7]))
-            query.bindValue(":municli", str(registro[8]))
-            query.bindValue(":bajacli", None if not str(registro[9]) else str(registro[9]))
+            query.bindValue(":movilcli", None if not (str(registro[5])) else str(registro[5]))
+            query.bindValue(":direcli", None if not (str(registro[6])) else str(registro[6]))
+            query.bindValue(":provcli", None if not (str(registro[7])) else str(registro[7]))
+            query.bindValue(":municli", None if not (str(registro[8])) else str(registro[8]))
+            query.bindValue(":bajacli", None if not (str(registro[9])) else str(registro[9]))
 
-            print("PUTO")
-            if query.exec():
+
+            if query.exec() and query.numRowsAffected()>0:
+                print(query.numRowsAffected())
                 return True
             else:
                 return False
@@ -185,7 +186,7 @@ class Conexion:
             query.bindValue(":dni", str(datos[0]).strip())
             query.bindValue(":bajacli", str(datos[1]))
 
-            if query.exec():
+            if query.exec() and query.numRowsAffected()>0:
                 return True
             else:
                 return False

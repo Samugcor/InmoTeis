@@ -119,6 +119,8 @@ class Clientes:
                 var.ui.txtNombreCliente,var.ui.txtEmailCliente,var.ui.txtMovilCliente,var.ui.txtDirecionCliente,
                 var.ui.cmbProvCli,var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
 
+            #print(registro)
+            #print(listado)
             for i in range(len(listado)):
                 if i==7 or i==8:
                     listado[i].setCurrentText(registro[i])
