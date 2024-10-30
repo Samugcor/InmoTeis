@@ -1,10 +1,10 @@
 /*--- Estilo para QMainWindow ---*/
 QMainWindow{
-background-color: #E4EAF1;
+background-color: #cdd7e4;
 }
 
 QtabWidget{
-background-color: none;
+background-color: e5eeff;
 }
 
 QMenuBar{

@@ -48,29 +48,50 @@ class Eventos:
     '''
     def cargarProvincias(self):
         var.ui.cmbProvCli.clear()
+        var.ui.cmbProvProp.clear()
         listado=conexion.Conexion.listaProv(self)
         #listado = conexionserver.ConexionServer.listaProv(self)
         var.ui.cmbProvCli.addItems(listado)
+        var.ui.cmbProvProp.addItems(listado)
 
     def cargarMunicipios(self):
-        provincia=var.ui.cmbProvCli.currentText()
+        provinciaCli=var.ui.cmbProvCli.currentText()
+        provinciaPro=var.ui.cmbProvProp.currentText()
+
         var.ui.cmbMunicipioCli.clear()
-        listado=conexion.Conexion.listaMuni(provincia)
+        var.ui.cmbMunicipioProp.clear()
+
+        listadoCli=conexion.Conexion.listaMuni(provinciaCli)
+        listadoPro=conexion.Conexion.listaMuni(provinciaPro)
+
         #listado = conexionserver.ConexionServer.listaMuniProv(provincia)
-        var.ui.cmbMunicipioCli.addItems(listado)
+
+        var.ui.cmbMunicipioCli.addItems(listadoCli)
+        var.ui.cmbMunicipioProp.addItems(listadoPro)
 
     def cargaFecha(qDate):
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
-            if var.panel == var.ui.panPrincipal.currentIndex() and var.btn==0:
+
+            if var.panel == 0 and var.btn==0:
                 var.ui.txtAltaCliente.setText(str(data))
-            elif var.panel == var.ui.panPrincipal.currentIndex() and var.btn==1:
+            elif var.panel == 0 and var.btn==1:
                 var.ui.txtBajaCliente.setText(str(data))
+            elif var.panel == 1 and var.btn==0:
+                var.ui.txtAltaProp.setText(str(data))
+            elif var.panel == 1 and var.btn==1:
+                var.ui.txtBajaProp.setText(str(data))
             time.sleep(0.2)
             var.uiCalendar.hide()
             return data
         except Exception as error:
             print("error en cargar fecha: ", error)
+
+    def cargarTipoPropiedad(self):
+        var.ui.cmbTipoProp.clear()
+
+        listado=conexion.Conexion.listaTipoPropiedad(self);
+        var.ui.cmbTipoProp.addItems(listado)
 
     '''
         VALIDACIÓN DATOS
@@ -212,3 +233,9 @@ class Eventos:
                 dato.setText("")
 
             eventos.Eventos.cargarProvincias(self)
+
+    def abrirTipoProp(self):
+        try:
+            var.dlggestion.show()
+        except Exception as e:
+            print("Error en abrir  ventana tipo prop ", e)

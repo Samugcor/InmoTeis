@@ -195,3 +195,50 @@ class Conexion:
             print("Error baja cliente bd",e)
 
 
+    '''CONEXIONES PROPIEDADES'''
+    def altaTipoPropiedad(tipoPropiedad):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT into tipoprop"
+                          " VALUES (:tipoPropiedad)")
+
+            #if str empty =null
+            # null if not str(nuevoCli[0]) else str(nuevoCli[0])
+            query.bindValue(":tipoPropiedad", None if not tipoPropiedad else tipoPropiedad)
+
+            if query.exec():
+                print("Tipo propiedad añadida")
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error altaTipoPropiedad (conexion.py): ",e)
+
+    def bajaTipoPropiedad(tipoPropiedad):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("DELETE FROM tipoprop"
+                          " WHERE tipo =:tipoPropiedad")
+
+            query.bindValue(":tipoPropiedad", tipoPropiedad)
+
+            if query.exec() and query.numRowsAffected()>0:
+                print("Tipo propiedad eliminada")
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error bajaTipoPropiedad (conexion.py): ",e)
+
+    def listaTipoPropiedad(self):
+        listaTipoProp = []
+        query = QtSql.QSqlQuery()
+        query.prepare("SELECT * FROM tipoprop")
+
+        if query.exec():
+            while query.next():
+                listaTipoProp.append(query.value(0))
+
+        return listaTipoProp
