@@ -110,7 +110,7 @@ class Conexion:
     def listadoClientes(self):
         try:
             listado=[]
-            if var.historico==0:
+            if var.ui.chkHistoricoCli.isChecked():
                 query = QtSql.QSqlQuery()
                 #Where fecha baja = null
                 query.prepare("SELECT * FROM clientes ORDER BY apecli, nomecli ASC")
@@ -242,3 +242,83 @@ class Conexion:
                 listaTipoProp.append(query.value(0))
 
         return listaTipoProp
+
+    def altaPropiedad(propiedad):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("Insert into propiedades (altaprop, bajaprop, dirprop, provprop, muniprop, cpprop,"
+                          "tipoprop, habprop, banprop, superprop, prealquiprop, prevenprop,"
+                          "obserprop, tipooperprop, estadoprop, nomeprop, movilprop) VALUES "
+                          "(:altaprop, :bajaprop, :dirprop, :provprop, :muniprop, :cpprop,"
+                          ":tipoprop, :habprop, :banprop, :superprop, :prealquiprop, :prevenprop,"
+                          ":obserprop, :tipooperprop, :estadoprop, :nomeprop, :movilprop)")
+
+            query.bindValue(":altaprop", None if not str(propiedad[0]) else str(propiedad[0]))
+            query.bindValue(":bajaprop", None if not str(propiedad[1]) else str(propiedad[1]))
+            query.bindValue(":dirprop", None if not str(propiedad[2]) else str(propiedad[2]))
+            query.bindValue(":provprop", None if not str(propiedad[3]) else str(propiedad[3]))
+            query.bindValue(":muniprop", None if not str(propiedad[4]) else str(propiedad[4]))
+            query.bindValue(":cpprop", None if not str(propiedad[5]) else str(propiedad[5]))
+            query.bindValue(":tipoprop", None if not str(propiedad[6]) else str(propiedad[6]))
+            query.bindValue(":habprop", None if not str(propiedad[7]) else str(propiedad[7]))
+            query.bindValue(":banprop", None if not str(propiedad[8]) else str(propiedad[8]))
+            query.bindValue(":superprop", None if not str(propiedad[9]) else str(propiedad[9]))
+            query.bindValue(":prealquiprop", None if not str(propiedad[10]) else str(propiedad[10]))
+            query.bindValue(":prevenprop", None if not str(propiedad[11]) else str(propiedad[11]))
+            query.bindValue(":obserprop", None if not str(propiedad[12]) else str(propiedad[12]))
+            query.bindValue(":tipooperprop", None if not str(propiedad[13]) else str(propiedad[13]))
+            query.bindValue(":estadoprop", None if not str(propiedad[14]) else str(propiedad[14]))
+            query.bindValue(":nomeprop", None if not str(propiedad[15]) else str(propiedad[15]))
+            query.bindValue(":movilprop", None if not str(propiedad[16]) else str(propiedad[16]))
+
+            if query.exec():
+                print("Propiedad añadida")
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error altaPropiedad (conexion.py): ",e)
+
+    def listadoPropiedades(self):
+        try:
+            listado=[]
+            if var.ui.chkHistoricoCli.isChecked():
+                query = QtSql.QSqlQuery()
+                #Where fecha baja = null
+                query.prepare("SELECT * FROM propiedades ORDER BY codigo ASC")
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            else:
+                query = QtSql.QSqlQuery()
+                # Where fecha baja = null
+                query.prepare("SELECT * FROM propiedades WHERE bajaprop IS null ORDER BY codigo ASC")
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+        except Exception as e:
+            print("Error recuperando el listado de clientes",e)
+
+    def datosOnePropiedad(dni):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM clientes WHERE dnicli = :dni")
+
+            query.bindValue(":dni",str(dni).strip())
+
+            if query.exec():
+                while query.next():
+                   for i in range(query.record().count()):
+                    registro.append(str(query.value(i)))
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de clientes",e)

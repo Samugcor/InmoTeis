@@ -26,9 +26,12 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.dlggestion = DlgGestionProp()
 
+        var.ui.rgEstado.setId(var.ui.rbtAlquilado, 1)
+        var.ui.rgEstado.setId(var.ui.rbtVendido, 2)
+        var.ui.rgEstado.setId(var.ui.rbtDisponible, 3)
+
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
-        var.historico=1
         #conexionserver.ConexionServer.crear_conexion(self)
 
 
@@ -38,7 +41,7 @@ class Main(QtWidgets.QMainWindow):
         clientes.Clientes.cargaTablaCientes(self)
         eventos.Eventos.resizeTablaClientes(self)
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
-
+        eventos.Eventos.resizeTablaPropiedades(self)
         '''
         Zona de eventos del menubar
         '''
@@ -82,7 +85,7 @@ class Main(QtWidgets.QMainWindow):
         '''
         Eventos checkbox
         '''
-        var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.historicoCli)
+        var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.cargaTablaCientes)
 
 
 if __name__ == '__main__':

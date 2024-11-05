@@ -221,6 +221,23 @@ class Eventos:
         except Exception as e:
             print("error en resize tabla clientes ", e)
 
+    def resizeTablaPropiedades(self):
+        try:
+            header=var.ui.tabPropiedades.horizontalHeader()
+            for i in range(header.count()):
+                if(i in (1,2,7)):
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_items =var.ui.tabPropiedades.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla propiedades ", e)
+
     def limpiarPanel(self):
         camposPanel = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
                     var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtMovilCliente,

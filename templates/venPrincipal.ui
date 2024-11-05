@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1346</width>
+    <width>1560</width>
     <height>1160</height>
    </rect>
   </property>
@@ -62,7 +62,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pesClientes">
        <attribute name="title">
@@ -874,23 +874,46 @@
           <item row="2" column="3" colspan="2">
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="1">
-             <widget class="QLabel" name="lblTipoOp">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <layout class="QHBoxLayout" name="horizontalLayout_14">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetMinimumSize</enum>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Tipo de operación</string>
-              </property>
-             </widget>
+              <item>
+               <widget class="QLabel" name="lblTipoOp">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Tipo de operación</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_14">
+                <property name="maximumSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item row="1" column="3">
              <widget class="QCheckBox" name="chkVenta">
@@ -905,41 +928,8 @@
                <string>Alquilado</string>
               </property>
               <attribute name="buttonGroup">
-               <string notr="true">buttonGroup</string>
+               <string notr="true">rgEstado</string>
               </attribute>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QCheckBox" name="chkAlquier">
-              <property name="text">
-               <string>Alquiler</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="4">
-             <widget class="QCheckBox" name="chkIntercambio">
-              <property name="text">
-               <string>Intercambio</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="lblEstadoProp">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Estado</string>
-              </property>
              </widget>
             </item>
             <item row="3" column="3">
@@ -948,8 +938,15 @@
                <string>Vendido</string>
               </property>
               <attribute name="buttonGroup">
-               <string notr="true">buttonGroup</string>
+               <string notr="true">rgEstado</string>
               </attribute>
+             </widget>
+            </item>
+            <item row="1" column="4">
+             <widget class="QCheckBox" name="chkIntercambio">
+              <property name="text">
+               <string>Intercambio</string>
+              </property>
              </widget>
             </item>
             <item row="3" column="4">
@@ -961,8 +958,15 @@
                <bool>true</bool>
               </property>
               <attribute name="buttonGroup">
-               <string notr="true">buttonGroup</string>
+               <string notr="true">rgEstado</string>
               </attribute>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QCheckBox" name="chkAlquiler">
+              <property name="text">
+               <string>Alquiler</string>
+              </property>
              </widget>
             </item>
             <item row="2" column="0">
@@ -981,26 +985,99 @@
               </property>
              </spacer>
             </item>
+            <item row="2" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <item>
+               <widget class="QLabel" name="lblEstadoProp">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Estado</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_15">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
           <item row="0" column="1" colspan="4">
            <layout class="QGridLayout" name="gridLayout_5">
-            <item row="2" column="3">
-             <widget class="QSpinBox" name="spinHabitaciones">
+            <item row="2" column="8">
+             <widget class="QLineEdit" name="txtSuperficie">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>50</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>200</width>
                 <height>16777215</height>
                </size>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="7">
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="lblAltaProp">
+                <property name="text">
+                 <string>Fecha Publicacion</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_13">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="cmbTipoProp">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>20</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -1034,46 +1111,6 @@
               </item>
              </layout>
             </item>
-            <item row="2" column="1">
-             <widget class="QComboBox" name="cmbTipoProp">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>20</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <layout class="QHBoxLayout" name="horizontalLayout_35">
-              <item>
-               <widget class="QLabel" name="lblHabitaciones">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Habitaciones</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_33">
-                <property name="toolTip">
-                 <string>Campo obligatorio</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(255, 0, 0);</string>
-                </property>
-                <property name="text">
-                 <string>*</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
             <item row="1" column="6">
              <spacer name="horizontalSpacer_21">
               <property name="orientation">
@@ -1090,52 +1127,22 @@
               </property>
              </spacer>
             </item>
-            <item row="2" column="4">
-             <layout class="QHBoxLayout" name="horizontalLayout_36">
-              <item>
-               <widget class="QLabel" name="lblBanios">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Baños</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_34">
-                <property name="toolTip">
-                 <string>Campo obligatorio</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(255, 0, 0);</string>
-                </property>
-                <property name="text">
-                 <string>*</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="2" column="8">
-             <widget class="QLineEdit" name="txtSuperficie">
+            <item row="2" column="3">
+             <widget class="QSpinBox" name="spinHabitaciones">
               <property name="minimumSize">
                <size>
-                <width>50</width>
+                <width>70</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
               </property>
-              <property name="text">
-               <string/>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -1188,34 +1195,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="lblCodigoPropText">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <layout class="QHBoxLayout" name="hlCodigo">
               <item>
@@ -1246,10 +1225,60 @@
               </item>
              </layout>
             </item>
-            <item row="0" column="7">
-             <widget class="QLabel" name="lblAltaProp">
+            <item row="2" column="2">
+             <widget class="QLabel" name="lblHabitaciones">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
-               <string>Fecha Publicacion</string>
+               <string>Habitaciones</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="lblCodigoPropText">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="8">
+             <widget class="QComboBox" name="cmbProvProp">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>170</width>
+                <height>16777215</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -1318,21 +1347,35 @@
               </item>
              </layout>
             </item>
-            <item row="1" column="8">
-             <widget class="QComboBox" name="cmbProvProp">
-              <property name="minimumSize">
-               <size>
-                <width>170</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>170</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
+            <item row="1" column="7">
+             <layout class="QHBoxLayout" name="horizontalLayout_31">
+              <item>
+               <widget class="QLabel" name="lblProvProp">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Provincia</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_30">
+                <property name="toolTip">
+                 <string>Campo obligatorio</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item row="1" column="9">
              <spacer name="horizontalSpacer_15">
@@ -1372,35 +1415,12 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="7">
-             <layout class="QHBoxLayout" name="horizontalLayout_31">
-              <item>
-               <widget class="QLabel" name="lblProvProp">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Provincia</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_30">
-                <property name="toolTip">
-                 <string>Campo obligatorio</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(255, 0, 0);</string>
-                </property>
-                <property name="text">
-                 <string>*</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+            <item row="0" column="10">
+             <widget class="QLabel" name="lblBajaProp">
+              <property name="text">
+               <string>Fecha Baja</string>
+              </property>
+             </widget>
             </item>
             <item row="1" column="10">
              <layout class="QHBoxLayout" name="horizontalLayout_32">
@@ -1425,13 +1445,6 @@
                </widget>
               </item>
              </layout>
-            </item>
-            <item row="0" column="10">
-             <widget class="QLabel" name="lblBajaProp">
-              <property name="text">
-               <string>Fecha Baja</string>
-              </property>
-             </widget>
             </item>
             <item row="1" column="13">
              <layout class="QHBoxLayout" name="horizontalLayout_38">
@@ -1512,74 +1525,6 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="12" colspan="3">
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <widget class="QLineEdit" name="txtPrecioVentaProp">
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="placeholderText">
-                 <string>Precio venta</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_12">
-                <property name="text">
-                 <string>/</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="txtPrecioAlquilerProp">
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="placeholderText">
-                 <string>Precio alquiler</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="1" column="11" colspan="2">
-             <widget class="QComboBox" name="cmbMunicipioProp">
-              <property name="minimumSize">
-               <size>
-                <width>170</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>170</height>
-               </size>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="11" colspan="2">
              <layout class="QHBoxLayout" name="horizontalLayout_24">
               <property name="spacing">
@@ -1642,31 +1587,95 @@
               </item>
              </layout>
             </item>
-            <item row="2" column="10" colspan="2">
-             <layout class="QHBoxLayout" name="horizontalLayout_37">
+            <item row="1" column="11" colspan="2">
+             <widget class="QComboBox" name="cmbMunicipioProp">
+              <property name="minimumSize">
+               <size>
+                <width>170</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>170</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="4">
+             <widget class="QLabel" name="lblBanios">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Baños</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="10">
+             <widget class="QLabel" name="lblPrecio">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Precio venta/alquiler</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="11" colspan="4">
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="QLabel" name="lblPrecio">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+               <widget class="QLineEdit" name="txtPrecioVentaProp">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                 <property name="text">
-                 <string>Precio venta/alquiler</string>
+                 <string/>
+                </property>
+                <property name="placeholderText">
+                 <string>Precio venta</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="label_35">
-                <property name="toolTip">
-                 <string>Campo obligatorio</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(255, 0, 0);</string>
-                </property>
+               <widget class="QLabel" name="label_12">
                 <property name="text">
-                 <string>*</string>
+                 <string>/</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="txtPrecioAlquilerProp">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="placeholderText">
+                 <string>Precio alquiler</string>
                 </property>
                </widget>
               </item>
@@ -1710,6 +1719,9 @@
             </item>
             <item>
              <widget class="QLabel" name="label">
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 0, 0);</string>
+              </property>
               <property name="text">
                <string>*</string>
               </property>
@@ -1963,6 +1975,13 @@
             </property>
            </spacer>
           </item>
+          <item>
+           <widget class="QCheckBox" name="chkHistoricoProp">
+            <property name="text">
+             <string>Historico</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="4" column="1">
@@ -1990,32 +2009,42 @@
           </attribute>
           <column>
            <property name="text">
-            <string>DNI/NIF</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Apellidos</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Nombre</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Movil</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Provincia</string>
+            <string>Código</string>
            </property>
           </column>
           <column>
            <property name="text">
             <string>Municipio</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tipo propiedad</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Habitaciones</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Baño</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Precio Alquiler</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Precio Venta</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tipo operacion</string>
            </property>
           </column>
           <column>
@@ -2097,7 +2126,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1346</width>
+     <width>1560</width>
      <height>21</height>
     </rect>
    </property>
@@ -2207,6 +2236,6 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="rgEstado"/>
  </buttongroups>
 </ui>

@@ -201,15 +201,6 @@ class Clientes:
         except Exception as e:
             print("Error baja de clientes", e)
 
-    def historicoCli(self):
-        try:
-            if var.ui.chkHistoricoCli.isChecked():
-                #Muestra los dados de baja
-                var.historico=0
-            else:
-                var.historico=1
-
-            clientes.Clientes.cargaTablaCientes(self)
 
         except Exception as error:
             print("Error cargando historico clientes", error)
