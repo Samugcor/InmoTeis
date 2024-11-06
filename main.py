@@ -42,6 +42,9 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.resizeTablaClientes(self)
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
         eventos.Eventos.resizeTablaPropiedades(self)
+
+        propiedades.Propiedades.cargaTablaPropiedades(self)
+
         '''
         Zona de eventos del menubar
         '''
@@ -86,6 +89,7 @@ class Main(QtWidgets.QMainWindow):
         Eventos checkbox
         '''
         var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.cargaTablaCientes)
+        var.ui.chkHistoricoProp.stateChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
 
 
 if __name__ == '__main__':

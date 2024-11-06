@@ -282,9 +282,8 @@ class Conexion:
     def listadoPropiedades(self):
         try:
             listado=[]
-            if var.ui.chkHistoricoCli.isChecked():
+            if var.ui.chkHistoricoProp.isChecked(): #Si esta chekeado muestra todo
                 query = QtSql.QSqlQuery()
-                #Where fecha baja = null
                 query.prepare("SELECT * FROM propiedades ORDER BY codigo ASC")
 
                 if query.exec():
@@ -294,7 +293,6 @@ class Conexion:
                 return listado
             else:
                 query = QtSql.QSqlQuery()
-                # Where fecha baja = null
                 query.prepare("SELECT * FROM propiedades WHERE bajaprop IS null ORDER BY codigo ASC")
 
                 if query.exec():

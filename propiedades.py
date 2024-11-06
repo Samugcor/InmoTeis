@@ -1,3 +1,5 @@
+from tokenize import String
+
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QIcon
 
@@ -119,7 +121,7 @@ class Propiedades():
 
                 mbox.exec()
 
-                #Clientes.cargaTablaCientes(self)
+                Propiedades.cargaTablaPropiedades(self)
             else:
                 QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta a la propiedad en la base de datos.',
                                                QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -130,32 +132,38 @@ class Propiedades():
 
     def cargaTablaPropiedades(self):
         try:
-            listado= conexion.Conexion.listadoClientes(self)
-            #listado = conexionserver.ConexionServer.listadoClientes(self)
+            listado= conexion.Conexion.listadoPropiedades(self)
             index=0
             for registro in listado:
-                var.ui.tabClientes.setRowCount(index+1)
-                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ registro[0] + "  "))
-                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[2] + "  "))
-                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[3]+ "  "))
-                var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ registro[5]+ "   "))
-                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))
-                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ registro[8]+ "  "))
-                var.ui.tabClientes.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ registro[9]+ "  "))
+                print(registro)
+                precioAlquiler="-" if not registro[11] else str(registro[11])
+                precioVenta = "-" if not registro[12] else str(registro[12])
+                var.ui.tabPropiedades.setRowCount(index+1)
+                var.ui.tabPropiedades.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ str(registro[0]) + "  "))
+                var.ui.tabPropiedades.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[5] + "  "))
+                var.ui.tabPropiedades.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))
+                var.ui.tabPropiedades.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ str(registro[8])+ "   "))
+                var.ui.tabPropiedades.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ str(registro[9])+ "  "))
+                var.ui.tabPropiedades.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ precioAlquiler + " €  "))
+                var.ui.tabPropiedades.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ precioVenta + " €  "))
+                var.ui.tabPropiedades.setItem(index, 7, QtWidgets.QTableWidgetItem("  " + registro[14] + "  "))
+                var.ui.tabPropiedades.setItem(index, 8, QtWidgets.QTableWidgetItem("  " + registro[2] + "  "))
 
-                var.ui.tabClientes.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tabClientes.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tabClientes.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tabClientes.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-                var.ui.tabClientes.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tabClientes.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
-                var.ui.tabClientes.item(index, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabPropiedades.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabPropiedades.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabPropiedades.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                var.ui.tabPropiedades.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabPropiedades.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabPropiedades.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tabPropiedades.item(index, 6).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                var.ui.tabPropiedades.item(index, 7).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                var.ui.tabPropiedades.item(index, 8).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
                 index+=1
 
 
         except Exception as error:
-            print("Error cargando la tabla de clientes", error)
+            print("Error cargando la tabla de propiedades (propiedades.py", error)
 
     def cargaOnePropiedad(self):
         try:

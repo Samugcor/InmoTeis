@@ -13,3 +13,16 @@ Añade una columna para la baja de la propiedad.
 
 - Validar telefono propiedad
 - Validar codigo postal
+
+## 06/11/2024
+
+- La nueva funcion "lupa" (buscar) permite buscar (cargar en la tabla) por tipo de apartamento y provincia.
+La version propuesta por el profesor tiene el boton en la herramienta de tareas y recibe los parametros de busqueda de las cajas tipo y municipio de la ventana (las que se utilizan para crear).*
+- Para dar de baja el inmueble no puede estar disponible
+- Si se modifica la fecha de baja y se vacia (vuelve a estar de alta) el inmueble tiene que pasar a esatr disponible
+- El boton de limpiar recarga la tabla sin filtros
+- El valor por defecto de un inmueble deb ser disponible
+- El tema de que puedas marcar el tipo de operacion como alquiler y poner solo el precio de venta.....
+
+*Propuesta: Apartado de filtros de busqueda con el historico y estas movidas. Si ocupa mucho espacio que se haga desplegable. A la hora de cargar hacer varias funciones que busquen segun numero de parametrops??? polimorfismo en python??
+    https://www.geeksforgeeks.org/python-method-overloading/
