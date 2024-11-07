@@ -2,7 +2,7 @@
 
 - Añadir propiedades. ✅
 - Eliminar propiedades.
-- Modificar propiedades.
+- Modificar propiedades.✅
 
 - Cargar propiedades en la tabla, campos: codigo, municipio, tipo propiedad habitaciones baño precio alquiler, precio venta tipo operacion. Los precios deben añadir el simbolo del euro (hardcode) y si estan vacios "- €".
 Añade una columna para la baja de la propiedad.✅
