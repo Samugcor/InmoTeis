@@ -165,7 +165,7 @@ class Clientes:
                 mbox.exec()
 
         except Exception as error:
-            print("Error cargando la tabla de clientes", error)
+            print("Error modificando la tabla de clientes (clientes.py): ", error)
 
     def bajaCliente(self):
         try:
@@ -200,7 +200,3 @@ class Clientes:
 
         except Exception as e:
             print("Error baja de clientes", e)
-
-
-        except Exception as error:
-            print("Error cargando historico clientes", error)

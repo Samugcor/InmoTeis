@@ -44,6 +44,7 @@ class Main(QtWidgets.QMainWindow):
         eventos.Eventos.resizeTablaPropiedades(self)
 
         propiedades.Propiedades.cargaTablaPropiedades(self)
+        var.ui.tabPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
 
         '''
         Zona de eventos del menubar
@@ -64,6 +65,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnAltaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 0))
         var.ui.btnBajaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 1))
         var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
+        var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
         '''
         Eventos de cajas de texto
         '''

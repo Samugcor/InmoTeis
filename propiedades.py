@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon
 
 import conexion
 import eventos
+import propiedades
 import var
 import venAux
 
@@ -135,7 +136,7 @@ class Propiedades():
             listado= conexion.Conexion.listadoPropiedades(self)
             index=0
             for registro in listado:
-                print(registro)
+                #print(registro)
                 precioAlquiler="-" if not registro[11] else str(registro[11])
                 precioVenta = "-" if not registro[12] else str(registro[12])
                 var.ui.tabPropiedades.setRowCount(index+1)
@@ -167,27 +168,99 @@ class Propiedades():
 
     def cargaOnePropiedad(self):
         try:
-            fila=var.ui.tabClientes.selectedItems()
-            datos=[dato.text() for dato in fila]
-            registro=conexion.Conexion.datosOneCliente(str(datos[0]))
-            listado= [var.ui.txtDniCliente,var.ui.txtAltaCliente,var.ui.txtApellidosCliente,
-                var.ui.txtNombreCliente,var.ui.txtEmailCliente,var.ui.txtMovilCliente,var.ui.txtDirecionCliente,
-                var.ui.cmbProvCli,var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
+            var.ui.chkAlquiler.setChecked(False)
+            var.ui.chkVenta.setChecked(False)
+            var.ui.chkIntercambio.setChecked(False)
 
-            #print(registro)
-            #print(listado)
-            for i in range(len(listado)):
-                if i==7 or i==8:
+            fila=var.ui.tabPropiedades.selectedItems()
+            datos=[dato.text() for dato in fila]
+
+            registro=conexion.Conexion.datosOnePropiedad(str(datos[0]))
+
+            listado= [var.ui.lblCodigoPropText, var.ui.txtAltaProp, var.ui.txtBajaProp, var.ui.txtDirecionProp,
+                         var.ui.cmbProvProp, var.ui.cmbMunicipioProp, var.ui.txtCpProp,
+                         var.ui.cmbTipoProp, var.ui.spinHabitaciones, var.ui.spinBanios,
+                         var.ui.txtSuperficie, var.ui.txtPrecioAlquilerProp, var.ui.txtPrecioVentaProp,
+                         var.ui.areatxtObservacionesProp,"placeholder","placeholder", var.ui.txtPropietarioProp, var.ui.txtMovilProp]
+
+
+
+            for i in range(len(registro)):
+                if i in (4,5,7):
                     listado[i].setCurrentText(registro[i])
+                elif i in (8,9):
+                    listado[i].setValue(int(registro[i]))
+                elif i == 14:
+                    if "Alquiler" in registro[i]:
+                        var.ui.chkAlquiler.setChecked(True)
+                    if "Venta" in registro[i]:
+                        var.ui.chkVenta.setChecked(True)
+                    if "Intercambio" in registro[i]:
+                        var.ui.chkIntercambio.setChecked(True)
+                elif i == 15:
+                    if "Alquilado" in registro[i]:
+                        var.ui.rbtAlquilado.setChecked(True)
+                    elif "Vendido" in registro[i]:
+                        var.ui.rbtVendido.setChecked(True)
+                    elif "Disponible" in registro[i]:
+                        var.ui.rbtDisponible.setChecked(True)
                 else:
                     listado[i].setText(registro[i])
 
         except Exception as error:
-            print("Error cargando datos del cliente", error)
+            print("Error cargando datos de propiedad (propiedades.py)", error)
 
+    def modifPropiedad(self):
+        try:
+            modifProp = [var.ui.lblCodigoPropText.text(), var.ui.txtAltaProp.text(), var.ui.txtBajaProp.text(), var.ui.txtDirecionProp.text(),
+                         var.ui.cmbProvProp.currentText(), var.ui.cmbMunicipioProp.currentText(), var.ui.txtCpProp.text(),
+                         var.ui.cmbTipoProp.currentText(), var.ui.spinHabitaciones.text(), var.ui.spinBanios.text(),
+                         var.ui.txtSuperficie.text(), var.ui.txtPrecioAlquilerProp.text(), var.ui.txtPrecioVentaProp.text(),
+                         var.ui.areatxtObservacionesProp.toPlainText(), var.ui.txtPropietarioProp.text(), var.ui.txtMovilProp.text()]
+            tipoOp = ""
+            if var.ui.chkAlquiler.isChecked():
+                tipoOp = "Alquiler" if len(tipoOp) == 0 else tipoOp + " - Alquiler"
+            if var.ui.chkVenta.isChecked():
+                tipoOp = "Venta" if len(tipoOp) == 0 else tipoOp + " - Venta"
+            if var.ui.chkIntercambio.isChecked():
+                tipoOp = "Intercambio" if len(tipoOp) == 0 else tipoOp + " - Intercambio"
 
-'''
-codigo, altaprop, bajaprop, dirprop, provprop, muniprop, cpprop,
-tipoprop, habprop, banprop, superprop, prealquiprop, prevenprop,
-obserprop, tipooperprop, estadoprop, nomeprop, movilprop
-	'''
+            modifProp.append(tipoOp)
+
+            if var.ui.rgEstado.checkedId() == 1:
+                modifProp.append("Alquilado")
+            elif var.ui.rgEstado.checkedId() == 2:
+                modifProp.append("Vendido")
+            else:
+                modifProp.append("Disponible")
+
+            if conexion.Conexion.modifPropiedad(modifProp):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowIcon(QIcon('./img/house.svg'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('Datos de propiedad modificados')
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+                mbox.exec()
+
+                propiedades.Propiedades.cargaTablaPropiedades(self)
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowIcon(QIcon('./img/house.svg'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('Error al modificar datos de propiedad')
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+                mbox.exec()
+
+        except Exception as error:
+            print("Error modificando la tabla de propiedades (propiedades.py)", error)
+

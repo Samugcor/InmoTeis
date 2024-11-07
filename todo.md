@@ -5,9 +5,9 @@
 - Modificar propiedades.
 
 - Cargar propiedades en la tabla, campos: codigo, municipio, tipo propiedad habitaciones baño precio alquiler, precio venta tipo operacion. Los precios deben añadir el simbolo del euro (hardcode) y si estan vacios "- €".
-Añade una columna para la baja de la propiedad.
+Añade una columna para la baja de la propiedad.✅
 
-- Haz que funcione el historico.
+- Haz que funcione el historico.✅
 - Haz que el boton de borrar borre también el formulario de propiedades. (Estaria bien que borre dependiendo de la pestaña en la que estás).
 - Nueva funcion de la barra de herramientas "lupa"
 
@@ -26,3 +26,9 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 
 *Propuesta: Apartado de filtros de busqueda con el historico y estas movidas. Si ocupa mucho espacio que se haga desplegable. A la hora de cargar hacer varias funciones que busquen segun numero de parametrops??? polimorfismo en python??
     https://www.geeksforgeeks.org/python-method-overloading/
+
+##07/11/2024
+
+- Al dar de alta una propiedad o cliente el campo de fecha baja debe de estar vacio
+- al dar de baja o alta las fechas tienen que tener sentido
+- En la tabla de propiedades precio venta y alquiler aparecen en el orden inverso

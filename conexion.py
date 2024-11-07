@@ -282,7 +282,7 @@ class Conexion:
     def listadoPropiedades(self):
         try:
             listado=[]
-            if var.ui.chkHistoricoProp.isChecked(): #Si esta chekeado muestra todo
+            if var.ui.chkHistoricoProp.isChecked(): #Si esta chekeado muestra to-do
                 query = QtSql.QSqlQuery()
                 query.prepare("SELECT * FROM propiedades ORDER BY codigo ASC")
 
@@ -301,15 +301,15 @@ class Conexion:
                         listado.append(fila)
                 return listado
         except Exception as e:
-            print("Error recuperando el listado de clientes",e)
+            print("Error recuperando el listado de propiedades (conexion.py)",e)
 
-    def datosOnePropiedad(dni):
+    def datosOnePropiedad(codigo):
         try:
             registro = []
             query = QtSql.QSqlQuery()
-            query.prepare("SELECT * FROM clientes WHERE dnicli = :dni")
+            query.prepare("SELECT * FROM propiedades WHERE codigo = :codigoProp")
 
-            query.bindValue(":dni",str(dni).strip())
+            query.bindValue(":codigoProp",str(codigo).strip())
 
             if query.exec():
                 while query.next():
@@ -319,4 +319,42 @@ class Conexion:
             return registro
 
         except Exception as e:
-            print("Error recuperando datos de clientes",e)
+            print("Error recuperando datos de propiedad (conexion.py)",e)
+
+    def modifPropiedad(registro):
+        try:
+
+            query=QtSql.QSqlQuery()
+            query.prepare("UPDATE propiedades SET altaprop=:altaprop, bajaprop=:bajaprop, dirprop=:dirprop, provprop=:provprop"
+                          ", muniprop=:muniprop, cpprop=:cpprop,tipoprop=:tipoprop, habprop=:habprop,"
+                          " banprop=:banprop, superprop=:superprop, prealquiprop=:prealquiprop, prevenprop=:prevenprop,"
+                          "obserprop=:obserprop, tipooperprop=:tipooperprop, estadoprop=:estadoprop, nomeprop=:nomeprop,"
+                          "movilprop=:movilprop WHERE codigo = :codigoProp")
+
+            query.bindValue(":codigoProp", str(registro[0]))
+            registro=registro[1:]
+            query.bindValue(":altaprop", None if not str(registro[0]) else str(registro[0]))
+            query.bindValue(":bajaprop", None if not str(registro[1]) else str(registro[1]))
+            query.bindValue(":dirprop", None if not str(registro[2]) else str(registro[2]))
+            query.bindValue(":provprop", None if not str(registro[3]) else str(registro[3]))
+            query.bindValue(":muniprop", None if not str(registro[4]) else str(registro[4]))
+            query.bindValue(":cpprop", None if not str(registro[5]) else str(registro[5]))
+            query.bindValue(":tipoprop", None if not str(registro[6]) else str(registro[6]))
+            query.bindValue(":habprop", None if not str(registro[7]) else str(registro[7]))
+            query.bindValue(":banprop", None if not str(registro[8]) else str(registro[8]))
+            query.bindValue(":superprop", None if not str(registro[9]) else str(registro[9]))
+            query.bindValue(":prealquiprop", None if not str(registro[10]) else str(registro[10]))
+            query.bindValue(":prevenprop", None if not str(registro[11]) else str(registro[11]))
+            query.bindValue(":obserprop", None if not str(registro[12]) else str(registro[12]))
+            query.bindValue(":tipooperprop", None if not str(registro[13]) else str(registro[13]))
+            query.bindValue(":estadoprop", None if not str(registro[14]) else str(registro[14]))
+            query.bindValue(":nomeprop", None if not str(registro[15]) else str(registro[15]))
+            query.bindValue(":movilprop", None if not str(registro[16]) else str(registro[16]))
+
+            if query.exec() and query.numRowsAffected()>0:
+                print(query.numRowsAffected())
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Fallo cargando modificacion de propieded en la bd (conexion.py):", e)
