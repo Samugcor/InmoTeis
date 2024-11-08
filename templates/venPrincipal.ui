@@ -227,7 +227,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Eliminar</string>
+             <string>Baja</string>
             </property>
            </widget>
           </item>
@@ -869,6 +869,22 @@
         <string>Propiedades</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="1">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="1" column="1">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="2" column="3" colspan="2">
@@ -944,6 +960,9 @@
             </item>
             <item row="1" column="4">
              <widget class="QCheckBox" name="chkIntercambio">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Intercambio</string>
               </property>
@@ -951,6 +970,9 @@
             </item>
             <item row="3" column="4">
              <widget class="QRadioButton" name="rbtDisponible">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Disponible</string>
               </property>
@@ -1259,7 +1281,7 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(255, 255, 255);</string>
+               <string notr="true">background-color: rgb(240, 243, 247);</string>
               </property>
               <property name="text">
                <string/>
@@ -1867,22 +1889,6 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="1">
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="2" column="0">
          <spacer name="horizontalSpacer_16">
           <property name="orientation">
@@ -1975,16 +1981,25 @@
             </property>
            </spacer>
           </item>
-          <item>
-           <widget class="QCheckBox" name="chkHistoricoProp">
-            <property name="text">
-             <string>Historico</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
-        <item row="4" column="1">
+        <item row="2" column="2">
+         <spacer name="horizontalSpacer_17">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="1">
          <widget class="QTableWidget" name="tabPropiedades">
           <property name="minimumSize">
            <size>
@@ -2054,36 +2069,7 @@
           </column>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="Line" name="line_2">
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="lineWidth">
-           <number>3</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <spacer name="horizontalSpacer_17">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <spacer name="verticalSpacer_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -2098,6 +2084,100 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="4" column="1">
+         <widget class="Line" name="line_2">
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="lineWidth">
+           <number>3</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="maximumSize">
+             <size>
+              <width>20</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Tipo</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Provincia</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>170</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Municipio</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_3">
+            <property name="minimumSize">
+             <size>
+              <width>170</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chkHistoricoProp">
+            <property name="text">
+             <string>Historico</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_23">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

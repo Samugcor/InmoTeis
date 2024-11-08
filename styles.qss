@@ -1,19 +1,32 @@
 /*--- Estilo para QMainWindow ---*/
 QMainWindow{
-background-color: #cdd7e4;
+    background-color: #cdd7e4;
 }
 
 QtabWidget{
-background-color: e5eeff;
+    background-color: e5eeff;
 }
 
 QMenuBar{
-background-color: whitesmoke;
+    background-color: whitesmoke;
 }
 
 QPushButton{
-background-color: #E4EAF1;
-color: black;
-border: none;
-border_radius: 5px;
+    background-color: #E4EAF1;
+    color: black;
+    border: none;
+    border_radius: 5px;
+}
+
+*:disabled {
+   color: #a6a6a6;
+}
+
+QCheckBox::indicator:disabled {
+    border: 1px solid #a6a6a6;
+    border-radius: 5px;
+}
+QRadioButton::indicator:disabled {
+    border: 1px solid #a6a6a6;
+    border-radius: 8px;
 }

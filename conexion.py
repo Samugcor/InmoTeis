@@ -12,7 +12,7 @@ class Conexion:
 
     """
     @staticmethod
-    método de una clase que no depende de una instancia específica de esa clase.
+    méto-do de una clase que no depende de una instancia específica de esa clase.
     Se puede llamarlo directamente a través de la clase, sin necesidad de crear un objeto de esa clase.
     Es útil en comportamientos o funcionalidades que son más a una clase en general que a una instancia en particular.
 
@@ -358,3 +358,19 @@ class Conexion:
                 return False
         except Exception as e:
             print("Fallo cargando modificacion de propieded en la bd (conexion.py):", e)
+
+    def bajaPropiedad(datos):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE propiedades SET bajaprop =:bajaprop WHERE codigo = :codigo")
+            query.bindValue(":codigo", str(datos[0]).strip())
+            query.bindValue(":bajaprop", str(datos[1]))
+
+            if query.exec() and query.numRowsAffected()>0:
+                return True
+            else:
+                return False
+
+        except Exception as e:
+            print("Error baja propiedad bd (conexion.py): ",e)

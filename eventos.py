@@ -19,6 +19,7 @@ from PyQt6.QtGui import QIcon
 
 import conexionserver
 import eventos
+import propiedades
 import var
 
 #Establecer configuracion regional
@@ -46,13 +47,25 @@ class Eventos:
     '''
         CARGAR VALORES
     '''
-    def cargarProvincias(self):
-        var.ui.cmbProvCli.clear()
-        var.ui.cmbProvProp.clear()
-        listado=conexion.Conexion.listaProv(self)
+    def cargarProvincias(self,modo):
+        listado = conexion.Conexion.listaProv(self)
         #listado = conexionserver.ConexionServer.listaProv(self)
-        var.ui.cmbProvCli.addItems(listado)
-        var.ui.cmbProvProp.addItems(listado)
+
+        if modo == 0:
+            var.ui.cmbProvCli.clear()
+            var.ui.cmbProvCli.addItems(listado)
+
+            var.ui.cmbProvProp.clear()
+            var.ui.cmbProvProp.addItems(listado)
+        elif modo == 1:
+            var.ui.cmbProvCli.clear()
+            var.ui.cmbProvCli.addItems(listado)
+        elif modo == 2:
+            var.ui.cmbProvProp.clear()
+            var.ui.cmbProvProp.addItems(listado)
+        else:
+            print("Error carga provincias modo no valido")
+
 
     def cargarMunicipios(self):
         provinciaCli=var.ui.cmbProvCli.currentText()
@@ -187,7 +200,7 @@ class Eventos:
 
                 mbox.exec()
                 conexion.Conexion.db_conexion(self)
-                eventos.Eventos.cargarProvincias(self)
+                eventos.Eventos.cargarProvincias(self,1)
                 clientes.Clientes.cargaTablaCientes(self)
 
         except Exception as e:
@@ -239,17 +252,40 @@ class Eventos:
             print("error en resize tabla propiedades ", e)
 
     def limpiarPanel(self):
-        camposPanel = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
-                    var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtMovilCliente,
-                    var.ui.txtDirecionCliente, var.ui.cmbProvCli, var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
+        try:
+            if var.ui.panPrincipal.currentIndex()==0:
+                camposPanel = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
+                               var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtMovilCliente,
+                               var.ui.txtDirecionCliente, var.ui.cmbProvCli, var.ui.cmbMunicipioCli,
+                               var.ui.txtBajaCliente]
 
-        for i, dato in enumerate(camposPanel):
-            if i==7 or i==8:
-                pass
+                for i, dato in enumerate(camposPanel):
+                    if i == 7 or i == 8:
+                        pass
+                    else:
+                        dato.setText("")
+
+                    eventos.Eventos.cargarProvincias(self,1)
             else:
-                dato.setText("")
+                camposProp = [var.ui.lblCodigoPropText, var.ui.txtAltaProp, var.ui.txtBajaProp, var.ui.txtDirecionProp,
+                              var.ui.txtCpProp, var.ui.spinHabitaciones, var.ui.spinBanios,
+                              var.ui.txtSuperficie, var.ui.txtPrecioAlquilerProp, var.ui.txtPrecioVentaProp,
+                              var.ui.areatxtObservacionesProp, var.ui.txtPropietarioProp, var.ui.txtMovilProp]
 
-            eventos.Eventos.cargarProvincias(self)
+                for i, dato in enumerate(camposProp):
+                    if isinstance(dato, QtWidgets.QSpinBox):
+                        dato.setValue(0)
+                    else:
+                        dato.setText("")
+
+                propiedades.Propiedades.formPropiedad(self)
+                var.ui.chkIntercambio.setChecked(False)
+
+                eventos.Eventos.cargarProvincias(self,2)
+                eventos.Eventos.cargarTipoPropiedad(self)
+
+        except Exception as e:
+            print("error al limpiar panel (eventos.py): ", e)
 
     def abrirTipoProp(self):
         try:

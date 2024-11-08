@@ -10,6 +10,39 @@ import var
 import venAux
 
 class Propiedades():
+    def formPropiedad(self):
+        try:
+            #BAJA PROP
+            if var.ui.txtBajaProp.text() == "":
+                var.ui.rbtDisponible.setEnabled(True)
+                var.ui.rbtVendido.setEnabled(False)
+                var.ui.rbtAlquilado.setEnabled(False)
+                var.ui.rbtDisponible.setChecked(True)
+            else:
+                var.ui.rbtDisponible.setEnabled(False)
+                var.ui.rbtVendido.setEnabled(True)
+                var.ui.rbtAlquilado.setEnabled(True)
+                var.ui.rbtVendido.setChecked(True)
+
+            ##PRECIO VENTA
+            if var.ui.txtPrecioVentaProp.text() == "":
+                var.ui.chkVenta.setChecked(False)
+                var.ui.chkVenta.setEnabled(False)
+            else:
+                var.ui.chkVenta.setChecked(True)
+                var.ui.chkVenta.setEnabled(True)
+
+            ##PRECIO ALQUILER
+            if var.ui.txtPrecioAlquilerProp.text() == "":
+                var.ui.chkAlquiler.setChecked(False)
+                var.ui.chkAlquiler.setEnabled(False)
+            else:
+                var.ui.chkAlquiler.setChecked(True)
+                var.ui.chkAlquiler.setEnabled(True)
+
+        except Exception as e:
+            print("ErRoR cargando la interfaz del formulario de propiedades (propiedades.py): ",e)
+
     def altaTipoPropiedades(self):
         try:
             tipo = var.dlggestion.ui.txtGestTipoProp.text()
@@ -264,3 +297,36 @@ class Propiedades():
         except Exception as error:
             print("Error modificando la tabla de propiedades (propiedades.py)", error)
 
+    def bajaPropiedad(self):
+        try:
+            datos= [var.ui.lblCodigoPropText.text(),var.ui.txtBajaProp.text()]
+
+            if conexion.Conexion.bajaPropiedad(datos):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowIcon(QIcon('./img/house.svg'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('Propiedad dada de baja')
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+                mbox.exec()
+
+                propiedades.Propiedades.cargaTablaPropiedades(self)
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowIcon(QIcon('./img/house.svg'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('Error Baja Propiedad: propiedad no existe o ya ha sido dado de baja')
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+                mbox.exec()
+
+        except Exception as e:
+            print("Error baja de propiedad (propiedades.py): ", e)

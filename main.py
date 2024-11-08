@@ -32,8 +32,17 @@ class Main(QtWidgets.QMainWindow):
 
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
+        propiedades.Propiedades.formPropiedad(self)
         #conexionserver.ConexionServer.crear_conexion(self)
 
+
+
+        '''
+        Eventos formulario
+        '''
+        var.ui.txtBajaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
+        var.ui.txtPrecioVentaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
+        var.ui.txtPrecioAlquilerProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
 
         '''
         Eventos de Tablas
@@ -66,6 +75,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnBajaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 1))
         var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
+        var.ui.btnEliminarProp.clicked.connect(propiedades.Propiedades.bajaPropiedad)
         '''
         Eventos de cajas de texto
         '''
@@ -76,7 +86,7 @@ class Main(QtWidgets.QMainWindow):
         '''
         Eventos de los combobox
         '''
-        eventos.Eventos.cargarProvincias(self)
+        eventos.Eventos.cargarProvincias(self,0)
         eventos.Eventos.cargarMunicipios(self)
         eventos.Eventos.cargarTipoPropiedad(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargarMunicipios)
@@ -92,6 +102,7 @@ class Main(QtWidgets.QMainWindow):
         '''
         var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.cargaTablaCientes)
         var.ui.chkHistoricoProp.stateChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+
 
 
 if __name__ == '__main__':
