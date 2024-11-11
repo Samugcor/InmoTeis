@@ -33,6 +33,7 @@ class Main(QtWidgets.QMainWindow):
         self.setStyleSheet(styles.load_stylesheet())
         conexion.Conexion.db_conexion(self)
         propiedades.Propiedades.formPropiedad(self)
+        eventos.Eventos.cargarFiltros(self)
         #conexionserver.ConexionServer.crear_conexion(self)
 
 
@@ -103,7 +104,10 @@ class Main(QtWidgets.QMainWindow):
         var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.cargaTablaCientes)
         var.ui.chkHistoricoProp.stateChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
 
-
+        ''''
+        Eventos filtros
+        '''
+        var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])

@@ -12,10 +12,13 @@ QMenuBar{
 }
 
 QPushButton{
-    background-color: #E4EAF1;
+    background-color: #d5e2f1;
     color: black;
     border: none;
-    border_radius: 5px;
+    border-radius: 5px;
+}
+QPushButton:hover{
+    background-color: #b7c7da;
 }
 
 *:disabled {

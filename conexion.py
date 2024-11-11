@@ -70,6 +70,18 @@ class Conexion:
                 listamunicipios.append(query.value(1))
         return listamunicipios
 
+    @staticmethod
+    def listAllMuni():
+        listamunicipios = []
+        query = QtSql.QSqlQuery()
+        query.prepare(
+            "SELECT * FROM municipios")
+
+        if query.exec():
+            while query.next():
+                listamunicipios.append(query.value(1))
+        return listamunicipios
+
     def altaCliente(nuevoCli):
         try:
 

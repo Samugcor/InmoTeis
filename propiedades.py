@@ -330,3 +330,4 @@ class Propiedades():
 
         except Exception as e:
             print("Error baja de propiedad (propiedades.py): ", e)
+

@@ -8,6 +8,9 @@ import time
 import re
 from datetime import datetime
 
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QCompleter
+
 import clientes
 import conexion
 import zipfile
@@ -66,6 +69,27 @@ class Eventos:
         else:
             print("Error carga provincias modo no valido")
 
+    def cargarFiltros(self):
+        listTipoProp = conexion.Conexion.listaTipoPropiedad(self)
+        listMuni = conexion.Conexion.listAllMuni()
+
+        var.ui.cmbFiltroTipoProp.clear()
+        listTipoProp.append("---")
+        var.ui.cmbFiltroTipoProp.addItems(listTipoProp)
+
+        completer = QCompleter(listTipoProp, var.ui.cmbFiltroTipoProp)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        var.ui.cmbFiltroTipoProp.setCompleter(completer)
+
+        var.ui.cmbFiltroMuniProp.clear()
+        listMuni.append("---")
+        var.ui.cmbFiltroMuniProp.addItems(listTipoProp)
+
+        completer = QCompleter(listMuni, var.ui.cmbFiltroMuniProp)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        var.ui.cmbFiltroMuniProp.setCompleter(completer)
 
     def cargarMunicipios(self):
         provinciaCli=var.ui.cmbProvCli.currentText()
@@ -149,6 +173,10 @@ class Eventos:
             return True
         else:
             return False
+
+    def validarFiltroTipo(self):
+
+        var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
     '''
         BACKUP
     '''
