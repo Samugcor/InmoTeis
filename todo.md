@@ -1,3 +1,5 @@
+validando los filtros para que el ususario no ponga cosas raras y pete todo
+
 ## 05/11/2024
 
 - ✅Añadir propiedades. 
