@@ -244,7 +244,8 @@ class Conexion:
         except Exception as e:
             print("Error bajaTipoPropiedad (conexion.py): ",e)
 
-    def listaTipoPropiedad(self):
+    @staticmethod
+    def listaTipoPropiedad():
         listaTipoProp = []
         query = QtSql.QSqlQuery()
         query.prepare("SELECT * FROM tipoprop")
@@ -314,6 +315,43 @@ class Conexion:
                 return listado
         except Exception as e:
             print("Error recuperando el listado de propiedades (conexion.py)",e)
+
+    def listaPropiedadesByTipo(self,tipoPropiedad):
+        try:
+            listado = []
+            if var.ui.chkHistoricoProp.isChecked():  # Si esta chekeado muestra to-do
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM propiedades WHERE tipoprop = :tipoprop ORDER BY codigo ASC")
+
+                query.bindValue(":tipoprop", tipoPropiedad)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            else:
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM propiedades WHERE bajaprop IS null and tipoprop = :tipoprop ORDER BY codigo ASC")
+
+                query.bindValue(":tipoprop", tipoPropiedad)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+        except Exception as e:
+            print("Error lista Propiedades por tipo (conexion.py): ",e)
+    def listaPropiedadesByMuni(self):
+        try:
+        except Exception as e:
+            print("Error lista Propiedades por municipio (conexion.py): ",e)
+
+    def listaPropiedadesByTipoMuni(self):
+        try:
+        except Exception as e:
+            print("Error lista Propiedades por Tipo y Municipio (conexion.py): ",e)
 
     def datosOnePropiedad(codigo):
         try:

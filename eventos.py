@@ -70,11 +70,13 @@ class Eventos:
             print("Error carga provincias modo no valido")
 
     def cargarFiltros(self):
-        listTipoProp = conexion.Conexion.listaTipoPropiedad(self)
+        #Recoge las listas de cada combo box
+        listTipoProp = conexion.Conexion.listaTipoPropiedad()
         listMuni = conexion.Conexion.listAllMuni()
 
+        #Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
         var.ui.cmbFiltroTipoProp.clear()
-        listTipoProp.append("---")
+        listTipoProp.insert(0,"---")
         var.ui.cmbFiltroTipoProp.addItems(listTipoProp)
 
         completer = QCompleter(listTipoProp, var.ui.cmbFiltroTipoProp)
@@ -82,9 +84,11 @@ class Eventos:
         completer.setFilterMode(Qt.MatchFlag.MatchContains)
         var.ui.cmbFiltroTipoProp.setCompleter(completer)
 
+
+        # Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
         var.ui.cmbFiltroMuniProp.clear()
-        listMuni.append("---")
-        var.ui.cmbFiltroMuniProp.addItems(listTipoProp)
+        listMuni.insert(0,"---")
+        var.ui.cmbFiltroMuniProp.addItems(listMuni)
 
         completer = QCompleter(listMuni, var.ui.cmbFiltroMuniProp)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
@@ -127,7 +131,7 @@ class Eventos:
     def cargarTipoPropiedad(self):
         var.ui.cmbTipoProp.clear()
 
-        listado=conexion.Conexion.listaTipoPropiedad(self);
+        listado=conexion.Conexion.listaTipoPropiedad();
         var.ui.cmbTipoProp.addItems(listado)
 
     '''
@@ -174,9 +178,14 @@ class Eventos:
         else:
             return False
 
-    def validarFiltroTipo(self):
+    @staticmethod
+    def validarFiltroTipo():
+        if var.ui.cmbFiltroTipoProp.currentText() not in conexion.Conexion.listaTipoPropiedad():
+            var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
 
-        var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
+        if var.ui.cmbFiltroMuniProp not in conexion.Conexion.listAllMuni():
+            var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
+
     '''
         BACKUP
     '''

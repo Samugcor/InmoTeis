@@ -36,3 +36,10 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 - En la tabla de propiedades precio venta y alquiler aparecen en el orden inverso
 - Cambia las comprobaciones de las cargas para que no vayan segun indice, si no por tipo de qt ( si es una combobox que es con current text que la localice por ser del tipo combo box y no por ser el indice 14)
 - Ponle color a la tab seleccionada
+
+## 13/11/24
+- Comprueba que las fechas tengan formato valido, que el cliente no meta texto
+- opcion exportar datos, exportar datos clientes json o csv. En herramientas>exportar datos> exportar clientes JSON, exportar clientes CSV*
+- Añadir atajos de teclado a las opciones de exportar backup y estas cosas. ctr+B (crear backup)
+
+*Para hacer exports a json y csv hay que instalar unas librerias, esta en los apuntes

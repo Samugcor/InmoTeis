@@ -34,6 +34,7 @@ class Main(QtWidgets.QMainWindow):
         conexion.Conexion.db_conexion(self)
         propiedades.Propiedades.formPropiedad(self)
         eventos.Eventos.cargarFiltros(self)
+        var.ui.cmbFiltroTipoProp.setEditable(True)
         #conexionserver.ConexionServer.crear_conexion(self)
 
 
@@ -66,17 +67,20 @@ class Main(QtWidgets.QMainWindow):
         '''
         Eventos de botones
         '''
+        #BOTONES CLIENTES
         var.ui.btnGrabarCli.clicked.connect(clientes.Clientes.altaClientes)
         var.ui.btnAltaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,0))
         var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,1))
         var.ui.btnModificarCliente.clicked.connect(clientes.Clientes.modifCliente)
         var.ui.btnEliminarCliente.clicked.connect(clientes.Clientes.bajaCliente)
 
+        #BOTONES PROPIEDADES
         var.ui.btnAltaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 0))
         var.ui.btnBajaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 1))
         var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnEliminarProp.clicked.connect(propiedades.Propiedades.bajaPropiedad)
+        var.ui.btnBuscarProp.clicked.connect(propiedades.Propiedades.)
         '''
         Eventos de cajas de texto
         '''
@@ -108,8 +112,10 @@ class Main(QtWidgets.QMainWindow):
         Eventos filtros
         '''
         var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
+        var.ui.cmbFiltroMuniProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
 
 if __name__ == '__main__':
+
     app = QtWidgets.QApplication([])
     window = Main()
     window.showMaximized()

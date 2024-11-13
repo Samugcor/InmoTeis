@@ -10,6 +10,14 @@ import var
 import venAux
 
 class Propiedades():
+    '''def buscarPropiedades(self):
+        try:
+            #query con parametros de busqueda
+        print("aaa")
+            #cargar tabla
+        except Exception as e:
+            print("Error buscando propiedades en la tabla (propiedades.py): "+e)'''
+
     def formPropiedad(self):
         try:
             #BAJA PROP
@@ -62,6 +70,7 @@ class Propiedades():
 
                 mbox.exec()
                 eventos.Eventos.cargarTipoPropiedad(self)
+                eventos.Eventos.cargarFiltros(self)
                 var.dlggestion.ui.txtGestTipoProp.setText('')
 
             else:
@@ -98,6 +107,7 @@ class Propiedades():
 
                 mbox.exec()
                 eventos.Eventos.cargarTipoPropiedad(self)
+                eventos.Eventos.cargarFiltros(self)
                 var.dlggestion.ui.txtGestTipoProp.setText('')
 
             else:
