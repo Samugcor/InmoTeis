@@ -2172,6 +2172,9 @@
             <property name="text">
              <string>Buscar</string>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>

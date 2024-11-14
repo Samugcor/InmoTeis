@@ -183,10 +183,10 @@ class Eventos:
         if var.ui.cmbFiltroTipoProp.currentText() not in conexion.Conexion.listaTipoPropiedad():
             var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
 
-        if var.ui.cmbFiltroMuniProp not in conexion.Conexion.listAllMuni():
+        if var.ui.cmbFiltroMuniProp.currentText() not in conexion.Conexion.listAllMuni():
             var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
 
-    '''
+    '''                                                                                                                                                                                                                   
         BACKUP
     '''
     def crearBackup(self):
@@ -329,3 +329,5 @@ class Eventos:
             var.dlggestion.show()
         except Exception as e:
             print("Error en abrir  ventana tipo prop ", e)
+
+

@@ -43,3 +43,33 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 - Añadir atajos de teclado a las opciones de exportar backup y estas cosas. ctr+B (crear backup)
 
 *Para hacer exports a json y csv hay que instalar unas librerias, esta en los apuntes
+````python
+ def exportCSVProp(self):
+        try:
+            fecha = datetime.today()
+            fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
+            file = (str(fecha) + '_DatosPropiedades.csv')
+            directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en CSV", file, ".csv")
+            if fichero:
+                registros = conexion.Conexion.listadoPropiedades(self)
+                with open(fichero, 'w', newline='', encondig='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    writer.writerow(["Codigo", "Alta", "Baja", "Dirección", "Provincia", "Municipio", "Tipo", "NºHabitaciones", "NºBaños", "Superficie", "Precio Alquiler", "Precio Compra", 
+                                     "Código Postal", "Observaciones", "Operación", "Estado", "Propietario", "Móvil"])
+                    for registro in registros:
+                        writer.writerow(registro)
+                shutil.move(fichero, directorio)
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                mbox.setWindowTitle("Error")
+                mbox.setText("Error Exportación de Datos propiedades.")
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+                    
+        except Exception as e:
+            print("Error al intentar exportar a CSV en Eventos exportCSVProp ", e)
+````

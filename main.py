@@ -80,7 +80,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
         var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
         var.ui.btnEliminarProp.clicked.connect(propiedades.Propiedades.bajaPropiedad)
-        var.ui.btnBuscarProp.clicked.connect(propiedades.Propiedades.)
+
         '''
         Eventos de cajas de texto
         '''
@@ -111,6 +111,11 @@ class Main(QtWidgets.QMainWindow):
         ''''
         Eventos filtros
         '''
+        if var.ui.btnBuscarProp.isChecked():
+            propiedades.Propiedades.cargaTablaPropiedades(self)
+            var.ui.cmbFiltroTipoProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+            var.ui.cmbFiltroMuniProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+
         var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
         var.ui.cmbFiltroMuniProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
 

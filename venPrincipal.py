@@ -835,6 +835,7 @@ class Ui_venPrincipal(object):
         self.horizontalLayout_17.addWidget(self.cmbFiltroMuniProp)
         self.btnBuscarProp = QtWidgets.QPushButton(parent=self.pesPropiedades)
         self.btnBuscarProp.setMinimumSize(QtCore.QSize(80, 25))
+        self.btnBuscarProp.setCheckable(True)
         self.btnBuscarProp.setObjectName("btnBuscarProp")
         self.horizontalLayout_17.addWidget(self.btnBuscarProp)
         spacerItem29 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)

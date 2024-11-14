@@ -343,13 +343,64 @@ class Conexion:
                 return listado
         except Exception as e:
             print("Error lista Propiedades por tipo (conexion.py): ",e)
-    def listaPropiedadesByMuni(self):
+
+    def listaPropiedadesByMuni(self,muni):
         try:
+            listado = []
+            if var.ui.chkHistoricoProp.isChecked():  # Si esta chekeado muestra to-do
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM propiedades WHERE muniprop = :muniprop ORDER BY codigo ASC")
+
+                query.bindValue(":muniprop", muni)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            else:
+                query = QtSql.QSqlQuery()
+                query.prepare(
+                    "SELECT * FROM propiedades WHERE bajaprop IS null and muniprop = :muniprop ORDER BY codigo ASC")
+
+                query.bindValue(":muniprop", muni)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
         except Exception as e:
             print("Error lista Propiedades por municipio (conexion.py): ",e)
 
-    def listaPropiedadesByTipoMuni(self):
+    def listaPropiedadesByTipoMuni(self,tipo,muni):
         try:
+            listado = []
+            if var.ui.chkHistoricoProp.isChecked():  # Si esta chekeado muestra to-do
+                query = QtSql.QSqlQuery()
+                query.prepare("SELECT * FROM propiedades WHERE tipoprop = :tipoprop and muniprop = :muniprop ORDER BY codigo ASC")
+
+                query.bindValue(":muniprop", muni)
+                query.bindValue(":tipoprop", tipo)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            else:
+                query = QtSql.QSqlQuery()
+                query.prepare(
+                    "SELECT * FROM propiedades WHERE bajaprop IS null and tipoprop = :tipoprop and muniprop = :muniprop ORDER BY codigo ASC")
+
+                query.bindValue(":muniprop", muni)
+                query.bindValue(":tipoprop", tipo)
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
         except Exception as e:
             print("Error lista Propiedades por Tipo y Municipio (conexion.py): ",e)
 

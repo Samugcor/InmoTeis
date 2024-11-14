@@ -20,7 +20,9 @@ QPushButton{
 QPushButton:hover{
     background-color: #b7c7da;
 }
-
+QPushButton:checked{
+    color: red
+}
 *:disabled {
    color: #a6a6a6;
 }
