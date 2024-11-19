@@ -64,6 +64,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restauraraBackup)
         var.ui.actionTipo_propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
+        var.ui.actionExportar_propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONProp)
+        var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         '''
         Eventos de botones
         '''
@@ -111,10 +113,10 @@ class Main(QtWidgets.QMainWindow):
         ''''
         Eventos filtros
         '''
-        if var.ui.btnBuscarProp.isChecked():
-            propiedades.Propiedades.cargaTablaPropiedades(self)
-            var.ui.cmbFiltroTipoProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
-            var.ui.cmbFiltroMuniProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+
+        var.ui.btnBuscarProp.clicked.connect(propiedades.Propiedades.cargaTablaPropiedades)
+        #var.ui.cmbFiltroTipoProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+        #var.ui.cmbFiltroMuniProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
 
         var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
         var.ui.cmbFiltroMuniProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)

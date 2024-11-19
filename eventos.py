@@ -1,6 +1,8 @@
 '''
 Eventos que no tienen que ver con la gestion dde la db
 '''
+import csv
+import json
 import locale
 import os.path
 import sys
@@ -321,6 +323,12 @@ class Eventos:
                 eventos.Eventos.cargarProvincias(self,2)
                 eventos.Eventos.cargarTipoPropiedad(self)
 
+                #Borrar filttros
+                var.ui.cmbFiltroTipoProp.setCurrentIndex(0)
+                var.ui.cmbFiltroMuniProp.setCurrentIndex(0)
+
+                propiedades.Propiedades.cargaTablaPropiedades(self)
+
         except Exception as e:
             print("error al limpiar panel (eventos.py): ", e)
 
@@ -330,4 +338,77 @@ class Eventos:
         except Exception as e:
             print("Error en abrir  ventana tipo prop ", e)
 
+    '''
+    EXPORTAR
+    '''
 
+    def exportCSVProp(self):
+        try:
+            fecha = datetime.today()
+            fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
+            file = (str(fecha) + '_DatosPropiedades.csv')
+            directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en CSV", file, ".csv")
+            if fichero:
+                registros = conexion.Conexion.listadoAllPropiedades(self)
+                with open(fichero, 'w', newline='', encoding='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    writer.writerow(
+                        ["Codigo", "Alta", "Baja", "Dirección", "Provincia", "Municipio","Código Postal", "Tipo", "NºHabitaciones",
+                         "NºBaños", "Superficie", "Precio Alquiler", "Precio Venta",
+                          "Observaciones", "Operación", "Estado", "Propietario", "Móvil"])
+                    for registro in registros:
+                        writer.writerow(registro)
+                shutil.move(fichero, directorio)
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                mbox.setWindowTitle("Error")
+                mbox.setText("Error Exportación de Datos propiedades.")
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+
+        except Exception as e:
+            print("Error al intentar exportar a CSV en Eventos exportCSVProp ", e)
+
+    def exportJSONProp(self):
+        try:
+            # Generate timestamped filename
+            fecha = datetime.today()
+            fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
+            file = (str(fecha) + '_DatosPropiedades.json')
+
+            # Open a save file dialog
+            directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en JSON", file, ".json")
+            if fichero:
+                # Fetch all property records
+                registros = conexion.Conexion.listadoAllPropiedades(self)
+
+                # Prepare data for JSON (list of dictionaries)
+                keys = ["Codigo", "Alta", "Baja", "Direccion", "Provincia", "Municipio","Codigo_Postal", "Tipo", "N_Habitaciones",
+                         "N_Baños", "Superficie", "Precio_Alquiler", "Precio_Venta",
+                          "Observaciones", "Operacion", "Estado", "Propietario", "Movil"]
+                json_data = [dict(zip(keys, registro)) for registro in registros]
+
+                # Write to JSON file
+                with open(fichero, 'w', encoding='utf-8') as jsonfile:
+                    json.dump(json_data, jsonfile, ensure_ascii=False, indent=4)
+
+                # Move file to chosen directory
+                shutil.move(fichero, directorio)
+            else:
+                # Handle case where no file was selected
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                mbox.setWindowTitle("Error")
+                mbox.setText("Error Exportación de Datos propiedades.")
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+
+        except Exception as e:
+            print("Error al intentar exportar a JSON en Eventos exportJSONProp ", e)

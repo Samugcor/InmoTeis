@@ -176,30 +176,26 @@ class Propiedades():
 
     def cargaTablaPropiedades(self):
         try:
-            if var.ui.btnBuscarProp.isChecked():
-                print("Filtros de busqueda activados")
-                listado = conexion.Conexion.listadoPropiedades(self)
-                print(str(var.ui.cmbFiltroTipoProp.currentText()))
-                print(str(var.ui.cmbFiltroMuniProp.currentText()))
-                if var.ui.cmbFiltroTipoProp.currentText() != "---" and var.ui.cmbFiltroMuniProp.currentText() != "---":
-                    print("Filtros de busqueda ambos")
-                    listado = conexion.Conexion.listaPropiedadesByTipoMuni(self, var.ui.cmbFiltroTipoProp.currentText,
-                                                                           var.ui.cmbFiltroMuniProp.currentText())
 
-                elif var.ui.cmbFiltroTipoProp.currentText() != "---":
-                    print("Filtros de busqueda tipo")
-                    listado = conexion.Conexion.listaPropiedadesByTipo(self, var.ui.cmbFiltroTipoProp.currentText())
-
-                elif var.ui.cmbFiltroMuniProp.currentText() != "---":
-                    print("Filtros de busqueda muni")
-                    listado = conexion.Conexion.listaPropiedadesByMuni(self, var.ui.cmbFiltroTipoProp.currentText())
-                else:
-                    print("No filtros de busqueda")
-                    listado = conexion.Conexion.listadoPropiedades(self)
+            listado = []
+            #print("Parametro tipo propiedad: "+str(var.ui.cmbFiltroTipoProp.currentText()))
+            #print("Parametro municipio: "+str(var.ui.cmbFiltroMuniProp.currentText()))
+            if var.ui.cmbFiltroTipoProp.currentText() != "---" and var.ui.cmbFiltroMuniProp.currentText() != "---":
+                #print("Filtros de busqueda ambos")
+                listado = conexion.Conexion.listaPropiedadesByTipoMuni(self, var.ui.cmbFiltroTipoProp.currentText(),
+                                                                       var.ui.cmbFiltroMuniProp.currentText())
+            elif var.ui.cmbFiltroTipoProp.currentText() != "---":
+                #print("Filtros de busqueda tipo")
+                listado = conexion.Conexion.listaPropiedadesByTipo(self, var.ui.cmbFiltroTipoProp.currentText())
+            elif var.ui.cmbFiltroMuniProp.currentText() != "---":
+                #print("Filtros de busqueda muni")
+                listado = conexion.Conexion.listaPropiedadesByMuni(self, var.ui.cmbFiltroMuniProp.currentText())
             else:
-                print("No filtros de busqueda")
+                #print("No filtros de busqueda")
                 listado = conexion.Conexion.listadoPropiedades(self)
 
+
+            var.ui.tabPropiedades.clearContents()
             index=0
             for registro in listado:
                 #print(registro)

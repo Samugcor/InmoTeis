@@ -3,10 +3,22 @@ QMainWindow{
     background-color: #cdd7e4;
 }
 
-QtabWidget{
-    background-color: e5eeff;
+/*--------- TABS --------*/
+
+QTabBar::tab {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding:10px 10px 8px 10px;
+    background:#d5e2f1;
+
 }
 
+QTabBar::tab:selected {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background: #f0f3f7; /* Mantener el mismo color al estar seleccionada */
+    padding:10px 10px 8px 10px;
+}
 QMenuBar{
     background-color: whitesmoke;
 }
@@ -35,3 +47,4 @@ QRadioButton::indicator:disabled {
     border: 1px solid #a6a6a6;
     border-radius: 8px;
 }
+

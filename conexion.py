@@ -292,6 +292,21 @@ class Conexion:
         except Exception as e:
             print("Error altaPropiedad (conexion.py): ",e)
 
+    def listadoAllPropiedades(self):
+        try:
+            listado=[]
+
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM propiedades ORDER BY codigo ASC")
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+            return listado
+
+        except Exception as e:
+            print("Error recuperando el listado de propiedades (conexion.py)",e)
+
     def listadoPropiedades(self):
         try:
             listado=[]
