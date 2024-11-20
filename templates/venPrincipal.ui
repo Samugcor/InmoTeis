@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../.designer/backup/img/house.svg</normaloff>../../../../../.designer/backup/img/house.svg</iconset>
+    <normaloff>../img/house.svg</normaloff>../img/house.svg</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -636,25 +636,6 @@
             </item>
            </layout>
           </item>
-          <item row="0" column="2">
-           <widget class="QLineEdit" name="txtDniCliente">
-            <property name="maximumSize">
-             <size>
-              <width>150</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color:rgb(255, 255, 222);</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
@@ -875,6 +856,56 @@
              <string>Fecha Baja</string>
             </property>
            </widget>
+          </item>
+          <item row="0" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <item>
+             <widget class="QLineEdit" name="txtDniCliente">
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color:rgb(255, 255, 222);</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnBuscaCliente">
+              <property name="styleSheet">
+               <string notr="true">padding: 5px;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../img/search.svg</normaloff>../img/search.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_25">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -2281,6 +2312,7 @@
     <property name="title">
      <string>Ayuda</string>
     </property>
+    <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuGestion">
     <property name="title">
@@ -2361,6 +2393,11 @@
   <action name="actionExportar_propiedades_CSV">
    <property name="text">
     <string>Exportar propiedades CSV</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

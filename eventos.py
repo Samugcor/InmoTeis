@@ -338,6 +338,12 @@ class Eventos:
         except Exception as e:
             print("Error en abrir  ventana tipo prop ", e)
 
+    def abrirAbout(self):
+        try:
+            var.dlgabout.show()
+        except Exception as e:
+            print("Error en abrir  ventana tipo prop ", e)
+
     '''
     EXPORTAR
     '''

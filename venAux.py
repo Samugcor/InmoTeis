@@ -1,4 +1,6 @@
 from datetime import  datetime
+
+from dlgAbout import Ui_Dialog
 from dlgCalendar import*
 from dlgTipoProp import*
 
@@ -31,5 +33,14 @@ class DlgGestionProp(QtWidgets.QDialog):
 
         self.ui.btnAltaTipoProp.clicked.connect(propiedades.Propiedades.altaTipoPropiedades)
         self.ui.btnEliminarTipoProp.clicked.connect(propiedades.Propiedades.bajaTipoPropiedades)
+
+class DlgAbout (QtWidgets.QDialog):
+    def __init__(self):
+        super(DlgAbout, self).__init__()
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+
+        self.ui.btnCerrarAbout.clicked.connect(self.close)
+
 
 

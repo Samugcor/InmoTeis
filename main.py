@@ -1,4 +1,5 @@
 from calendar import Calendar
+from idlelib.help_about import AboutDialog
 
 import conexionserver
 import propiedades
@@ -25,6 +26,7 @@ class Main(QtWidgets.QMainWindow):
         var.uiCalendar = Calendar()
         var.dlgabrir = FileDialogAbrir()
         var.dlggestion = DlgGestionProp()
+        var.dlgabout = DlgAbout()
 
         var.ui.rgEstado.setId(var.ui.rbtAlquilado, 1)
         var.ui.rgEstado.setId(var.ui.rbtVendido, 2)
@@ -66,6 +68,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionTipo_propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
         var.ui.actionExportar_propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONProp)
         var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
+        var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
         '''
         Eventos de botones
         '''
@@ -75,6 +78,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnBajaCli.clicked.connect(lambda: eventos.Eventos.abrirCalendar(0,1))
         var.ui.btnModificarCliente.clicked.connect(clientes.Clientes.modifCliente)
         var.ui.btnEliminarCliente.clicked.connect(clientes.Clientes.bajaCliente)
+        var.ui.btnBuscaCliente.clicked.connect(clientes.Clientes.buscarCliente)
 
         #BOTONES PROPIEDADES
         var.ui.btnAltaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 0))

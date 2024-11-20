@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../img/house.svg</normaloff>../img/house.svg</iconset>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -32,9 +36,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>50</y>
+     <y>30</y>
      <width>382</width>
-     <height>171</height>
+     <height>211</height>
     </rect>
    </property>
    <property name="maximumSize">
@@ -59,7 +63,7 @@
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>120</y>
+      <y>170</y>
       <width>150</width>
       <height>20</height>
      </rect>
@@ -81,7 +85,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>70</y>
+      <y>120</y>
       <width>321</width>
       <height>41</height>
      </rect>
@@ -101,10 +105,10 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>130</x>
       <y>20</y>
-      <width>50</width>
-      <height>50</height>
+      <width>121</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -117,7 +121,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../img/house.svg</pixmap>
+     <pixmap>../img/realestatehouse_101105.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -128,7 +132,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
+     <y>250</y>
      <width>381</width>
      <height>22</height>
     </rect>

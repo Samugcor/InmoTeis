@@ -200,3 +200,58 @@ class Clientes:
 
         except Exception as e:
             print("Error baja de clientes", e)
+
+    def buscarCliente(self):
+        dni=var.ui.txtDniCliente.text()
+        if dni == "":
+            mbox = QtWidgets.QMessageBox()
+            mbox.setWindowIcon(QIcon('./img/house.svg'))
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+            mbox.setWindowTitle('Aviso')
+            mbox.setText('No puedes buscar clientes sin un DNI')
+            mbox.setStandardButtons(
+                QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+            mbox.exec()
+
+        elif eventos.Eventos.validarDNIcli(dni) == True:
+            registro = conexion.Conexion.datosOneCliente(dni)
+            if registro:
+                listado = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
+                           var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtMovilCliente,
+                           var.ui.txtDirecionCliente,
+                           var.ui.cmbProvCli, var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
+
+                for i in range(len(listado)):
+                    if i == 7 or i == 8:
+                        listado[i].setCurrentText(registro[i])
+                    else:
+                        listado[i].setText(registro[i])
+            else:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowIcon(QIcon('./img/house.svg'))
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowTitle('Aviso')
+                mbox.setText('No se ha encontrado un cliente con el DNI ' + dni)
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+                mbox.exec()
+        else:
+            #Nunca se usa porque el campo no borra el contenido si detecta que el formato no es valido
+            mbox = QtWidgets.QMessageBox()
+            mbox.setWindowIcon(QIcon('./img/house.svg'))
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+            mbox.setWindowTitle('Aviso')
+            mbox.setText('El DNI no es valido')
+            mbox.setStandardButtons(
+                QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+            mbox.exec()
+

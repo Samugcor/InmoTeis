@@ -32,7 +32,8 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 - Al dar de alta una propiedad o cliente el campo de fecha baja debe de estar vacio // No de acuerdo con esto.
 - al dar de baja o alta las fechas tienen que tener sentido
 - ✅En la tabla de propiedades precio venta y alquiler aparecen en el orden inverso
-- Cambia las comprobaciones de las cargas para que no vayan segun indice, si no por tipo de qt ( si es una combobox que es con current text que la localice por ser del tipo combo box y no por ser el indice 14)
+
+~~- Cambia las comprobaciones de las cargas para que no vayan segun indice, si no por tipo de qt ( si es una combobox que es con current text que la localice por ser del tipo combo box y no por ser el indice 14)~~
 - ✅Ponle color a la tab seleccionada
 
 ## 13/11/24
@@ -44,6 +45,9 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 
 
 ## 18/11/2024
-- Crea un dialog de acerca de con icono nombre programa, autor y version simbolo compirright ( y un boton para cerrar)
+- ✅Crea un dialog de acerca de con icono nombre programa, autor y version simbolo compirright ( y un boton para cerrar)
 - Cuando das de baja un apropiedad que puede estar vendida alquilada que pregunte por cual en vez de marcar por defecto vendido.
 - Muestra un mensaje (metelo en un registro en una columna) de que no hay registros si no muestra nada
+
+## 20/11/2024
+- ✅En la pestaña de clientes añade un boton de lupa al lado del dni, cuando el usuario introduce un dni y le da a buscar cargará todos los datos del cliente en la oarte de arriba. Si el cliente no existe te sale un dialog de que no existe.
