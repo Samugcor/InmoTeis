@@ -27,26 +27,34 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.dlggestion = DlgGestionProp()
         var.dlgabout = DlgAbout()
+        var.conexionMode = True
 
         var.ui.rgEstado.setId(var.ui.rbtAlquilado, 1)
         var.ui.rgEstado.setId(var.ui.rbtVendido, 2)
         var.ui.rgEstado.setId(var.ui.rbtDisponible, 3)
 
         self.setStyleSheet(styles.load_stylesheet())
-        conexion.Conexion.db_conexion(self)
-        propiedades.Propiedades.formPropiedad(self)
-        eventos.Eventos.cargarFiltros(self)
-        var.ui.cmbFiltroTipoProp.setEditable(True)
-        #conexionserver.ConexionServer.crear_conexion(self)
+
+    #    propiedades.Propiedades.formPropiedad(self)
+    #    eventos.Eventos.cargarFiltros(self)
+    #    var.ui.cmbFiltroTipoProp.setEditable(True)
+
+        '''Conexiones: cambia var.conexionMode para usar una u otra conexion'''
+        if var.conexionMode:
+            print("Usando db_conexion, la conexion con la base de datos del proyecto")
+            conexion.Conexion.db_conexion(self)
+        else:
+            print("Usando ConexionServer, la conexion con la base de datos del servidor")
+            conexionserver.ConexionServer.crear_conexion(self)
 
 
 
         '''
         Eventos formulario
         '''
-        var.ui.txtBajaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
-        var.ui.txtPrecioVentaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
-        var.ui.txtPrecioAlquilerProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
+    #    var.ui.txtBajaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
+    #    var.ui.txtPrecioVentaProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
+    #    var.ui.txtPrecioAlquilerProp.textChanged.connect(propiedades.Propiedades.formPropiedad)
 
         '''
         Eventos de Tablas
@@ -56,8 +64,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
         eventos.Eventos.resizeTablaPropiedades(self)
 
-        propiedades.Propiedades.cargaTablaPropiedades(self)
-        var.ui.tabPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
+    #    propiedades.Propiedades.cargaTablaPropiedades(self)
+    #    var.ui.tabPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
 
         '''
         Zona de eventos del menubar
@@ -65,9 +73,9 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionSalir.triggered.connect(eventos.Eventos.mensajeSalir)
         var.ui.actionCrear_Backup.triggered.connect(eventos.Eventos.crearBackup)
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restauraraBackup)
-        var.ui.actionTipo_propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
-        var.ui.actionExportar_propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONProp)
-        var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
+    #    var.ui.actionTipo_propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
+    #    var.ui.actionExportar_propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONProp)
+    #    var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
         '''
         Eventos de botones
@@ -81,11 +89,11 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnBuscaCliente.clicked.connect(clientes.Clientes.buscarCliente)
 
         #BOTONES PROPIEDADES
-        var.ui.btnAltaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 0))
-        var.ui.btnBajaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 1))
-        var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
-        var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
-        var.ui.btnEliminarProp.clicked.connect(propiedades.Propiedades.bajaPropiedad)
+    #    var.ui.btnAltaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 0))
+    #    var.ui.btnBajaProp.clicked.connect(lambda: eventos.Eventos.abrirCalendar(1, 1))
+    #    var.ui.btnGrabarProp.clicked.connect(propiedades.Propiedades.altaPropiedad)
+    #    var.ui.btnModificarProp.clicked.connect(propiedades.Propiedades.modifPropiedad)
+    #    var.ui.btnEliminarProp.clicked.connect(propiedades.Propiedades.bajaPropiedad)
 
         '''
         Eventos de cajas de texto
@@ -99,9 +107,9 @@ class Main(QtWidgets.QMainWindow):
         '''
         eventos.Eventos.cargarProvincias(self,0)
         eventos.Eventos.cargarMunicipios(self)
-        eventos.Eventos.cargarTipoPropiedad(self)
+    #    eventos.Eventos.cargarTipoPropiedad(self)
         var.ui.cmbProvCli.currentIndexChanged.connect(eventos.Eventos.cargarMunicipios)
-        var.ui.cmbProvProp.currentIndexChanged.connect(eventos.Eventos.cargarMunicipios)
+    #    var.ui.cmbProvProp.currentIndexChanged.connect(eventos.Eventos.cargarMunicipios)
         '''
         Eventos ToolBar
         '''
@@ -112,18 +120,15 @@ class Main(QtWidgets.QMainWindow):
         Eventos checkbox
         '''
         var.ui.chkHistoricoCli.stateChanged.connect(clientes.Clientes.cargaTablaCientes)
-        var.ui.chkHistoricoProp.stateChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
+    #    var.ui.chkHistoricoProp.stateChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
 
         ''''
         Eventos filtros
         '''
 
-        var.ui.btnBuscarProp.clicked.connect(propiedades.Propiedades.cargaTablaPropiedades)
-        #var.ui.cmbFiltroTipoProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
-        #var.ui.cmbFiltroMuniProp.currentIndexChanged.connect(propiedades.Propiedades.cargaTablaPropiedades)
-
-        var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
-        var.ui.cmbFiltroMuniProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
+    #    var.ui.btnBuscarProp.clicked.connect(propiedades.Propiedades.cargaTablaPropiedades)
+    #    var.ui.cmbFiltroTipoProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
+    #    var.ui.cmbFiltroMuniProp.lineEdit().editingFinished.connect(eventos.Eventos.validarFiltroTipo)
 
 if __name__ == '__main__':
 

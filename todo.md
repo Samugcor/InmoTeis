@@ -51,3 +51,13 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 
 ## 20/11/2024
 - ✅En la pestaña de clientes añade un boton de lupa al lado del dni, cuando el usuario introduce un dni y le da a buscar cargará todos los datos del cliente en la oarte de arriba. Si el cliente no existe te sale un dialog de que no existe.
+
+## 25/11/2024
+- Estamos haciendo que ta,bien funcione (solo la parte de clientes ) con la bd del servidor del profesor.
+- Cambia el color del registro seleccionado en la tabla por algo más llamativo
+
+## 27/11/2024
+- Si te apetece y te sobra el tiempo carga la tabla con paginaciones :) que muestre de 15 en 15 registros o asi
+
+## 02/12/2024
+- Cuando limpias que se deseleccione el registro de la tabla (si había uno seleccionado)

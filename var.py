@@ -9,3 +9,4 @@ global dlgabrir
 global btn
 global dlggestion
 global dlgabout
+global conexionMode

@@ -4,6 +4,7 @@ from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QIcon
 
 import conexion
+import conexionserver
 import eventos
 import propiedades
 import var
@@ -57,34 +58,27 @@ class Propiedades():
             tipo = tipo.capitalize()
             print(tipo)
 
-            if conexion.Conexion.altaTipoPropiedad(tipo):
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Tipo de propiedad "'+tipo+'" añadido')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+            if var.conexionMode:
+                if conexion.Conexion.altaTipoPropiedad(tipo):
+                    eventos.Eventos.alertMaker("Information","Aviso", "Tipo de propiedad"+tipo+"añadido")
 
-                mbox.exec()
-                eventos.Eventos.cargarTipoPropiedad(self)
-                eventos.Eventos.cargarFiltros(self)
-                var.dlggestion.ui.txtGestTipoProp.setText('')
+                    eventos.Eventos.cargarTipoPropiedad(self)
+                    eventos.Eventos.cargarFiltros(self)
+                    var.dlggestion.ui.txtGestTipoProp.setText('')
 
+                else:
+                    eventos.Eventos.alertMaker("Critical","Aviso", "Error al añadir tipo de propiedad. Compruebe que el tipo no exista")
             else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Error al añadir tipo de propiedad. Compruebe que el tipo no exista')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                if conexionserver.ConexionServer.altaTipoPropiedad(tipo):
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Tipo de propiedad" + tipo + "añadido")
 
-                mbox.exec()
+                    eventos.Eventos.cargarTipoPropiedad(self)
+                    eventos.Eventos.cargarFiltros(self)
+                    var.dlggestion.ui.txtGestTipoProp.setText('')
+
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso","Error al añadir tipo de propiedad. Compruebe que el tipo no exista")
+
         except Exception as e:
             print("Error en altaTipoPropiedades (propiedades.py)",e)
 
@@ -94,34 +88,28 @@ class Propiedades():
             tipo = tipo.capitalize()
             print(tipo)
 
-            if conexion.Conexion.bajaTipoPropiedad(tipo):
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Tipo de propiedad "'+tipo+'" eliminado')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+            if var.conexionMode:
+                if conexion.Conexion.bajaTipoPropiedad(tipo):
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Tipo de propiedad" + tipo + "eliminado")
 
-                mbox.exec()
-                eventos.Eventos.cargarTipoPropiedad(self)
-                eventos.Eventos.cargarFiltros(self)
-                var.dlggestion.ui.txtGestTipoProp.setText('')
+                    eventos.Eventos.cargarTipoPropiedad(self)
+                    eventos.Eventos.cargarFiltros(self)
+                    var.dlggestion.ui.txtGestTipoProp.setText('')
 
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso","Error al eliminar tipo de propiedad. Compruebe que el tipo exista")
             else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Error al eliminar tipo de propiedad')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                if conexionserver.ConexionServer.bajaTipoPropiedad(tipo):
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Tipo de propiedad" + tipo + "eliminado")
+                    #⭕❓‼️❓⭕❓❓❓‼️‼️❓❓⬇️⭕⭕❓
+                    eventos.Eventos.cargarTipoPropiedad(self)
+                    eventos.Eventos.cargarFiltros(self)
+                    var.dlggestion.ui.txtGestTipoProp.setText('')
 
-                mbox.exec()
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso",
+                                               "Error al eliminar tipo de propiedad. Compruebe que el tipo exista")
+
         except Exception as e:
             print("Error en bajaTipoPropiedades (propiedades.py)",e)
 

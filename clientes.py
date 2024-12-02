@@ -26,27 +26,30 @@ class Clientes:
             print("Error check clientes",e)
 
     def altaClientes(self):
-        nuevoCli =[var.ui.txtDniCliente.text(),var.ui.txtAltaCliente.text(),var.ui.txtApellidosCliente.text(),
-                var.ui.txtNombreCliente.text(),var.ui.txtEmailCliente.text(),var.ui.txtMovilCliente.text(),var.ui.txtDirecionCliente.text(),
-                var.ui.cmbProvCli.currentText(),var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
-
-        if conexion.Conexion.altaCliente(nuevoCli):
-            mbox = QtWidgets.QMessageBox()
-            mbox.setWindowIcon(QIcon('./img/house.svg'))
-            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-            mbox.setWindowTitle('Aviso')
-            mbox.setText('Cliente dado de alta en base de datos')
-            mbox.setStandardButtons(
-                QtWidgets.QMessageBox.StandardButton.Ok)
-            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-            mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
-
-            mbox.exec()
-
-            Clientes.cargaTablaCientes(self)
+        if var.conexionMode:
+            nuevoCli =[var.ui.txtDniCliente.text(),var.ui.txtAltaCliente.text(),var.ui.txtApellidosCliente.text(),
+                    var.ui.txtNombreCliente.text(),var.ui.txtEmailCliente.text(),var.ui.txtMovilCliente.text(),var.ui.txtDirecionCliente.text(),
+                    var.ui.cmbProvCli.currentText(),var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
         else:
-            QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
-                                           QtWidgets.QMessageBox.StandardButton.Cancel)
+            nuevoCli = [var.ui.txtDniCliente.text(), var.ui.txtAltaCliente.text(), var.ui.txtApellidosCliente.text(),
+                        var.ui.txtNombreCliente.text(), var.ui.txtDirecionCliente.text(), var.ui.txtEmailCliente.text(), var.ui.txtMovilCliente.text(),
+                        var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText()]
+
+        if var.conexionMode:
+            if conexion.Conexion.altaCliente(nuevoCli):
+                eventos.Eventos.alertMaker("Information","Information","Cliente dado de alta en base de datos")
+                Clientes.cargaTablaCientes(self)
+            else:
+                QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
+                                               QtWidgets.QMessageBox.StandardButton.Cancel)
+        else:
+            print(nuevoCli)
+            if conexionserver.ConexionServer.altaCliente(nuevoCli):
+                eventos.Eventos.alertMaker("Information","Information","Cliente dado de alta en base de datos")
+                Clientes.cargaTablaCientes(self)
+            else:
+                QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
+                                               QtWidgets.QMessageBox.StandardButton.Cancel)
 
     @staticmethod
     def checkEmail():
@@ -83,18 +86,29 @@ class Clientes:
 
     def cargaTablaCientes(self):
         try:
-            listado= conexion.Conexion.listadoClientes(self)
-            #listado = conexionserver.ConexionServer.listadoClientes(self)
+            if var.conexionMode:
+                listado= conexion.Conexion.listadoClientes(self)
+            else:
+                listado = conexionserver.ConexionServer.listadoClientes(self)
+
             index=0
             for registro in listado:
                 var.ui.tabClientes.setRowCount(index+1)
-                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ registro[0] + "  "))
-                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[2] + "  "))
-                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[3]+ "  "))
-                var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ registro[5]+ "   "))
-                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))
-                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ registro[8]+ "  "))
-                var.ui.tabClientes.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ registro[9]+ "  "))
+                var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ registro[0] + "  "))#dni
+                var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[2] + "  "))#apellido
+                var.ui.tabClientes.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[3]+ "  "))#nombre
+
+                if var.conexionMode:
+                    var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ registro[5]+ "   "))#movil
+                else:
+                    var.ui.tabClientes.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ registro[6]+ "   "))
+
+                var.ui.tabClientes.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))#provincia
+                var.ui.tabClientes.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ registro[8]+ "  "))#municipio
+                registro[9] = " " if registro[9] is None else registro[9]
+                var.ui.tabClientes.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ registro[9]+ "  "))#baja
+
+
 
                 var.ui.tabClientes.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 var.ui.tabClientes.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
@@ -108,21 +122,33 @@ class Clientes:
 
 
         except Exception as error:
-            print("Error cargando la tabla de clientes", error)
+            print("Error cargando la tabla de clientes (clientes.py)", error)
 
     def cargaOneCliente(self):
         try:
             fila=var.ui.tabClientes.selectedItems()
             datos=[dato.text() for dato in fila]
-            registro=conexion.Conexion.datosOneCliente(str(datos[0]))
-            listado= [var.ui.txtDniCliente,var.ui.txtAltaCliente,var.ui.txtApellidosCliente,
-                var.ui.txtNombreCliente,var.ui.txtEmailCliente,var.ui.txtMovilCliente,var.ui.txtDirecionCliente,
-                var.ui.cmbProvCli,var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
+
+            if var.conexionMode:
+                registro=conexion.Conexion.datosOneCliente(str(datos[0]))
+            else:
+                registro=conexionserver.ConexionServer.datosOneCliente(str(datos[0]))
+
+            if var.conexionMode:
+                listado= [var.ui.txtDniCliente,var.ui.txtAltaCliente,var.ui.txtApellidosCliente,
+                    var.ui.txtNombreCliente,var.ui.txtEmailCliente,var.ui.txtMovilCliente,var.ui.txtDirecionCliente,
+                    var.ui.cmbProvCli,var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
+            else:
+                #
+                listado = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
+                           var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtDirecionCliente,
+                           var.ui.txtMovilCliente, var.ui.cmbProvCli, var.ui.cmbMunicipioCli, var.ui.txtBajaCliente]
 
             #print(registro)
             #print(listado)
             for i in range(len(listado)):
-                if i==7 or i==8:
+                registro[i] = " " if registro[i] == "None" else registro[i]
+                if isinstance(listado[i], QtWidgets.QComboBox):
                     listado[i].setCurrentText(registro[i])
                 else:
                     listado[i].setText(registro[i])
@@ -137,32 +163,22 @@ class Clientes:
                         var.ui.txtDirecionCliente.text(), var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText(),
                         var.ui.txtBajaCliente.text()]
 
-            if conexion.Conexion.modifCliente(modifCli):
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Datos de cliente modificados')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+            if var.conexionMode:
+                if conexion.Conexion.modifCliente(modifCli):
+                    eventos.Eventos.alertMaker("Information", "Aviso","Datos de cliente modificado")
 
-                mbox.exec()
-
-                clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self)
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso","Error al modificar datos de cliente")
             else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Error al modificar datos de cliente')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                print("justo antes de la conexion")
+                if conexionserver.ConexionServer.modifCliente(modifCli):
+                    print("se modifico")
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Datos de cliente modificado")
 
-                mbox.exec()
+                    clientes.Clientes.cargaTablaCientes(self)
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso", "Error al modificar datos de cliente")
 
         except Exception as error:
             print("Error modificando la tabla de clientes (clientes.py): ", error)
@@ -171,32 +187,21 @@ class Clientes:
         try:
             datos= [var.ui.txtDniCliente.text(),var.ui.txtBajaCliente.text()]
 
-            if conexion.Conexion.bajaCliente(datos):
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Cliente dado de baja')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+            if var.conexionMode:
+                if conexion.Conexion.bajaCliente(datos):
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Cliente dado de baja")
 
-                mbox.exec()
-
-                clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self)
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso", "Error Baja Cliente: cliente no existe o ya ha sido dado de baja")
             else:
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowIcon(QIcon('./img/house.svg'))
-                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-                mbox.setWindowTitle('Aviso')
-                mbox.setText('Error Baja Cliente: cliente no existe o ya ha sido dado de baja')
-                mbox.setStandardButtons(
-                    QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                if conexionserver.ConexionServer.bajaCliente(datos):
+                    eventos.Eventos.alertMaker("Information", "Aviso", "Cliente dado de baja")
 
-                mbox.exec()
+                    clientes.Clientes.cargaTablaCientes(self)
+                else:
+                    eventos.Eventos.alertMaker("Critical", "Aviso",
+                                               "Error Baja Cliente: cliente no existe o ya ha sido dado de baja")
 
         except Exception as e:
             print("Error baja de clientes", e)
@@ -217,7 +222,11 @@ class Clientes:
             mbox.exec()
 
         elif eventos.Eventos.validarDNIcli(dni) == True:
-            registro = conexion.Conexion.datosOneCliente(dni)
+            if var.conexionMode:
+                registro = conexion.Conexion.datosOneCliente(dni)
+            else:
+                registro = conexionserver.ConexionServer.datosOneCliente(dni)
+
             if registro:
                 listado = [var.ui.txtDniCliente, var.ui.txtAltaCliente, var.ui.txtApellidosCliente,
                            var.ui.txtNombreCliente, var.ui.txtEmailCliente, var.ui.txtMovilCliente,

@@ -53,8 +53,10 @@ class Eventos:
         CARGAR VALORES
     '''
     def cargarProvincias(self,modo):
-        listado = conexion.Conexion.listaProv(self)
-        #listado = conexionserver.ConexionServer.listaProv(self)
+        if var.conexionMode:
+            listado = conexion.Conexion.listaProv(self)
+        else:
+            listado = conexionserver.ConexionServer.listaProv(self)
 
         if modo == 0:
             var.ui.cmbProvCli.clear()
@@ -73,8 +75,12 @@ class Eventos:
 
     def cargarFiltros(self):
         #Recoge las listas de cada combo box
-        listTipoProp = conexion.Conexion.listaTipoPropiedad()
-        listMuni = conexion.Conexion.listAllMuni()
+        if var.conexionMode:
+            listTipoProp = conexion.Conexion.listaTipoPropiedad()
+            listMuni = conexion.Conexion.listAllMuni()
+        else:
+            listTipoProp = conexionserver.ConexionServer.listaTipoPropiedad()
+            listMuni = conexionserver.ConexionServer.listAllMuni()
 
         #Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
         var.ui.cmbFiltroTipoProp.clear()
@@ -104,10 +110,13 @@ class Eventos:
         var.ui.cmbMunicipioCli.clear()
         var.ui.cmbMunicipioProp.clear()
 
-        listadoCli=conexion.Conexion.listaMuni(provinciaCli)
-        listadoPro=conexion.Conexion.listaMuni(provinciaPro)
+        if var.conexionMode:
+            listadoCli=conexion.Conexion.listaMuni(provinciaCli)
+            listadoPro=conexion.Conexion.listaMuni(provinciaPro)
+        else:
+            listadoCli=conexionserver.ConexionServer.listaMuniProv(provinciaCli)
+            listadoPro=conexionserver.ConexionServer.listaMuniProv(provinciaPro)
 
-        #listado = conexionserver.ConexionServer.listaMuniProv(provincia)
 
         var.ui.cmbMunicipioCli.addItems(listadoCli)
         var.ui.cmbMunicipioProp.addItems(listadoPro)
@@ -133,7 +142,11 @@ class Eventos:
     def cargarTipoPropiedad(self):
         var.ui.cmbTipoProp.clear()
 
-        listado=conexion.Conexion.listaTipoPropiedad();
+        if var.conexionMode:
+            listado=conexion.Conexion.listaTipoPropiedad()
+        else:
+            listado=conexionserver.ConexionServer.listaTipoPropiedad()
+
         var.ui.cmbTipoProp.addItems(listado)
 
     '''
@@ -182,11 +195,18 @@ class Eventos:
 
     @staticmethod
     def validarFiltroTipo():
-        if var.ui.cmbFiltroTipoProp.currentText() not in conexion.Conexion.listaTipoPropiedad():
-            var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
+        if var.conexionMode:
+            if var.ui.cmbFiltroTipoProp.currentText() not in conexion.Conexion.listaTipoPropiedad():
+                var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
 
-        if var.ui.cmbFiltroMuniProp.currentText() not in conexion.Conexion.listAllMuni():
-            var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
+            if var.ui.cmbFiltroMuniProp.currentText() not in conexion.Conexion.listAllMuni():
+                var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
+        else:
+            if var.ui.cmbFiltroTipoProp.currentText() not in conexionserver.ConexionServer.listaTipoPropiedad():
+                var.ui.cmbFiltroTipoProp.lineEdit().setText("---")
+
+            if var.ui.cmbFiltroMuniProp.currentText() not in conexionserver.ConexionServer.listAllMuni():
+                var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
 
     '''                                                                                                                                                                                                                   
         BACKUP
@@ -238,7 +258,11 @@ class Eventos:
                 mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
 
                 mbox.exec()
-                conexion.Conexion.db_conexion(self)
+                if var.conexionMode:
+                    conexion.Conexion.db_conexion(self)
+                else:
+                    conexionserver.ConexionServer.crear_conexion(self)
+
                 eventos.Eventos.cargarProvincias(self,1)
                 clientes.Clientes.cargaTablaCientes(self)
 
@@ -344,6 +368,25 @@ class Eventos:
         except Exception as e:
             print("Error en abrir  ventana tipo prop ", e)
 
+    @staticmethod
+    def alertMaker(tipo,titulo,mensaje):
+
+        mbox = QtWidgets.QMessageBox()
+        mbox.setWindowIcon(QIcon('./img/house.svg'))
+        if tipo == "Information":
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        elif tipo == "Critical":
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+
+        mbox.setWindowTitle(titulo)
+        mbox.setText(mensaje)
+        mbox.setStandardButtons(
+            QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+        mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+
+        mbox.exec()
+
     '''
     EXPORTAR
     '''
@@ -355,7 +398,11 @@ class Eventos:
             file = (str(fecha) + '_DatosPropiedades.csv')
             directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en CSV", file, ".csv")
             if fichero:
-                registros = conexion.Conexion.listadoAllPropiedades(self)
+                if var.conexionMode:
+                    registros = conexion.Conexion.listadoAllPropiedades(self)
+                #else:
+                    #⭕registros = conexionserver.ConexionServer
+
                 with open(fichero, 'w', newline='', encoding='utf-8') as csvfile:
                     writer = csv.writer(csvfile)
                     writer.writerow(
@@ -390,7 +437,10 @@ class Eventos:
             directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en JSON", file, ".json")
             if fichero:
                 # Fetch all property records
-                registros = conexion.Conexion.listadoAllPropiedades(self)
+                if var.conexionMode:
+                    registros = conexion.Conexion.listadoAllPropiedades(self)
+                #else:
+                    #⭕registros = conexionserver.ConexionServer
 
                 # Prepare data for JSON (list of dictionaries)
                 keys = ["Codigo", "Alta", "Baja", "Direccion", "Provincia", "Municipio","Codigo_Postal", "Tipo", "N_Habitaciones",
