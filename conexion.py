@@ -170,25 +170,30 @@ class Conexion:
                           " movilcli = :movilcli, direcli = :direcli, provcli = :provcli, municli = :municli, bajacli = :bajacli "
                           " WHERE dnicli = :dni")
 
-            query.bindValue(":dni", None if not(str(registro[0]))else str(registro[0]))
-            query.bindValue(":altacli", None if not (str(registro[1])) else str(registro[1]))
-            query.bindValue(":apecli", None if not (str(registro[2])) else str(registro[2]))
-            query.bindValue(":nomecli", None if not (str(registro[3])) else str(registro[3]))
+            query.bindValue(":dni", None if not str(registro[0]) else str(registro[0]))
+            query.bindValue(":altacli", None if not str(registro[1]) else str(registro[1]))
+            query.bindValue(":apecli", None if not str(registro[2]) else str(registro[2]))
+            query.bindValue(":nomecli", None if not str(registro[3]) else str(registro[3]))
             query.bindValue(":emailcli", None if not str(registro[4]) else str(registro[4]))
-            query.bindValue(":movilcli", None if not (str(registro[5])) else str(registro[5]))
-            query.bindValue(":direcli", None if not (str(registro[6])) else str(registro[6]))
-            query.bindValue(":provcli", None if not (str(registro[7])) else str(registro[7]))
-            query.bindValue(":municli", None if not (str(registro[8])) else str(registro[8]))
-            query.bindValue(":bajacli", None if not (str(registro[9])) else str(registro[9]))
+            query.bindValue(":movilcli", None if not str(registro[5]) else str(registro[5]))
+            query.bindValue(":direcli", None if not str(registro[6]) else str(registro[6]))
+            query.bindValue(":provcli", None if not str(registro[7]) else str(registro[7]))
+            query.bindValue(":municli", None if not str(registro[8]) else str(registro[8]))
+            query.bindValue(":bajacli", None if not str(registro[9]) else str(registro[9]))
 
 
-            if query.exec() and query.numRowsAffected()>0:
-                print(query.numRowsAffected())
-                return True
+            if query.exec():
+                if query.numRowsAffected()>0:
+                    print(query.numRowsAffected())
+                    return True
+                else:
+                    print("Query executed but no rows affected")
+                    return True
             else:
+                print("Error executing query:", query.lastError().text())
                 return False
         except Exception as e:
-            print("Fallo cargando modificacion en la bd:" + e)
+            print("Fallo cargando modificacion en la bd:" + str(e))
 
     def bajaCliente(datos):
         try:
@@ -196,7 +201,7 @@ class Conexion:
             query = QtSql.QSqlQuery()
             query.prepare("UPDATE clientes SET bajacli =:bajacli WHERE dnicli = :dni")
             query.bindValue(":dni", str(datos[0]).strip())
-            query.bindValue(":bajacli", str(datos[1]))
+            query.bindValue(":bajacli", None if not str(datos[1]) else str(datos[1]))
 
             if query.exec() and query.numRowsAffected()>0:
                 return True
@@ -261,7 +266,7 @@ class Conexion:
             query = QtSql.QSqlQuery()
             query.prepare("Insert into propiedades (altaprop, bajaprop, dirprop, provprop, muniprop, cpprop,"
                           "tipoprop, habprop, banprop, superprop, prealquiprop, prevenprop,"
-                          "obserprop, tipooperprop, estadoprop, nomeprop, movilprop) VALUES "
+                          "obserprop, nomeprop, movilprop, tipooperprop, estadoprop) VALUES "
                           "(:altaprop, :bajaprop, :dirprop, :provprop, :muniprop, :cpprop,"
                           ":tipoprop, :habprop, :banprop, :superprop, :prealquiprop, :prevenprop,"
                           ":obserprop, :tipooperprop, :estadoprop, :nomeprop, :movilprop)")
@@ -279,10 +284,11 @@ class Conexion:
             query.bindValue(":prealquiprop", None if not str(propiedad[10]) else str(propiedad[10]))
             query.bindValue(":prevenprop", None if not str(propiedad[11]) else str(propiedad[11]))
             query.bindValue(":obserprop", None if not str(propiedad[12]) else str(propiedad[12]))
-            query.bindValue(":tipooperprop", None if not str(propiedad[13]) else str(propiedad[13]))
-            query.bindValue(":estadoprop", None if not str(propiedad[14]) else str(propiedad[14]))
-            query.bindValue(":nomeprop", None if not str(propiedad[15]) else str(propiedad[15]))
-            query.bindValue(":movilprop", None if not str(propiedad[16]) else str(propiedad[16]))
+            query.bindValue(":nomeprop", None if not str(propiedad[13]) else str(propiedad[15]))
+            query.bindValue(":movilprop", None if not str(propiedad[14]) else str(propiedad[16]))
+            query.bindValue(":tipooperprop", None if not str(propiedad[15]) else str(propiedad[13]))
+            query.bindValue(":estadoprop", None if not str(propiedad[16]) else str(propiedad[14]))
+
 
             if query.exec():
                 print("Propiedad añadida")
@@ -444,8 +450,8 @@ class Conexion:
             query.prepare("UPDATE propiedades SET altaprop=:altaprop, bajaprop=:bajaprop, dirprop=:dirprop, provprop=:provprop"
                           ", muniprop=:muniprop, cpprop=:cpprop,tipoprop=:tipoprop, habprop=:habprop,"
                           " banprop=:banprop, superprop=:superprop, prealquiprop=:prealquiprop, prevenprop=:prevenprop,"
-                          "obserprop=:obserprop, tipooperprop=:tipooperprop, estadoprop=:estadoprop, nomeprop=:nomeprop,"
-                          "movilprop=:movilprop WHERE codigo = :codigoProp")
+                          "obserprop=:obserprop, nomeprop=:nomeprop, movilprop=:movilprop,"
+                          " tipooperprop=:tipooperprop, estadoprop=:estadoprop WHERE codigo = :codigoProp")
 
             query.bindValue(":codigoProp", str(registro[0]))
             registro=registro[1:]
@@ -462,10 +468,10 @@ class Conexion:
             query.bindValue(":prealquiprop", None if not str(registro[10]) else str(registro[10]))
             query.bindValue(":prevenprop", None if not str(registro[11]) else str(registro[11]))
             query.bindValue(":obserprop", None if not str(registro[12]) else str(registro[12]))
-            query.bindValue(":tipooperprop", None if not str(registro[13]) else str(registro[13]))
-            query.bindValue(":estadoprop", None if not str(registro[14]) else str(registro[14]))
-            query.bindValue(":nomeprop", None if not str(registro[15]) else str(registro[15]))
-            query.bindValue(":movilprop", None if not str(registro[16]) else str(registro[16]))
+            query.bindValue(":nomeprop", None if not str(registro[13]) else str(registro[13]))
+            query.bindValue(":movilprop", None if not str(registro[14]) else str(registro[14]))
+            query.bindValue(":tipooperprop", None if not str(registro[15]) else str(registro[15]))
+            query.bindValue(":estadoprop", None if not str(registro[16]) else str(registro[16]))
 
             if query.exec() and query.numRowsAffected()>0:
                 print(query.numRowsAffected())

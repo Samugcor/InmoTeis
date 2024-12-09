@@ -10,3 +10,5 @@ global btn
 global dlggestion
 global dlgabout
 global conexionMode
+global npaginacli
+global npaginapro

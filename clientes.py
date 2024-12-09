@@ -9,6 +9,7 @@ import conexionserver
 import eventos
 import var
 
+
 class Clientes:
     def checkDNI(dni):
         try:
@@ -30,6 +31,10 @@ class Clientes:
             nuevoCli =[var.ui.txtDniCliente.text(),var.ui.txtAltaCliente.text(),var.ui.txtApellidosCliente.text(),
                     var.ui.txtNombreCliente.text(),var.ui.txtEmailCliente.text(),var.ui.txtMovilCliente.text(),var.ui.txtDirecionCliente.text(),
                     var.ui.cmbProvCli.currentText(),var.ui.cmbMunicipioCli.currentText(), var.ui.txtBajaCliente.text()]
+            if nuevoCli[-1]:
+                eventos.Eventos.alertMaker("Critical", "Aviso",
+                                           "No se puede dar de alta un cliente dado de baja")
+                return False
         else:
             nuevoCli = [var.ui.txtDniCliente.text(), var.ui.txtAltaCliente.text(), var.ui.txtApellidosCliente.text(),
                         var.ui.txtNombreCliente.text(), var.ui.txtDirecionCliente.text(), var.ui.txtEmailCliente.text(), var.ui.txtMovilCliente.text(),
@@ -38,7 +43,7 @@ class Clientes:
         if var.conexionMode:
             if conexion.Conexion.altaCliente(nuevoCli):
                 eventos.Eventos.alertMaker("Information","Information","Cliente dado de alta en base de datos")
-                Clientes.cargaTablaCientes(self)
+                Clientes.cargaTablaCientes(self,1)
             else:
                 QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
                                                QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -46,7 +51,7 @@ class Clientes:
             print(nuevoCli)
             if conexionserver.ConexionServer.altaCliente(nuevoCli):
                 eventos.Eventos.alertMaker("Information","Information","Cliente dado de alta en base de datos")
-                Clientes.cargaTablaCientes(self)
+                Clientes.cargaTablaCientes(self,1)
             else:
                 QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta al cliente en la base de datos.',
                                                QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -84,15 +89,49 @@ class Clientes:
         except Exception as error:
             print("Erros checkeando el movil", error)
 
-    def cargaTablaCientes(self):
+
+    def cargaTablaCientes(self,mode):
         try:
+            if mode==1:
+                var.npaginacli=0
+
+            n=10 #numero de registros por pagina (19) max
+
             if var.conexionMode:
                 listado= conexion.Conexion.listadoClientes(self)
             else:
                 listado = conexionserver.ConexionServer.listadoClientes(self)
 
+            '''
+            my_list = [1, 2, 3, 4, 5,
+              6, 7, 8, 9]
+
+            # How many elements each
+            # list should have
+            n = 4 
+            
+            # using list comprehension
+            final = [my_list[i * n:(i + 1) * n] for i in range((len(my_list) + n - 1) // n )] 
+            print (final)
+            '''
+            listas = [listado[i*n:(i+1)*n] for i in range((len(listado) + n -1) // n)]
+
+            #Control botones
+            if var.npaginacli == 0:
+                var.ui.btnAnteriorPagCli.setEnabled(False)
+            else:
+                var.ui.btnAnteriorPagCli.setEnabled(True)
+
+            if var.npaginacli == len(listas)-1:
+                var.ui.btnSiguientePagCli.setEnabled(False)
+            else:
+                var.ui.btnSiguientePagCli.setEnabled(True)
+
+
+            #Asignar valores
+            var.ui.tabClientes.clearContents()
             index=0
-            for registro in listado:
+            for registro in listas[var.npaginacli]:
                 var.ui.tabClientes.setRowCount(index+1)
                 var.ui.tabClientes.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ registro[0] + "  "))#dni
                 var.ui.tabClientes.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[2] + "  "))#apellido
@@ -163,20 +202,25 @@ class Clientes:
                         var.ui.txtDirecionCliente.text(), var.ui.cmbProvCli.currentText(), var.ui.cmbMunicipioCli.currentText(),
                         var.ui.txtBajaCliente.text()]
 
+
+            if not modifCli[0]:
+                eventos.Eventos.alertMaker("Critical", "Aviso","No se ha seleccionado ningún cliente que modificar")
+                return
+            if not eventos.Eventos.validarFechaAlta():
+                return
+
             if var.conexionMode:
                 if conexion.Conexion.modifCliente(modifCli):
                     eventos.Eventos.alertMaker("Information", "Aviso","Datos de cliente modificado")
 
-                    clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self,0)
                 else:
                     eventos.Eventos.alertMaker("Critical", "Aviso","Error al modificar datos de cliente")
             else:
-                print("justo antes de la conexion")
                 if conexionserver.ConexionServer.modifCliente(modifCli):
-                    print("se modifico")
                     eventos.Eventos.alertMaker("Information", "Aviso", "Datos de cliente modificado")
 
-                    clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self,0)
                 else:
                     eventos.Eventos.alertMaker("Critical", "Aviso", "Error al modificar datos de cliente")
 
@@ -185,20 +229,24 @@ class Clientes:
 
     def bajaCliente(self):
         try:
+            if not eventos.Eventos.validarFechaBaja():
+                return
+            print("fecha comprobada")
+
             datos= [var.ui.txtDniCliente.text(),var.ui.txtBajaCliente.text()]
 
             if var.conexionMode:
                 if conexion.Conexion.bajaCliente(datos):
                     eventos.Eventos.alertMaker("Information", "Aviso", "Cliente dado de baja")
 
-                    clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self,1)
                 else:
                     eventos.Eventos.alertMaker("Critical", "Aviso", "Error Baja Cliente: cliente no existe o ya ha sido dado de baja")
             else:
                 if conexionserver.ConexionServer.bajaCliente(datos):
                     eventos.Eventos.alertMaker("Information", "Aviso", "Cliente dado de baja")
 
-                    clientes.Clientes.cargaTablaCientes(self)
+                    clientes.Clientes.cargaTablaCientes(self,1)
                 else:
                     eventos.Eventos.alertMaker("Critical", "Aviso",
                                                "Error Baja Cliente: cliente no existe o ya ha sido dado de baja")

@@ -101,7 +101,6 @@ class Propiedades():
             else:
                 if conexionserver.ConexionServer.bajaTipoPropiedad(tipo):
                     eventos.Eventos.alertMaker("Information", "Aviso", "Tipo de propiedad" + tipo + "eliminado")
-                    #⭕❓‼️❓⭕❓❓❓‼️‼️❓❓⬇️⭕⭕❓
                     eventos.Eventos.cargarTipoPropiedad(self)
                     eventos.Eventos.cargarFiltros(self)
                     var.dlggestion.ui.txtGestTipoProp.setText('')
@@ -153,7 +152,7 @@ class Propiedades():
 
                 mbox.exec()
 
-                Propiedades.cargaTablaPropiedades(self)
+                Propiedades.cargaTablaPropiedades(self,1)
             else:
                 QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo dar de alta a la propiedad en la base de datos.',
                                                QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -162,12 +161,13 @@ class Propiedades():
         except Exception as e:
             print("Error en altaPropiedad (propiedades.py)",e)
 
-    def cargaTablaPropiedades(self):
+    def cargaTablaPropiedades(self,mode):
         try:
+            if mode == 1:
+                var.npaginapro = 0
+            n = 10  # numero de registros por pagina (19) max
 
             listado = []
-            #print("Parametro tipo propiedad: "+str(var.ui.cmbFiltroTipoProp.currentText()))
-            #print("Parametro municipio: "+str(var.ui.cmbFiltroMuniProp.currentText()))
             if var.ui.cmbFiltroTipoProp.currentText() != "---" and var.ui.cmbFiltroMuniProp.currentText() != "---":
                 #print("Filtros de busqueda ambos")
                 listado = conexion.Conexion.listaPropiedadesByTipoMuni(self, var.ui.cmbFiltroTipoProp.currentText(),
@@ -182,23 +182,37 @@ class Propiedades():
                 #print("No filtros de busqueda")
                 listado = conexion.Conexion.listadoPropiedades(self)
 
+            #Dividir la lista en sublistas
+            listas = [listado[i*n:(i+1)*n] for i in range((len(listado) + n -1) // n)]
 
+            #Activar y desactivar botones
+            if var.npaginapro == 0:
+                var.ui.btnAnteriorPagProp.setEnabled(False)
+            else:
+                var.ui.btnAnteriorPagProp.setEnabled(True)
+
+            if var.npaginapro == len(listas)-1:
+                var.ui.btnSiguientePagProp.setEnabled(False)
+            else:
+                var.ui.btnSiguientePagProp.setEnabled(True)
+
+            #Asignar valores
             var.ui.tabPropiedades.clearContents()
             index=0
-            for registro in listado:
+            for registro in listas[var.npaginapro]:
                 #print(registro)
                 precioAlquiler="-" if not registro[11] else str(registro[11])
                 precioVenta = "-" if not registro[12] else str(registro[12])
                 var.ui.tabPropiedades.setRowCount(index+1)
-                var.ui.tabPropiedades.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ str(registro[0]) + "  "))
-                var.ui.tabPropiedades.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[5] + "  "))
-                var.ui.tabPropiedades.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))
-                var.ui.tabPropiedades.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ str(registro[8])+ "   "))
-                var.ui.tabPropiedades.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ str(registro[9])+ "  "))
-                var.ui.tabPropiedades.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ precioAlquiler + " €  "))
-                var.ui.tabPropiedades.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ precioVenta + " €  "))
-                var.ui.tabPropiedades.setItem(index, 7, QtWidgets.QTableWidgetItem("  " + registro[14] + "  "))
-                var.ui.tabPropiedades.setItem(index, 8, QtWidgets.QTableWidgetItem("  " + registro[2] + "  "))
+                var.ui.tabPropiedades.setItem(index, 0, QtWidgets.QTableWidgetItem("  "+ str(registro[0]) + "  "))#columna codigo
+                var.ui.tabPropiedades.setItem(index, 1, QtWidgets.QTableWidgetItem("  "+ registro[5] + "  "))# clumna municipio
+                var.ui.tabPropiedades.setItem(index, 2, QtWidgets.QTableWidgetItem("  "+ registro[7]+ "  "))# clumna tipo prop
+                var.ui.tabPropiedades.setItem(index, 3, QtWidgets.QTableWidgetItem("   "+ str(registro[8])+ "   "))# clumna habita
+                var.ui.tabPropiedades.setItem(index, 4, QtWidgets.QTableWidgetItem("  "+ str(registro[9])+ "  "))# clumna baños
+                var.ui.tabPropiedades.setItem(index, 5, QtWidgets.QTableWidgetItem("  "+ precioAlquiler + " €  "))# clumna precio alquiler
+                var.ui.tabPropiedades.setItem(index, 6, QtWidgets.QTableWidgetItem("  "+ precioVenta + " €  "))# clumna precio venta
+                var.ui.tabPropiedades.setItem(index, 7, QtWidgets.QTableWidgetItem("  " + registro[16] + "  "))# clumna tipo operacion
+                var.ui.tabPropiedades.setItem(index, 8, QtWidgets.QTableWidgetItem("  " + registro[2] + "  "))# clumna fecha de baja
 
                 var.ui.tabPropiedades.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 var.ui.tabPropiedades.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
@@ -227,35 +241,47 @@ class Propiedades():
 
             registro=conexion.Conexion.datosOnePropiedad(str(datos[0]))
 
+            datosTexto=registro[:16]
+            datosCheck=registro[16:]
+
             listado= [var.ui.lblCodigoPropText, var.ui.txtAltaProp, var.ui.txtBajaProp, var.ui.txtDirecionProp,
                          var.ui.cmbProvProp, var.ui.cmbMunicipioProp, var.ui.txtCpProp,
                          var.ui.cmbTipoProp, var.ui.spinHabitaciones, var.ui.spinBanios,
                          var.ui.txtSuperficie, var.ui.txtPrecioAlquilerProp, var.ui.txtPrecioVentaProp,
-                         var.ui.areatxtObservacionesProp,"placeholder","placeholder", var.ui.txtPropietarioProp, var.ui.txtMovilProp]
+                         var.ui.areatxtObservacionesProp, var.ui.txtPropietarioProp, var.ui.txtMovilProp]
 
 
 
-            for i in range(len(registro)):
-                if i in (4,5,7):
+            for i in range(len(datosTexto)):
+                if isinstance(listado[i], QtWidgets.QComboBox):
                     listado[i].setCurrentText(registro[i])
-                elif i in (8,9):
+                elif isinstance(listado[i], QtWidgets.QSpinBox):
                     listado[i].setValue(int(registro[i]))
-                elif i == 14:
-                    if "Alquiler" in registro[i]:
-                        var.ui.chkAlquiler.setChecked(True)
-                    if "Venta" in registro[i]:
-                        var.ui.chkVenta.setChecked(True)
-                    if "Intercambio" in registro[i]:
-                        var.ui.chkIntercambio.setChecked(True)
-                elif i == 15:
-                    if "Alquilado" in registro[i]:
-                        var.ui.rbtAlquilado.setChecked(True)
-                    elif "Vendido" in registro[i]:
-                        var.ui.rbtVendido.setChecked(True)
-                    elif "Disponible" in registro[i]:
-                        var.ui.rbtDisponible.setChecked(True)
                 else:
                     listado[i].setText(registro[i])
+
+
+            if "Alquiler" in datosCheck[0]:
+                var.ui.chkAlquiler.setChecked(True)
+            else:
+                var.ui.chkAlquiler.setChecked(False)
+
+            if "Venta" in datosCheck[0]:
+                var.ui.chkVenta.setChecked(True)
+            else:
+                var.ui.chkVenta.setChecked(False)
+
+            if "Intercambio" in datosCheck[0]:
+                var.ui.chkIntercambio.setChecked(True)
+            else:
+                var.ui.chkIntercambio.setChecked(False)
+
+            if "Alquilado" in datosCheck[1]:
+                var.ui.rbtAlquilado.setChecked(True)
+            elif "Vendido" in datosCheck[1]:
+                var.ui.rbtVendido.setChecked(True)
+            elif "Disponible" in datosCheck[1]:
+                var.ui.rbtDisponible.setChecked(True)
 
         except Exception as error:
             print("Error cargando datos de propiedad (propiedades.py)", error)
@@ -297,7 +323,7 @@ class Propiedades():
 
                 mbox.exec()
 
-                propiedades.Propiedades.cargaTablaPropiedades(self)
+                propiedades.Propiedades.cargaTablaPropiedades(self,0)
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowIcon(QIcon('./img/house.svg'))
@@ -331,7 +357,7 @@ class Propiedades():
 
                 mbox.exec()
 
-                propiedades.Propiedades.cargaTablaPropiedades(self)
+                propiedades.Propiedades.cargaTablaPropiedades(self,1)
             else:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowIcon(QIcon('./img/house.svg'))

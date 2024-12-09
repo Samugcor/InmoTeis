@@ -29,15 +29,15 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 
 ## 07/11/2024
 
-- Al dar de alta una propiedad o cliente el campo de fecha baja debe de estar vacio // No de acuerdo con esto.
-- al dar de baja o alta las fechas tienen que tener sentido
+- ✅Al dar de alta una propiedad o cliente el campo de fecha baja debe de estar vacio // No de acuerdo con esto.
+- ✅al dar de baja o alta las fechas tienen que tener sentido
 - ✅En la tabla de propiedades precio venta y alquiler aparecen en el orden inverso
 
 ~~- Cambia las comprobaciones de las cargas para que no vayan segun indice, si no por tipo de qt ( si es una combobox que es con current text que la localice por ser del tipo combo box y no por ser el indice 14)~~
 - ✅Ponle color a la tab seleccionada
 
 ## 13/11/24
-- Comprueba que las fechas tengan formato valido, que el cliente no meta texto
+- ✅Comprueba que las fechas tengan formato valido, que el cliente no meta texto
 - ✅ opcion exportar datos, exportar datos clientes json o csv. En herramientas>exportar datos> exportar clientes JSON, exportar clientes CSV*
 - Añadir atajos de teclado a las opciones de exportar backup y estas cosas. ctr+B (crear backup)
 
@@ -53,11 +53,15 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 - ✅En la pestaña de clientes añade un boton de lupa al lado del dni, cuando el usuario introduce un dni y le da a buscar cargará todos los datos del cliente en la oarte de arriba. Si el cliente no existe te sale un dialog de que no existe.
 
 ## 25/11/2024
-- Estamos haciendo que ta,bien funcione (solo la parte de clientes ) con la bd del servidor del profesor.
+- 🛑Estamos haciendo que ta,bien funcione (solo la parte de clientes ) con la bd del servidor del profesor.
 - Cambia el color del registro seleccionado en la tabla por algo más llamativo
 
 ## 27/11/2024
-- Si te apetece y te sobra el tiempo carga la tabla con paginaciones :) que muestre de 15 en 15 registros o asi
+- ✅Si te apetece y te sobra el tiempo carga la tabla con paginaciones :) que muestre de 15 en 15 registros o asi
 
 ## 02/12/2024
-- Cuando limpias que se deseleccione el registro de la tabla (si había uno seleccionado)
+- ✅Cuando limpias que se deseleccione el registro de la tabla (si había uno seleccionado)
+
+## 03/12/2024
+-✅Hay problemas con la validacion de los nulls al modificar y dar de alta creo
+

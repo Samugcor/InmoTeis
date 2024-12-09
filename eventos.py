@@ -9,9 +9,10 @@ import sys
 import time
 import re
 from datetime import datetime
+from xmlrpc.client import DateTime
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QCompleter
+from PyQt6.QtWidgets import QCompleter, QApplication
 
 import clientes
 import conexion
@@ -208,6 +209,59 @@ class Eventos:
             if var.ui.cmbFiltroMuniProp.currentText() not in conexionserver.ConexionServer.listAllMuni():
                 var.ui.cmbFiltroMuniProp.lineEdit().setText("---")
 
+    @staticmethod
+    def validarFechaAlta():
+        try:
+            fechaAlta = datetime.strptime(var.ui.txtAltaCliente.text(), '%d/%m/%Y')
+
+
+            if var.ui.txtBajaCliente.text():
+                try:
+                    fechaBaja = datetime.strptime(var.ui.txtBajaCliente.text(), '%d/%m/%Y')
+                    if fechaAlta <= fechaBaja:
+                        return True
+                    else:
+                        eventos.Eventos.alertMaker("Critical", "Aviso",
+                                                   "La fecha de alta no puede ser posterior a la de baja")
+                        return False
+                except Exception as error:
+                    print("error en convirtiendo fecha baja", error)
+            else:
+                return True
+        except Exception as error:
+            print("error en convirtiendo fecha alta", error)
+
+    @staticmethod
+    def validarFechaBaja():
+        try:
+            fechaAlta = datetime.strptime(var.ui.txtAltaCliente.text(), '%d/%m/%Y')
+            print(type(fechaAlta))
+            print(fechaAlta)
+        except Exception as error:
+            print("error en convirtiendo fecha alta", error)
+
+        if var.ui.txtBajaCliente.text():
+            try:
+                fechaBaja = datetime.strptime(var.ui.txtBajaCliente.text(), '%d/%m/%Y')
+                print(type(fechaBaja))
+                print(fechaBaja)
+            except Exception as error:
+                print("error en convirtiendo fecha baja", error)
+                eventos.Eventos.alertMaker("Critical", "Aviso",
+                                           "El formato de la fecha de baja no es valido")
+                return False
+
+            if fechaAlta < fechaBaja:
+                return True
+            else:
+                eventos.Eventos.alertMaker("Critical", "Aviso",
+                                           "La fecha de baja no puede ser anterior a la fecha de alta")
+                return False
+        else:
+            eventos.Eventos.alertMaker("Critical", "Aviso",
+                                       "Para dar de baja a un cliente debe introducir una fecha de baja")
+            return False
+
     '''                                                                                                                                                                                                                   
         BACKUP
     '''
@@ -264,7 +318,7 @@ class Eventos:
                     conexionserver.ConexionServer.crear_conexion(self)
 
                 eventos.Eventos.cargarProvincias(self,1)
-                clientes.Clientes.cargaTablaCientes(self)
+                clientes.Clientes.cargaTablaCientes(self,1)
 
         except Exception as e:
             print("error en restaurar backup: ", e)
@@ -328,7 +382,8 @@ class Eventos:
                     else:
                         dato.setText("")
 
-                    eventos.Eventos.cargarProvincias(self,1)
+                eventos.Eventos.cargarProvincias(self,1)
+                var.ui.tabClientes.clearSelection()
             else:
                 camposProp = [var.ui.lblCodigoPropText, var.ui.txtAltaProp, var.ui.txtBajaProp, var.ui.txtDirecionProp,
                               var.ui.txtCpProp, var.ui.spinHabitaciones, var.ui.spinBanios,
@@ -351,7 +406,7 @@ class Eventos:
                 var.ui.cmbFiltroTipoProp.setCurrentIndex(0)
                 var.ui.cmbFiltroMuniProp.setCurrentIndex(0)
 
-                propiedades.Propiedades.cargaTablaPropiedades(self)
+                propiedades.Propiedades.cargaTablaPropiedades(self,1)
 
         except Exception as e:
             print("error al limpiar panel (eventos.py): ", e)
@@ -386,6 +441,35 @@ class Eventos:
         mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
 
         mbox.exec()
+
+
+    def pasarPag(self):
+        if QApplication.instance().sender().objectName() == "btnSiguientePagCli":
+            print("btnsiguiente cli")
+            var.npaginacli = var.npaginacli + 1
+            clientes.Clientes.cargaTablaCientes(self,0)
+
+        elif QApplication.instance().sender().objectName() == "btnAnteriorPagCli":
+            print("btnanterior cli")
+            var.npaginacli = var.npaginacli - 1
+            clientes.Clientes.cargaTablaCientes(self,0)
+
+        elif QApplication.instance().sender().objectName() == "btnSiguientePagProp":
+            print("btnsiguiente prop")
+
+            var.npaginapro = var.npaginapro + 1
+            propiedades.Propiedades.cargaTablaPropiedades(self,0)
+
+        elif QApplication.instance().sender().objectName() == "btnAnteriorPagProp":
+            print("btnanterior pro")
+
+            var.npaginapro = var.npaginapro - 1
+            propiedades.Propiedades.cargaTablaPropiedades(self,0)
+
+        else:
+            print("Error en pasar pagina")
+
+
 
     '''
     EXPORTAR
