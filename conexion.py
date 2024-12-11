@@ -1,10 +1,12 @@
 import os
+from datetime import datetime
 from idlelib import query
 
 from PyQt6 import QtSql, QtWidgets
 from PyQt6.QtGui import QIcon
 from PyQt6.uic.properties import QtCore
 
+import eventos
 import var
 
 
@@ -22,8 +24,9 @@ class Conexion:
     def db_conexion(self):
         # Verifica si el archivo de base de datos existe
         if not os.path.isfile('bbdd.sqlite'):
-            QtWidgets.QMessageBox.critical(None, 'Error', 'El archivo de la base de datos no existe.',
-                                           QtWidgets.QMessageBox.StandardButton.Cancel)
+            eventos.Eventos.alertMaker("Critical","Error","El archivo de la base de datos no existe.")
+            #QtWidgets.QMessageBox.critical(None, 'Error', 'El archivo de la base de datos no existe.',
+             #                              QtWidgets.QMessageBox.StandardButton.Cancel)
             return False
         # Crear la conexión con la base de datos SQLite
         db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
@@ -35,16 +38,13 @@ class Conexion:
             query.exec("SELECT name FROM sqlite_master WHERE type='table';")
 
             if not query.next():  # Si no hay tablas
-                QtWidgets.QMessageBox.critical(None, 'Error', 'Base de datos vacía o no válida.',
-                                               QtWidgets.QMessageBox.StandardButton.Cancel)
+                eventos.Eventos.alertMaker("Critical", "Error", "Base de datos vacía o no válida")
                 return False
             else:
-                QtWidgets.QMessageBox.information(None, 'Aviso', 'Conexión Base de Datos realizada',
-                                               QtWidgets.QMessageBox.StandardButton.Ok)
+                eventos.Eventos.alertMaker("Information", "Aviso", "Conexión Base de Datos realizada")
                 return True
         else:
-            QtWidgets.QMessageBox.critical(None, 'Error', 'No se pudo abrir la base de datos.',
-                                           QtWidgets.QMessageBox.StandardButton.Cancel)
+            eventos.Eventos.alertMaker("Critical", "Error", "No se pudo abrir la base de datos")
             return False
 
     @staticmethod
@@ -74,12 +74,13 @@ class Conexion:
     def listAllMuni():
         listamunicipios = []
         query = QtSql.QSqlQuery()
-        query.prepare(
-            "SELECT * FROM municipios")
+        query.prepare("SELECT * FROM municipios")
 
         if query.exec():
             while query.next():
                 listamunicipios.append(query.value(1))
+        else:
+            print("Query execution failed:", query.lastError().text())
         return listamunicipios
 
     def altaCliente(nuevoCli):
@@ -212,7 +213,10 @@ class Conexion:
             print("Error baja cliente bd",e)
 
 
-    '''CONEXIONES PROPIEDADES'''
+    '''
+    CONEXIONES PROPIEDADES
+    
+    '''
     def altaTipoPropiedad(tipoPropiedad):
         try:
 
@@ -496,3 +500,195 @@ class Conexion:
 
         except Exception as e:
             print("Error baja propiedad bd (conexion.py): ",e)
+
+    '''''
+    VENDEDORES
+    '''
+
+    def altaVendedores(nuevoVendedor):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT into vendedores (dniVendedor, nombreVendedor, altaVendedor, bajaVendedor, movilVendedor, emailVendedor, delegacionVendedor)"
+                          " VALUES (:dniVendedor, :nombreVendedor, :altaVendedor, :bajaVendedor, :movilVendedor, :emailVendedor, :delegacionVendedor)")
+
+            query.bindValue(":dniVendedor", None if not str(nuevoVendedor[0]) else str(nuevoVendedor[0]))
+            query.bindValue(":nombreVendedor", None if not str(nuevoVendedor[1]) else str(nuevoVendedor[1]))
+            query.bindValue(":altaVendedor", None if not str(nuevoVendedor[2]) else str(nuevoVendedor[2]))
+            query.bindValue(":bajaVendedor", None if not str(nuevoVendedor[3]) else str(nuevoVendedor[3]))
+            query.bindValue(":movilVendedor", None if not str(nuevoVendedor[4]) else str(nuevoVendedor[4]))
+            query.bindValue(":emailVendedor", None if not str(nuevoVendedor[5]) else str(nuevoVendedor[5]))
+            query.bindValue(":delegacionVendedor", None if not str(nuevoVendedor[6]) else str(nuevoVendedor[6]))
+
+
+            if query.exec():
+                print("Vendedor añadido")
+                return True
+            else:
+                print("Error executing query:", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error alta vendedor (conexion.py)",e)
+
+    def listadoVendedores(self):
+        try:
+            listado=[]
+
+            if var.ui.chkHistoricoVendedores.isChecked():
+                query = QtSql.QSqlQuery()
+                #Where fecha baja = null
+                query.prepare("SELECT * FROM vendedores ORDER BY idVendedor ASC")
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+            else:
+                query = QtSql.QSqlQuery()
+                # Where fecha baja = null
+                query.prepare("SELECT * FROM vendedores WHERE bajaVendedor IS null ORDER BY idVendedor ASC")
+
+                if query.exec():
+                    while query.next():
+                        fila = [query.value(i) for i in range(query.record().count())]
+                        listado.append(fila)
+                return listado
+        except Exception as e:
+            print("Error recuperando el listado de vendedores",e)
+
+    def datosOneVendedor(id):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM vendedores WHERE idVendedor = :idVendedor")
+
+            query.bindValue(":idVendedor",str(id).strip())
+
+            if query.exec():
+                while query.next():
+                   for i in range(query.record().count()):
+                    registro.append(str(query.value(i)))
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de vensedor",e)
+
+    def modifVendedor(registro):
+        try:
+            qq = QtSql.QSqlQuery()
+            qq.prepare("SELECT dniVendedor FROM vendedores WHERE idVendedor = :idVendedor")
+
+            qq.bindValue(":idVendedor", None if not str(registro[0]) else str(registro[0]))
+
+            if qq.exec():
+              dniAntiguo = [qq.value(i) for i in range(qq.record().count())]
+
+            if dniAntiguo != str(registro[1]):
+                print("DNI Cambiado")
+                eventos.Eventos.alertMaker("Critical", "Aviso","No puedes modificar el dni de un vendedor")
+                return
+
+
+            query=QtSql.QSqlQuery()
+            query.prepare("UPDATE vendedores SET nombreVendedor = :nombreVendedor,"
+                          " altaVendedor = :altaVendedor, bajaVendedor = :bajaVendedor, "
+                          "movilVendedor = :movilVendedor, emailVendedor = :emailVendedor,"
+                          " delegacionVendedor = :delegacionVendedor"
+                          " WHERE idVendedor = :idVendedor")
+
+            query.bindValue(":idVendedor", None if not str(registro[0]) else str(registro[0]))
+            query.bindValue(":nombreVendedor", None if not str(registro[2]) else str(registro[2]))
+            query.bindValue(":altaVendedor", None if not str(registro[3]) else str(registro[3]))
+            query.bindValue(":bajaVendedor", None if not str(registro[4]) else str(registro[4]))
+            query.bindValue(":movilVendedor", None if not str(registro[5]) else str(registro[5]))
+            query.bindValue(":emailVendedor", None if not str(registro[6]) else str(registro[6]))
+            query.bindValue(":delegacionVendedor", None if not str(registro[7]) else str(registro[7]))
+
+
+            if query.exec():
+                if query.numRowsAffected()>0:
+                    print(query.numRowsAffected())
+                    return True
+                else:
+                    print("Query executed but no rows affected")
+                    return True
+            else:
+                print("Error executing query (modif vendedor):", query.lastError().text())
+
+                return False
+        except Exception as e:
+            print("Fallo cargando modificacion de vendedor en la bd:" + str(e))
+
+    def bajaVendedor(datos):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE vendedores SET bajaVendedor = :bajaVendedor WHERE idVendedor = :idVendedor")
+            query.bindValue(":idVendedor", str(datos).strip())
+            dia = datetime.now().day
+            mes = datetime.now().month
+            ano = datetime.now().year
+            fecha = str(dia)+"/"+str(mes)+"/"+str(ano)
+            #print(fecha)
+            query.bindValue(":bajaVendedor", fecha)
+
+            if query.exec() and query.numRowsAffected()>0:
+                return True
+            else:
+                print("Error executing query:", query.lastError().text())
+                return False
+
+        except Exception as e:
+            print("Error baja vendedor bd",e)
+
+    def getAllDniVendedores(self):
+        try:
+            dnis=[]
+
+            query = QtSql.QSqlQuery()
+            #Where fecha baja = null
+            query.prepare("SELECT dniVendedor FROM vendedores ORDER BY idVendedor ASC")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    dnis.append(fila[0])
+                #print(dnis)
+            return dnis
+
+        except Exception as e:
+            print("Error recuperando el listado de vendedores",e)
+
+    def datosVendedorByMovil(movil):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM vendedores WHERE movilVendedor = :movilVendedor")
+
+            query.bindValue(":movilVendedor",str(movil).strip())
+
+            if query.exec():
+                while query.next():
+                   for i in range(query.record().count()):
+                    registro.append(str(query.value(i)))
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de vensedor",e)
+
+    def listAllVendedores(self):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM vendedores ")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    registro.append(fila)
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de vensedor",e)

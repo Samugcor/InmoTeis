@@ -3,6 +3,7 @@ from idlelib.help_about import AboutDialog
 
 import conexionserver
 import propiedades
+import vendedor
 from venPrincipal import *
 from venAux import *
 
@@ -38,9 +39,7 @@ class Main(QtWidgets.QMainWindow):
 
         self.setStyleSheet(styles.load_stylesheet())
 
-        propiedades.Propiedades.formPropiedad(self)
-        eventos.Eventos.cargarFiltros(self)
-        var.ui.cmbFiltroTipoProp.setEditable(True)
+
 
         '''Conexiones: cambia var.conexionMode para usar una u otra conexion'''
         if var.conexionMode:
@@ -50,7 +49,9 @@ class Main(QtWidgets.QMainWindow):
             print("Usando ConexionServer, la conexion con la base de datos del servidor")
             conexionserver.ConexionServer.crear_conexion(self)
 
-
+        propiedades.Propiedades.formPropiedad(self)
+        eventos.Eventos.cargarFiltros(self)
+        var.ui.cmbFiltroTipoProp.setEditable(True)
 
         '''
         Eventos formulario
@@ -65,10 +66,16 @@ class Main(QtWidgets.QMainWindow):
         clientes.Clientes.cargaTablaCientes(self,1)
         eventos.Eventos.resizeTablaClientes(self)
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
-        eventos.Eventos.resizeTablaPropiedades(self)
+
 
         propiedades.Propiedades.cargaTablaPropiedades(self,1)
+        eventos.Eventos.resizeTablaPropiedades(self)
         var.ui.tabPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
+
+        vendedor.Vendedor.cargaTablaVendedores(self)
+        eventos.Eventos.resizeTablaVendedores(self)
+        var.ui.tabVendedores.clicked.connect(vendedor.Vendedor.cargaOneVendedor)
+
 
         '''
         Zona de eventos del menubar
@@ -78,6 +85,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionRestaurar_Backup.triggered.connect(eventos.Eventos.restauraraBackup)
         var.ui.actionTipo_propiedades.triggered.connect(eventos.Eventos.abrirTipoProp)
         var.ui.actionExportar_propiedades_JSON.triggered.connect(eventos.Eventos.exportJSONProp)
+        var.ui.actionExportar_vendedores_JSON.triggered.connect(eventos.Eventos.exportJSONVendedores)
         var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
         '''
@@ -102,12 +110,27 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnSiguientePagProp.clicked.connect(eventos.Eventos.pasarPag)
         var.ui.btnAnteriorPagProp.clicked.connect(eventos.Eventos.pasarPag)
 
+        #BOTONES VENDEDORES
+        var.ui.btnGrabarVendedor.clicked.connect(vendedor.Vendedor.altaVendedores)
+        var.ui.btnModificarVendedor.clicked.connect(vendedor.Vendedor.modifVendedor)
+        var.ui.btnEliminarVendedor.clicked.connect(vendedor.Vendedor.bajaVendedor)
+        var.ui.btnAltaVendedor.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3,0))
+        var.ui.btnBuscarVendedor.clicked.connect(vendedor.Vendedor.buscarVendedor)
+
+
+
         '''
         Eventos de cajas de texto
         '''
+        #CLIENTES
         var.ui.txtDniCliente.editingFinished.connect(lambda: clientes.Clientes.checkDNI(var.ui.txtDniCliente.text()))
         var.ui.txtEmailCliente.editingFinished.connect(clientes.Clientes.checkEmail)
         var.ui.txtMovilCliente.editingFinished.connect(clientes.Clientes.checkMovil)
+
+        #VENDEDORES
+        var.ui.txtDniVendedor.editingFinished.connect(lambda: vendedor.Vendedor.checkDNI(var.ui.txtDniCliente.text()))
+        var.ui.txtEmailVendedor.editingFinished.connect(vendedor.Vendedor.checkEmail)
+        var.ui.txtMovilVendedor.editingFinished.connect(vendedor.Vendedor.checkMovil)
 
         '''
         Eventos de los combobox
@@ -128,7 +151,7 @@ class Main(QtWidgets.QMainWindow):
         '''
         var.ui.chkHistoricoCli.stateChanged.connect(lambda: clientes.Clientes.cargaTablaCientes(self,1))
         var.ui.chkHistoricoProp.stateChanged.connect(lambda: propiedades.Propiedades.cargaTablaPropiedades(self,1))
-
+        var.ui.chkHistoricoVendedores.stateChanged.connect(vendedor.Vendedor.cargaTablaVendedores)
         ''''
         Eventos filtros
         '''

@@ -114,6 +114,16 @@ class Clientes:
             final = [my_list[i * n:(i + 1) * n] for i in range((len(my_list) + n - 1) // n )] 
             print (final)
             '''
+            if len(listado) == 0:
+                var.ui.tabClientes.clearContents()
+                var.ui.tabClientes.setRowCount(1)
+                var.ui.tabClientes.setItem(0,0,QtWidgets.QTableWidgetItem("No se encontraron registros"))
+                var.ui.tabClientes.setSpan(0, 0, 1, var.ui.tabClientes.columnCount())  # Span all columns
+                var.ui.tabClientes.item(0, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                return
+            else:
+                var.ui.tabClientes.setSpan(0, 0, 1, 1)  # Span all columns
+
             listas = [listado[i*n:(i+1)*n] for i in range((len(listado) + n -1) // n)]
 
             #Control botones

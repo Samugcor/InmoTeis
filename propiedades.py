@@ -182,6 +182,17 @@ class Propiedades():
                 #print("No filtros de busqueda")
                 listado = conexion.Conexion.listadoPropiedades(self)
 
+            if len(listado) == 0:
+                var.ui.tabPropiedades.clearContents()
+                var.ui.tabPropiedades.setRowCount(1)
+                var.ui.tabPropiedades.setItem(0,0,QtWidgets.QTableWidgetItem("No se encontraron registros"))
+                var.ui.tabPropiedades.setSpan(0, 0, 1, var.ui.tabPropiedades.columnCount())
+                var.ui.tabPropiedades.item(0, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                return
+            else:
+                var.ui.tabPropiedades.setSpan(0, 0, 1, 1)  # Span all columns
+
+
             #Dividir la lista en sublistas
             listas = [listado[i*n:(i+1)*n] for i in range((len(listado) + n -1) // n)]
 

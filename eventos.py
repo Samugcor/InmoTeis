@@ -65,6 +65,9 @@ class Eventos:
 
             var.ui.cmbProvProp.clear()
             var.ui.cmbProvProp.addItems(listado)
+
+            var.ui.cmbProvVendedor.clear()
+            var.ui.cmbProvVendedor.addItems(listado)
         elif modo == 1:
             var.ui.cmbProvCli.clear()
             var.ui.cmbProvCli.addItems(listado)
@@ -75,34 +78,37 @@ class Eventos:
             print("Error carga provincias modo no valido")
 
     def cargarFiltros(self):
-        #Recoge las listas de cada combo box
-        if var.conexionMode:
-            listTipoProp = conexion.Conexion.listaTipoPropiedad()
-            listMuni = conexion.Conexion.listAllMuni()
-        else:
-            listTipoProp = conexionserver.ConexionServer.listaTipoPropiedad()
-            listMuni = conexionserver.ConexionServer.listAllMuni()
+        try:
+            # Recoge las listas de cada combo box
+            if var.conexionMode:
+                listTipoProp = conexion.Conexion.listaTipoPropiedad()
+                listMuni = conexion.Conexion.listAllMuni()
+            else:
+                listTipoProp = conexionserver.ConexionServer.listaTipoPropiedad()
+                listMuni = conexionserver.ConexionServer.listAllMuni()
 
-        #Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
-        var.ui.cmbFiltroTipoProp.clear()
-        listTipoProp.insert(0,"---")
-        var.ui.cmbFiltroTipoProp.addItems(listTipoProp)
+        
+            # Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
+            var.ui.cmbFiltroTipoProp.clear()
+            listTipoProp.insert(0, "---")
+            var.ui.cmbFiltroTipoProp.addItems(listTipoProp)
 
-        completer = QCompleter(listTipoProp, var.ui.cmbFiltroTipoProp)
-        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        completer.setFilterMode(Qt.MatchFlag.MatchContains)
-        var.ui.cmbFiltroTipoProp.setCompleter(completer)
+            completer = QCompleter(listTipoProp, var.ui.cmbFiltroTipoProp)
+            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+            completer.setFilterMode(Qt.MatchFlag.MatchContains)
+            var.ui.cmbFiltroTipoProp.setCompleter(completer)
 
+            # Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
+            var.ui.cmbFiltroMuniProp.clear()
+            listMuni.insert(0, "---")
+            var.ui.cmbFiltroMuniProp.addItems(listMuni)
 
-        # Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
-        var.ui.cmbFiltroMuniProp.clear()
-        listMuni.insert(0,"---")
-        var.ui.cmbFiltroMuniProp.addItems(listMuni)
-
-        completer = QCompleter(listMuni, var.ui.cmbFiltroMuniProp)
-        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        completer.setFilterMode(Qt.MatchFlag.MatchContains)
-        var.ui.cmbFiltroMuniProp.setCompleter(completer)
+            completer = QCompleter(listMuni, var.ui.cmbFiltroMuniProp)
+            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+            completer.setFilterMode(Qt.MatchFlag.MatchContains)
+            var.ui.cmbFiltroMuniProp.setCompleter(completer)
+        except Exception as e:
+            print("Error cargando filtros: ",e)
 
     def cargarMunicipios(self):
         provinciaCli=var.ui.cmbProvCli.currentText()
@@ -134,6 +140,8 @@ class Eventos:
                 var.ui.txtAltaProp.setText(str(data))
             elif var.panel == 1 and var.btn==1:
                 var.ui.txtBajaProp.setText(str(data))
+            elif var.panel ==3 and var.btn == 0:
+                var.ui.txtAltaVendedor.setText(str(data))
             time.sleep(0.2)
             var.uiCalendar.hide()
             return data
@@ -368,6 +376,23 @@ class Eventos:
         except Exception as e:
             print("error en resize tabla propiedades ", e)
 
+    def resizeTablaVendedores(self):
+        try:
+            header=var.ui.tabVendedores.horizontalHeader()
+            for i in range(header.count()):
+                if not 0:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                header_items =var.ui.tabVendedores.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla clientes ", e)
+
     def limpiarPanel(self):
         try:
             if var.ui.panPrincipal.currentIndex()==0:
@@ -439,29 +464,25 @@ class Eventos:
             QtWidgets.QMessageBox.StandardButton.Ok)
         mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
         mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
-
+        mbox.setModal(True)
         mbox.exec()
 
 
     def pasarPag(self):
         if QApplication.instance().sender().objectName() == "btnSiguientePagCli":
-            print("btnsiguiente cli")
             var.npaginacli = var.npaginacli + 1
             clientes.Clientes.cargaTablaCientes(self,0)
 
         elif QApplication.instance().sender().objectName() == "btnAnteriorPagCli":
-            print("btnanterior cli")
             var.npaginacli = var.npaginacli - 1
             clientes.Clientes.cargaTablaCientes(self,0)
 
         elif QApplication.instance().sender().objectName() == "btnSiguientePagProp":
-            print("btnsiguiente prop")
 
             var.npaginapro = var.npaginapro + 1
             propiedades.Propiedades.cargaTablaPropiedades(self,0)
 
         elif QApplication.instance().sender().objectName() == "btnAnteriorPagProp":
-            print("btnanterior pro")
 
             var.npaginapro = var.npaginapro - 1
             propiedades.Propiedades.cargaTablaPropiedades(self,0)
@@ -552,3 +573,42 @@ class Eventos:
 
         except Exception as e:
             print("Error al intentar exportar a JSON en Eventos exportJSONProp ", e)
+
+    def exportJSONVendedores(self):
+        try:
+            # Generate timestamped filename
+            fecha = datetime.today()
+            fecha = fecha.strftime('%Y_%m_%d_%H_%M_%S')
+            file = (str(fecha) + '_DatosVendedores.json')
+
+            # Open a save file dialog
+            directorio, fichero = var.dlgabrir.getSaveFileName(None, "Exporta Datos en JSON", file, ".json")
+            if fichero:
+                # Fetch all property records
+                registros = conexion.Conexion.listAllVendedores(self)
+                print(registros)
+
+                # Prepare data for JSON (list of dictionaries)
+                keys = ["idVendedor", "dniVendedor", "nombreVendedor", "altaVendedor", "bajaVendedor", "movilVendedor", "emailVendedor", "delegacionVendedor"]
+                json_data = [dict(zip(keys, registro)) for registro in registros]
+
+                # Write to JSON file
+                with open(fichero, 'w', encoding='utf-8') as jsonfile:
+                    json.dump(json_data, jsonfile, ensure_ascii=False, indent=4)
+
+                # Move file to chosen directory
+                shutil.move(fichero, directorio)
+            else:
+                # Handle case where no file was selected
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                mbox.setWindowTitle("Error")
+                mbox.setText("Error Exportación de Datos vendedores.")
+                mbox.setStandardButtons(
+                    QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.button(QtWidgets.QMessageBox.StandardButton.Ok).setText('Aceptar')
+                mbox.exec()
+
+        except Exception as e:
+            print("Error al intentar exportar a JSON en Eventos exportJSONVendedores ", e)
