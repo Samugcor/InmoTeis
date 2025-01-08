@@ -12,3 +12,4 @@ global dlgabout
 global conexionMode
 global npaginacli
 global npaginapro
+global report

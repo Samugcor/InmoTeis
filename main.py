@@ -4,6 +4,7 @@ from idlelib.help_about import AboutDialog
 import conexionserver
 import propiedades
 import vendedor
+from ficheros import Informes
 from venPrincipal import *
 from venAux import *
 
@@ -11,6 +12,7 @@ import clientes
 import conexion
 import eventos
 import styles
+import ficheros
 
 import sys
 import var
@@ -88,6 +90,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionExportar_vendedores_JSON.triggered.connect(eventos.Eventos.exportJSONVendedores)
         var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
+        var.ui.actionListado_Clientes.triggered.connect(ficheros.Informes.reportClientes)
         '''
         Eventos de botones
         '''

@@ -578,15 +578,18 @@ class Conexion:
     def modifVendedor(registro):
         try:
             qq = QtSql.QSqlQuery()
-            qq.prepare("SELECT dniVendedor FROM vendedores WHERE idVendedor = :idVendedor")
+            qq.prepare("SELECT * FROM vendedores WHERE idVendedor = :idVendedor")
 
-            qq.bindValue(":idVendedor", None if not str(registro[0]) else str(registro[0]))
+            qq.bindValue(":idVendedor", registro[0])
 
             if qq.exec():
-              dniAntiguo = [qq.value(i) for i in range(qq.record().count())]
+                if qq.next():
+                    dniAntiguo = qq.value(1)
+            else:
+                print("SQL Error:", qq.lastError().text())
 
             if dniAntiguo != str(registro[1]):
-                print("DNI Cambiado")
+                print("DNI Cambiado",str(registro[1]))
                 eventos.Eventos.alertMaker("Critical", "Aviso","No puedes modificar el dni de un vendedor")
                 return
 
@@ -609,7 +612,7 @@ class Conexion:
 
             if query.exec():
                 if query.numRowsAffected()>0:
-                    print(query.numRowsAffected())
+                    print('Rows affected: ',query.numRowsAffected())
                     return True
                 else:
                     print("Query executed but no rows affected")

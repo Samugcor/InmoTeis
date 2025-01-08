@@ -65,3 +65,6 @@ La version propuesta por el profesor tiene el boton en la herramienta de tareas 
 ## 03/12/2024
 -✅Hay problemas con la validacion de los nulls al modificar y dar de alta creo
 
+## 16/12/2024
+- Utiliza la nueva libreria para pasar las imagenes a python, comando pysid6-rec img-rec.py -o img.rcc (o algo así)
+recureda importar las imagenes
