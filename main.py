@@ -1,10 +1,12 @@
 from calendar import Calendar
 from idlelib.help_about import AboutDialog
 
+import alquileres
 import conexionserver
 import propiedades
 import vendedor
-from ficheros import Informes
+import ventas
+from informes import Informes
 from venPrincipal import *
 from venAux import *
 
@@ -12,7 +14,7 @@ import clientes
 import conexion
 import eventos
 import styles
-import ficheros
+import informes
 
 import sys
 import var
@@ -32,12 +34,19 @@ class Main(QtWidgets.QMainWindow):
         var.dlgabrir = FileDialogAbrir()
         var.dlggestion = DlgGestionProp()
         var.dlgabout = DlgAbout()
+        var.dlginformeprop = DlgInformeProp()
+        var.dlgselectvendedor = DlgSeleccionarVendedor()
         var.conexionMode = True
 
 
         var.ui.rgEstado.setId(var.ui.rbtAlquilado, 1)
         var.ui.rgEstado.setId(var.ui.rbtVendido, 2)
         var.ui.rgEstado.setId(var.ui.rbtDisponible, 3)
+
+        var.ui.tabClientes.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        var.ui.tabPropiedades.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+        var.ui.btn_GuardarFactura.setEnabled(False)
 
         self.setStyleSheet(styles.load_stylesheet())
 
@@ -66,17 +75,30 @@ class Main(QtWidgets.QMainWindow):
         Eventos de Tablas
         '''
         clientes.Clientes.cargaTablaCientes(self,1)
+        var.ui.tabClientes.customContextMenuRequested.connect(eventos.Eventos.showContextMenuClientes)
         eventos.Eventos.resizeTablaClientes(self)
         var.ui.tabClientes.clicked.connect(clientes.Clientes.cargaOneCliente)
 
 
         propiedades.Propiedades.cargaTablaPropiedades(self,1)
+        var.ui.tabPropiedades.customContextMenuRequested.connect(eventos.Eventos.showContextMenuPropiedades)
         eventos.Eventos.resizeTablaPropiedades(self)
         var.ui.tabPropiedades.clicked.connect(propiedades.Propiedades.cargaOnePropiedad)
 
         vendedor.Vendedor.cargaTablaVendedores(self)
         eventos.Eventos.resizeTablaVendedores(self)
         var.ui.tabVendedores.clicked.connect(vendedor.Vendedor.cargaOneVendedor)
+
+        ventas.Ventas.cargarTablaFacturas()
+        eventos.Eventos.resizeTablaFacturas(self)
+        var.ui.tbl_facturas.clicked.connect(ventas.Ventas.cargarOneFactura)
+
+
+        eventos.Eventos.resizeTablaVentas(self)
+
+        eventos.Eventos.resizeTablaContratos(self)
+        alquileres.Alquileres.cargarTablaContratos()
+        var.ui.tbl_contratos.clicked.connect(alquileres.Alquileres.cargarOneContrato)
 
 
         '''
@@ -90,7 +112,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionExportar_vendedores_JSON.triggered.connect(eventos.Eventos.exportJSONVendedores)
         var.ui.actionExportar_propiedades_CSV.triggered.connect(eventos.Eventos.exportCSVProp)
         var.ui.actionAbout.triggered.connect(eventos.Eventos.abrirAbout)
-        var.ui.actionListado_Clientes.triggered.connect(ficheros.Informes.reportClientes)
+        var.ui.actionListado_Clientes.triggered.connect(informes.Informes.reportClientes)
+        var.ui.actionListado_Propiedades.triggered.connect(eventos.Eventos.abrirInformeProp)
         '''
         Eventos de botones
         '''
@@ -117,9 +140,13 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnGrabarVendedor.clicked.connect(vendedor.Vendedor.altaVendedores)
         var.ui.btnModificarVendedor.clicked.connect(vendedor.Vendedor.modifVendedor)
         var.ui.btnEliminarVendedor.clicked.connect(vendedor.Vendedor.bajaVendedor)
-        var.ui.btnAltaVendedor.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3,0))
+        var.ui.btnAltaVendedor.clicked.connect(lambda: eventos.Eventos.abrirCalendar(2,0))
         var.ui.btnBuscarVendedor.clicked.connect(vendedor.Vendedor.buscarVendedor)
 
+        #BOTONES VENTAS
+        var.ui.btn_FechaFactura.clicked.connect(lambda: eventos.Eventos.abrirCalendar(3,0))
+        var.ui.btn_GuardarFactura.clicked.connect(ventas.Ventas.guardarFactura)
+        var.ui.btn_aniadirafactura.clicked.connect(ventas.Ventas.guardarVenta)
 
 
         '''

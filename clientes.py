@@ -1,7 +1,9 @@
 from tabnanny import check
 
 from PyQt6 import QtWidgets, QtCore
+from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QMenu
 
 import clientes
 import conexion
@@ -173,6 +175,7 @@ class Clientes:
         except Exception as error:
             print("Error cargando la tabla de clientes (clientes.py)", error)
 
+
     def cargaOneCliente(self):
         try:
             fila=var.ui.tabClientes.selectedItems()
@@ -204,6 +207,17 @@ class Clientes:
 
         except Exception as error:
             print("Error cargando datos del cliente", error)
+
+    @staticmethod
+    def cargarClienteEnFactura(registro):
+        try:
+            datos = [dato.text() for dato in registro]
+            var.ui.txt_DNIFactura.setText(datos[0])
+            var.ui.txt_ApellidosCliFactura.setText(datos[1])
+            var.ui.txt_NombreCliFactura.setText(datos[2])
+        except Exception as error:
+            print("Error cargando datos del cliente en la factura (clientes.py): ", error)
+
 
     def modifCliente(self):
         try:

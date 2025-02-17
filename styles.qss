@@ -32,6 +32,9 @@ QPushButton{
 QPushButton:hover{
     background-color: #b7c7da;
 }
+QPushButton:focus{
+    background-color: #b0d1ff;
+}
 
 QPushButton:disabled{
     background-color: #a6a6a6;
@@ -39,7 +42,11 @@ QPushButton:disabled{
 }
 
 *:disabled {
-   color: #a6a6a6;
+   color: #dcdcdc;
+}
+
+QLineEdit:disabled{
+    color: blue;
 }
 
 QCheckBox::indicator:disabled {

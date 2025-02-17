@@ -137,7 +137,7 @@ class Vendedor:
             #print(registro)
             #print(listado)
             for i in range(len(listado)):
-                registro[i] = " " if registro[i] == "None" else registro[i]
+
                 if isinstance(listado[i], QtWidgets.QComboBox):
                     listado[i].setCurrentText(registro[i])
                 else:

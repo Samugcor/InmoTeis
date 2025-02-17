@@ -22,7 +22,7 @@ class Propiedades():
     def formPropiedad(self):
         try:
             #BAJA PROP
-            if var.ui.txtBajaProp.text() == "":
+            if var.ui.txtBajaProp.text() == "" or var.ui.txtBajaProp.text() is None:
                 var.ui.rbtDisponible.setEnabled(True)
                 var.ui.rbtVendido.setEnabled(False)
                 var.ui.rbtAlquilado.setEnabled(False)
@@ -177,7 +177,7 @@ class Propiedades():
                 listado = conexion.Conexion.listaPropiedadesByTipo(self, var.ui.cmbFiltroTipoProp.currentText())
             elif var.ui.cmbFiltroMuniProp.currentText() != "---":
                 #print("Filtros de busqueda muni")
-                listado = conexion.Conexion.listaPropiedadesByMuni(self, var.ui.cmbFiltroMuniProp.currentText())
+                listado = conexion.Conexion.listaPropiedadesByMuni(var.ui.cmbFiltroMuniProp.currentText())
             else:
                 #print("No filtros de busqueda")
                 listado = conexion.Conexion.listadoPropiedades(self)

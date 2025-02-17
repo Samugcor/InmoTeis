@@ -12,7 +12,9 @@ from datetime import datetime
 from xmlrpc.client import DateTime
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QCompleter, QApplication
+from PyQt6.QtWidgets import QCompleter, QApplication, QMenu
+from datetime import datetime
+
 
 import clientes
 import conexion
@@ -87,7 +89,7 @@ class Eventos:
                 listTipoProp = conexionserver.ConexionServer.listaTipoPropiedad()
                 listMuni = conexionserver.ConexionServer.listAllMuni()
 
-        
+
             # Limpia para volver a poner valores, añade el valor -- para cuando no hay nada seleccionado, añade al cmb
             var.ui.cmbFiltroTipoProp.clear()
             listTipoProp.insert(0, "---")
@@ -140,8 +142,10 @@ class Eventos:
                 var.ui.txtAltaProp.setText(str(data))
             elif var.panel == 1 and var.btn==1:
                 var.ui.txtBajaProp.setText(str(data))
-            elif var.panel ==3 and var.btn == 0:
+            elif var.panel ==2 and var.btn == 0:
                 var.ui.txtAltaVendedor.setText(str(data))
+            elif var.panel ==3 and var.btn == 0:
+                var.ui.txt_FechaFactura.setText(str(data))
             time.sleep(0.2)
             var.uiCalendar.hide()
             return data
@@ -332,7 +336,7 @@ class Eventos:
             print("error en restaurar backup: ", e)
 
     '''
-        OTROS
+        MOSTRAR COSAS
     '''
     def abrirCalendar(pan, btn):
         try:
@@ -342,6 +346,134 @@ class Eventos:
         except Exception as error:
             print("error en abrir calendar ", error)
 
+    def abrirTipoProp(self):
+        try:
+            var.dlggestion.show()
+        except Exception as e:
+            print("Error en abrir  ventana tipo prop ", e)
+
+    def abrirAbout(self):
+        try:
+            var.dlgabout.show()
+        except Exception as e:
+            print("Error en abrir  ventana tipo prop ", e)
+
+    def abrirInformeProp(self):
+        try:
+
+            listaMuniConPropiedades = conexion.Conexion.listaMuniConPropiedades()
+            var.dlginformeprop.ui.cmb_informeMunicipio.clear()
+            var.dlginformeprop.ui.cmb_informeMunicipio.addItem("")
+            var.dlginformeprop.ui.cmb_informeMunicipio.addItems(listaMuniConPropiedades)
+
+            completer = QCompleter(listaMuniConPropiedades, var.dlginformeprop.ui.cmb_informeMunicipio)
+            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+            completer.setFilterMode(Qt.MatchFlag.MatchContains)
+            var.dlginformeprop.ui.cmb_informeMunicipio.setCompleter(completer)
+
+            var.dlginformeprop.show()
+        except Exception as e:
+            print("Error en abrir  ventana informe prop ", e)
+
+    @staticmethod
+    def showContextMenuClientes(position):
+        try:
+            fila = var.ui.tabClientes.selectedItems()
+
+            if fila:
+                menu = QMenu()
+
+                # Add actions to the menu
+                crearFactura_action = menu.addAction("Generar factura")
+                crearContratoAlquiler_action = menu.addAction("Generar contrato de alquiler")
+
+                # Execute the menu and capture the selected action
+                action = menu.exec(var.ui.tabClientes.viewport().mapToGlobal(position))
+
+                # Handle the actions
+                if action == crearFactura_action:
+                    clientes.Clientes.cargarClienteEnFactura(fila)
+                    #Cargar el resto de los datos
+                    data = ('{:02d}/{:02d}/{:4d}'.format(datetime.today().day, datetime.today().month, datetime.today().year))
+                    var.ui.txt_FechaFactura.setText(str(data))
+                    var.ui.txt_NFactura.setText(str(conexion.Conexion.getNextIdFactura()))
+
+                    #Enable boton guardar
+                    var.ui.btn_GuardarFactura.setEnabled(True)
+
+                    #Mostrar tab ventas
+                    var.ui.panPrincipal.setCurrentIndex(3)
+                    var.ui.btn_GuardarFactura.setFocus()
+
+                elif action == crearContratoAlquiler_action:
+                    print("crear contrato de alquiler")
+
+        except Exception as error:
+            print("Error cargando menu contextual de la tabla de clientes (clientes.py)", error)
+
+    @staticmethod
+    def showContextMenuPropiedades(position):
+        try:
+            registro = var.ui.tabPropiedades.selectedItems()
+            print(registro)
+
+            if registro:
+
+                menu = QMenu()
+
+                # Add actions to the menu
+                addVenta = menu.addAction("Añadir a la pestaña de venta")
+
+                # Execute the menu and capture the selected action
+                action = menu.exec(var.ui.tabPropiedades.viewport().mapToGlobal(position))
+
+                # Handle the actions
+                if action == addVenta:
+
+                    if "Venta" not in registro[7].text():
+                        Eventos.alertMaker("Information", "Aviso",
+                                           "El piso debe estar en venta para ser añadido a una factura")
+                        return
+                    if conexion.Conexion.isDisponible(registro[0].text()):
+                        Eventos.alertMaker("Information", "Aviso",
+                                           "El piso debe estar disponible para ser añadido a una factura")
+                        return
+                    if not var.ui.txt_NFactura.text():
+                        Eventos.alertMaker("Information", "Aviso",
+                                           "Debe haber una factura abierta para cargar una venta")
+                        return
+
+                    idprop = registro[0].text()
+                    propiedad = conexion.Conexion.getPropiedadById(idprop)
+
+                    var.ui.txt_codpropventas.setText(propiedad[0])
+                    var.ui.txt_dirpropventas.setText(propiedad[1])
+                    var.ui.txt_munipropventas.setText(propiedad[2])
+                    var.ui.txt_tipopropventas.setText(propiedad[3])
+                    var.ui.txt_preciopropventas.setText(propiedad[4])
+
+                    #Elige un vendedor
+                    listaVendedores = conexion.Conexion.getIdNameDniFromVendedores()
+                    print(listaVendedores)
+                    for id, nombre, dni in listaVendedores:
+                        display_text = f"{id} : {nombre} - {dni}"
+                        print(display_text)
+                        var.dlgselectvendedor.ui.cmb_vendedores.addItem(display_text, {"id": id, "nombre": nombre, "dni": dni})
+                    var.dlgselectvendedor.show()
+
+                    # Enable boton guardar
+                    var.ui.btn_aniadirafactura.setEnabled(True)
+
+                    # Mostrar tab ventas
+                    var.ui.panPrincipal.setCurrentIndex(3)
+                    var.ui.btn_aniadirafactura.setFocus()
+
+        except Exception as error:
+            print("Error cargando menu contextual de la tabla de propiedades (clientes.py)", error)
+
+    '''
+    RESIZE TABLAS
+    '''
     def resizeTablaClientes(self):
         try:
             header=var.ui.tabClientes.horizontalHeader()
@@ -393,6 +525,63 @@ class Eventos:
         except Exception as e:
             print("error en resize tabla clientes ", e)
 
+    def resizeTablaFacturas(self):
+        try:
+            header=var.ui.tbl_facturas.horizontalHeader()
+            for i in range(header.count()):
+                if i == 0 or i == 3:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+
+                header_items =var.ui.tbl_facturas.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla Facturas ", e)
+
+    def resizeTablaVentas(self):
+        try:
+            header=var.ui.tbl_ventas.horizontalHeader()
+            for i in range(header.count()):
+                if i in (0,1,6):
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+
+                header_items =var.ui.tbl_ventas.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla Ventas ", e)
+
+    def resizeTablaContratos(self):
+        try:
+            header=var.ui.tbl_contratos.horizontalHeader()
+            for i in range(header.count()):
+                if i == 0 or i == 2:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+
+                header_items =var.ui.tbl_contratos.horizontalHeaderItem(i)
+                font= header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+        except Exception as e:
+            print("error en resize tabla Facturas ", e)
+
+    '''
+    OTROS
+    '''
     def limpiarPanel(self):
         try:
             if var.ui.panPrincipal.currentIndex()==0:
@@ -435,18 +624,6 @@ class Eventos:
 
         except Exception as e:
             print("error al limpiar panel (eventos.py): ", e)
-
-    def abrirTipoProp(self):
-        try:
-            var.dlggestion.show()
-        except Exception as e:
-            print("Error en abrir  ventana tipo prop ", e)
-
-    def abrirAbout(self):
-        try:
-            var.dlgabout.show()
-        except Exception as e:
-            print("Error en abrir  ventana tipo prop ", e)
 
     @staticmethod
     def alertMaker(tipo,titulo,mensaje):

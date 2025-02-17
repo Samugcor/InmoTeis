@@ -22,6 +22,13 @@ class Conexion:
 
     @staticmethod
     def db_conexion(self):
+        """
+
+        :param self: None
+        :type self: None
+        :return: False or True
+        :rtype: bool
+        """
         # Verifica si el archivo de base de datos existe
         if not os.path.isfile('bbdd.sqlite'):
             eventos.Eventos.alertMaker("Critical","Error","El archivo de la base de datos no existe.")
@@ -49,6 +56,16 @@ class Conexion:
 
     @staticmethod
     def listaProv(self):
+        """
+
+        :param self: None
+        :type self: None
+        :return: lista de provincias
+        :rtype: list
+
+        Metodo que obtiene una lista con todos las provincias en la bd
+
+        """
         listaprov=[]
         query= QtSql.QSqlQuery()
         query.prepare("SELECT * FROM provincias")
@@ -61,6 +78,16 @@ class Conexion:
 
     @staticmethod
     def listaMuni(provincia):
+        """
+
+        :param provincia: nombre de la provincia
+        :type provincia: str
+        :return: lista de municipios de la provincia
+        :rtype: list
+
+        Devuelve una lista con los municipios de la provincia
+
+        """
         listamunicipios = []
         query = QtSql.QSqlQuery()
         query.prepare("SELECT * FROM municipios where idprov = (select idprov from provincias where provincia = :provincia)")
@@ -72,6 +99,16 @@ class Conexion:
 
     @staticmethod
     def listAllMuni():
+        """
+
+        :param: None
+        :type: None
+        :return: lista de municipios
+        :rtype: list
+
+        Devuelve una lista con todos los municipios de la bd
+
+        """
         listamunicipios = []
         query = QtSql.QSqlQuery()
         query.prepare("SELECT * FROM municipios")
@@ -83,7 +120,39 @@ class Conexion:
             print("Query execution failed:", query.lastError().text())
         return listamunicipios
 
+    @staticmethod
+    def listaMuniConPropiedades():
+        try:
+            listamunicipios = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT muniprop FROM propiedades GROUP BY muniprop")
+
+            if query.exec():
+                while query.next():
+                    listamunicipios.append(query.value(0))
+            else:
+                print("Query execution failed:", query.lastError().text())
+            return listamunicipios
+
+        except Exception as e:
+            print("Error recuperando listado de municipios con propiedades",e)
+
+    '''
+    CONEXIONES CLIENTES
+    
+    '''
+
     def altaCliente(nuevoCli):
+        """
+
+        :param nuevoCli: lista con datos de cliente
+        :type nuevoCli: list
+        :return: true or false
+        :rtype: bool
+
+        Metodo que inserta un nuevo registro cliente en la bd
+
+        """
         try:
 
             query = QtSql.QSqlQuery()
@@ -121,6 +190,16 @@ class Conexion:
             print("Error alta cliente",e)
 
     def listadoClientes(self):
+        """
+
+        :param self: None
+        :type self: None
+        :return: listado de listas de datos de clientes
+        :rtype: list
+
+        Devuelve una lista con las listas de datos de aqueyos clientes que coincidan con los criterios.
+        Dependiendo de si el checkbox Historico sea true o false se incluiran todos los clientes o solo aquellos sin fecha de baja respectivamente
+        """
         try:
             listado=[]
             if var.ui.chkHistoricoCli.isChecked():
@@ -147,6 +226,16 @@ class Conexion:
             print("Error recuperando el listado de clientes",e)
 
     def datosOneCliente(dni):
+        """
+
+        :param dni: DNI de un cliente
+        :type dni: str
+        :return: listado de datos de un cliente
+        :rtype: list
+
+        Devuelve los datos del cliente cuyo dni coincida con el dni proporcionado
+
+        """
         try:
             registro = []
             query = QtSql.QSqlQuery()
@@ -165,6 +254,17 @@ class Conexion:
             print("Error recuperando datos de clientes",e)
 
     def modifCliente(registro):
+        """
+
+        :param registro: lista de datos de un cliente
+        :type registro: list
+        :return: True or False
+        :rtype: bool
+
+        Recoge los datos de un cliente y los modifica en el registro adecuado segun el DNI (PK).
+        Devuelve True si la modificación ha sido exitosa y False en caso contrario
+
+        """
         try:
             query=QtSql.QSqlQuery()
             query.prepare("UPDATE clientes SET altacli =:altacli, apecli = :apecli, nomecli = :nomecli, emailcli = :emailcli, "
@@ -197,6 +297,17 @@ class Conexion:
             print("Fallo cargando modificacion en la bd:" + str(e))
 
     def bajaCliente(datos):
+        """
+
+        :param datos: lista de datos (dni, fecha de baja)
+        :type datos: list
+        :return: True or False
+        :rtype: bool
+
+        Modifica la fecha de baja del cliente que coincida con el dni proporcionado.
+        No elimina el registro de la bd
+
+        """
         try:
 
             query = QtSql.QSqlQuery()
@@ -218,6 +329,13 @@ class Conexion:
     
     '''
     def altaTipoPropiedad(tipoPropiedad):
+        """
+
+        :param tipoPropiedad: lista de datos (dni, fecha de baja)
+        :type tipoPropiedad: list
+        :return:
+        :rtype:
+        """
         try:
 
             query = QtSql.QSqlQuery()
@@ -369,7 +487,8 @@ class Conexion:
         except Exception as e:
             print("Error lista Propiedades por tipo (conexion.py): ",e)
 
-    def listaPropiedadesByMuni(self,muni):
+    @staticmethod
+    def listaPropiedadesByMuni(muni):
         try:
             listado = []
             if var.ui.chkHistoricoProp.isChecked():  # Si esta chekeado muestra to-do
@@ -501,8 +620,86 @@ class Conexion:
         except Exception as e:
             print("Error baja propiedad bd (conexion.py): ",e)
 
+    @staticmethod
+    def getPropiedadById(id):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                "select p.codigo, p.dirprop, p.muniprop, p.tipoprop, p.prevenprop from propiedades p where codigo = :cod")
+
+            query.bindValue(":cod", int(id))
+
+            if query.exec():
+                while query.next():
+                    for i in range(query.record().count()):
+                        registro.append(str(query.value(i)))
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de propiedad by id (conexion.py): ", e)
+
+    @staticmethod
+    def setEstadoVendido(codigoProp,fechabaja):
+        try:
+
+            query=QtSql.QSqlQuery()
+            query.prepare("UPDATE propiedades SET estadoprop=:estadoprop, bajaprop=:bajaprop WHERE codigo = :codigoProp")
+
+            query.bindValue(":codigoProp", codigoProp)
+            query.bindValue(":estadoprop", "Vendido")
+            query.bindValue(":bajaprop", str(fechabaja))
+
+            if query.exec() and query.numRowsAffected()>0:
+                print(query.numRowsAffected())
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Fallo cargando modificacion de propieded en la bd (conexion.py):", e)
+
+    @staticmethod
+    def setEstadoDisponible(codigoProp):
+        try:
+
+            query=QtSql.QSqlQuery()
+            query.prepare("UPDATE propiedades SET estadoprop=:estadoprop, bajaprop=:bajaprop WHERE codigo = :codigoProp")
+
+            query.bindValue(":codigoProp", codigoProp)
+            query.bindValue(":estadoprop", "Disponible")
+            query.bindValue(":bajaprop", None)
+
+            if query.exec() and query.numRowsAffected()>0:
+                print(query.numRowsAffected())
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Fallo cargando modificacion de propieded en la bd (conexion.py):", e)
+
+    @staticmethod
+    def isDisponible(codigo):
+        try:
+
+            query=QtSql.QSqlQuery()
+            query.prepare("select * from propiedades where codigo=:codigo AND estadoprop = 'Vendido'")
+
+            query.bindValue(":codigo", codigo)
+
+            if query.exec():
+                return query.next()  # Returns True if there's at least one match, False otherwise
+            return False
+        except Exception as e:
+            print("Fallo recuperando disponibilidad en la bd (conexion.py):", e)
+
+
     '''''
-    VENDEDORES
+    CONEXIONES VENDEDORES
+    
     '''
 
     def altaVendedores(nuevoVendedor):
@@ -695,3 +892,215 @@ class Conexion:
 
         except Exception as e:
             print("Error recuperando datos de vensedor",e)
+
+    @staticmethod
+    def getIdNameDniFromVendedores():
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("select idVendedor,nombreVendedor, dniVendedor from vendedores")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    print(fila)
+                    registro.append(fila)
+            else:
+                print("Error executing query:", query.lastError().text())
+                return False
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos id, nombre y dni de vendedor", e)
+
+    '''
+    CONEXIONES VENTAS
+    
+    '''
+    @staticmethod
+    def altaFactura(factura):
+        try:
+            print("datos dactura a dar de alta: ",factura)
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT INTO facturas (fechaFactura,dniFactura) VALUES (:fechaFactura,:dniFactura)")
+
+            query.bindValue(":fechaFactura", factura[0])
+            query.bindValue(":dniFactura", factura[1].strip())
+
+            if query.exec():
+                return True
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error alta factura (conexion.py): ",e)
+
+    @staticmethod
+    def listaFacturas():
+        try:
+            listado=[]
+            query = QtSql.QSqlQuery()
+            query.prepare("Select * FROM facturas")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+                return listado
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error listado facturas (conexion.py): ", e)
+
+    @staticmethod
+    def eliminarFactura(idFactura):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("DELETE FROM facturas WHERE idFactura = :idFactura")
+            query.bindValue(":idFactura", idFactura)
+
+            if query.exec() and query.numRowsAffected()>0:
+                return True
+            else:
+                print("Error executing query eliminarFactura: ", query.lastError().text())
+                return False
+
+        except Exception as e:
+            print("Error eliminar factura bd (conexion.py)",e)
+
+    @staticmethod
+    def getVentasFromFactura(idFactura):
+        try:
+            listado=[]
+            query = QtSql.QSqlQuery()
+            query.prepare("Select * FROM ventas WHERE idFactura = :idFactura")
+            query.bindValue(":idFactura", idFactura)
+
+            if query.exec():
+                while query.next():
+                   fila = [query.value(i) for i in range(query.record().count())]
+                   listado.append(fila)
+
+                return listado
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error listado ventas por factura (conexion.py): ", e)
+
+    @staticmethod
+    def getNextIdFactura():
+        query = QtSql.QSqlQuery()
+        query.prepare("SELECT Max(idFactura) FROM facturas")
+
+        if query.exec():
+            query.next()
+            return query.value(0)+1
+        else:
+            print("Error executing query: ", query.lastError().text())
+            return False
+
+    @staticmethod
+    def getFacturaById(idFactura):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare("select f.idFactura, f.fechaFactura, f.dniFactura ,c.nomecli, c.apecli from facturas as f INNER JOIN clientes as c on f.dniFactura=c.dnicli where idFactura = :idFactura")
+
+            query.bindValue(":idFactura", str(idFactura).strip())
+
+            if query.exec():
+                while query.next():
+                    for i in range(query.record().count()):
+                        registro.append(str(query.value(i)))
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de factura (conexion.py): ", e)
+
+    @staticmethod
+    def altaVenta(venta):
+        try:
+
+            query = QtSql.QSqlQuery()
+            query.prepare("insert into ventas (idFactura,idPropiedad,idVendedor) values (:idFactura,:idPropiedad,:idVendedor)")
+
+            query.bindValue(":idFactura", venta[0])
+            query.bindValue(":idPropiedad", venta[1])
+            query.bindValue(":idVendedor", venta[2])
+
+            if query.exec():
+                return True
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error alta factura (conexion.py): ", e)
+
+    @staticmethod
+    def eliminarVenta(idVenta):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("DELETE FROM ventas WHERE idVenta = :idVenta")
+            query.bindValue(":idVenta", idVenta)
+
+            if query.exec() and query.numRowsAffected() > 0:
+                return True
+            else:
+                print("Error executing query eliminarVenta: ", query.lastError().text())
+                return False
+
+        except Exception as e:
+            print("Error eliminar factura bd (conexion.py)", e)
+
+
+    '''
+    CONEXIONES ALQUILERES
+    '''
+
+    @staticmethod
+    def listaContratos():
+        try:
+            listado = []
+            query = QtSql.QSqlQuery()
+            query.prepare("Select * FROM contratos")
+
+            if query.exec():
+                while query.next():
+                    fila = [query.value(i) for i in range(query.record().count())]
+                    listado.append(fila)
+                return listado
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+        except Exception as e:
+            print("Error listado contratos (conexion.py): ", e)
+
+    @staticmethod
+    def getContratoById(idContrato):
+        try:
+            registro = []
+            query = QtSql.QSqlQuery()
+            query.prepare(
+                "SELECT con.idContrato, con.idVendedor, con.fechaFirma, con.fechaInicio, con.fechaFin, p.codigo, p.dirprop, p.muniprop, p.cpprop, cli.dnicli, cli.nomecli, cli.apecli from contratos as con INNER join clientes as cli on con.idCliente = cli.dnicli INNER join propiedades as p on con.idPropiedad = p.codigo where con.idContrato = :idContrato")
+
+            query.bindValue(":idContrato", str(idContrato).strip())
+
+            if query.exec():
+                while query.next():
+                    for i in range(query.record().count()):
+                        registro.append(str(query.value(i)))
+            else:
+                print("Error executing query: ", query.lastError().text())
+                return False
+
+            return registro
+
+        except Exception as e:
+            print("Error recuperando datos de contrato (conexion.py): ", e)

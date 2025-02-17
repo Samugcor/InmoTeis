@@ -13,3 +13,5 @@ global conexionMode
 global npaginacli
 global npaginapro
 global report
+global dlginformeprop
+global dlgselectvendedor
